@@ -1,28 +1,32 @@
 <div align="center">
 
-# TRAMONTANE CENTRAL STATION
+# TRAMONTANE · CENTRAL STATION
 
-*San-Fierro Police Department.*
+*Порядок рождается там, где закон работает без сбоев.*
 
-**Официальный сайт центральной станции Трамонтана**
-вся нужная информация находится здесь.
-
-<br>
-
-[![Открыть сайт](https://img.shields.io/badge/ОТКРЫТЬ_САЙТ-TRAMONTANE-SFPD-c23a2e?style=for-the-badge&labelColor=16161a)](https://weisez.github.io/Tramontane/?view)
+**Официальный сайт центральной станции Трамонтана полицейского департамента Сан-Фиерро:**
+подразделения, состав, приказы, брифинги, пресс-центр и формуляры.
 
 <br>
 
-![Статика](https://img.shields.io/badge/stack-HTML_·_CSS_·_JS-d9830f?style=flat-square&labelColor=16161a)
-![Без зависимостей](https://img.shields.io/badge/dependencies-none-6f95b5?style=flat-square&labelColor=16161a)
-![Hosting](https://img.shields.io/badge/hosting-GitHub_Pages-ece8e1?style=flat-square&labelColor=16161a)
+[![Открыть сайт](https://img.shields.io/badge/ОТКРЫТЬ_САЙТ-TRAMONTANE-b8932f?style=for-the-badge&labelColor=09111b)](https://weisez.github.io/Tramontane/?view)
+
+<br>
+
+![Статика](https://img.shields.io/badge/stack-HTML_·_CSS_·_JS-c9a24b?style=flat-square&labelColor=09111b)
+![Без зависимостей](https://img.shields.io/badge/dependencies-none-4f84c4?style=flat-square&labelColor=09111b)
+![Hosting](https://img.shields.io/badge/hosting-GitHub_Pages-e9e5da?style=flat-square&labelColor=09111b)
 
 </div>
+
+<!-- Скриншот: положите картинку в docs/preview.png и раскомментируйте строку ниже
+<p align="center"><img src="docs/preview.png" alt="Tramontane Central Station" width="860"></p>
+-->
 
 ---
 
 <div align="center">
 
-<sub>Tramontane Central Station · <a href="https://weisez.github.io/Tramontane/?view">открыть сайт</a></sub>
+<sub>Tramontane Central Station · SFPD 2nd Area Command · <a href="https://weisez.github.io/Tramontane/?view">открыть сайт</a></sub>
 
 </div>
