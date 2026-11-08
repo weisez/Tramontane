@@ -9,7 +9,7 @@
 
 <br>
 
-[![Открыть сайт](https://img.shields.io/badge/ОТКРЫТЬ_САЙТ-TRAMONTANE-CENTRAL-STATION-c23a2e?style=for-the-badge&labelColor=16161a)](https://weisez.github.io/Tramontane/?view)
+[![Открыть сайт](https://img.shields.io/badge/ОТКРЫТЬ_САЙТ-TRAMONTANE-SFPD-c23a2e?style=for-the-badge&labelColor=16161a)](https://weisez.github.io/Tramontane/?view)
 
 <br>
 
