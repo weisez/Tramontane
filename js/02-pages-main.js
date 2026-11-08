@@ -21,7 +21,7 @@ route("", () => {
   </div></section>
   ${br ? `<div class="strip"><b>Брифинг</b><span>${E(br.num)} · ${E(br.date)}</span><a href="#/doc/${br.id}">Читать →</a></div>` : ""}
   <section class="sec"><div class="wrap quote">
-    ${cap ? `<div class="reveal">${phot(cap)}</div>` : ""}
+    ${cap ? `<div class="reveal" style="position:relative">${phot(cap)}${eb("people", cap.id)}</div>` : ""}
     <div class="reveal"><div class="eb">Командующий офицер</div><h2 style="margin:8px 0 22px">${cap ? E(cap.rank + " " + cap.name) : ""}</h2>
       <blockquote class="q" style="margin:0 0 26px">«${E(m.motto)}»<cite>${E(m.mottoBy)}</cite></blockquote>
       <div class="prose">${H(m.intro)}</div><p><a class="btn ghost" href="#/about">О станции</a></p></div>
@@ -37,7 +37,7 @@ route("", () => {
     <div>${sech("Пресс-центр", "Пресс-релизы")}${latest("press", 3).map(drow).join("")}<p><a class="btn ghost" href="#/press">Все релизы</a></p></div>
   </div></section>
   <section class="sec"><div class="wrap quote">
-    <div class="reveal"><div class="ph"><img src="${E(m.careerImg)}" alt="" loading="lazy"><b>SFPD</b></div></div>
+    <div class="reveal" style="position:relative"><div class="ph"><img src="${E(m.careerImg)}" alt="" loading="lazy"><b>SFPD</b></div>${eb("meta", "-")}</div>
     <div class="reveal"><div class="eb">Карьера</div><h2 style="margin:8px 0 18px">Департамент даёт вам звание, станция даёт вам стандарт</h2><p class="lead">Путь от кадета до командного состава: академия, полевая подготовка, специализированные секции. Станция принимает на службу и ищет сильных офицеров в старший состав.</p><p><a class="btn" href="#/career">Узнать больше</a> <a class="btn ghost" href="#/forms">Подать заявление</a></p></div>
   </div></section>` };
 }, "home");
