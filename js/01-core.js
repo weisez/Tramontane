@@ -51,7 +51,9 @@ const addb = (c, l) => H(`<button class="ed addb" data-add="${c}">+ ${l}</button
 const ROUTES = [];
 const route = (pat, fn, nav) => ROUTES.push({ re: new RegExp("^" + pat.replace(/:\w+/g, "([^/]+)") + "$"), fn, nav });
 function render() {
-  const h = decodeURIComponent(location.hash.replace(/^#\/?/, "")).replace(/\/+$/, "");
+  let h = location.hash.replace(/^#\/?/, "");
+  try { h = decodeURIComponent(h); } catch (e) {}
+  h = h.replace(/\/+$/, "");
   const app = $("#app");
   let r = null, m = null;
   for (const x of ROUTES) { m = h.match(x.re); if (m) { r = x; break; } }
@@ -67,7 +69,7 @@ function render() {
   scrollTo(0, 0);
   after(); if (out.init) out.init(app);
 }
-const notFound = () => `<section class="sec"><div class="wrap"><div class="eb">404</div><h2>Страница не найдена</h2><p class="lead">Такого раздела нет или документ перенесён в архив.</p><p><a class="btn" href="#/">На главную</a></p></div></section>`;
+const notFound = () => `<section class="sec"><div class="wrap"><div class="eb">404</div><h1 style="font-size:clamp(26px,3.6vw,40px)">Страница не найдена</h1><p class="lead">Такого раздела нет или документ перенесён в архив.</p><p><a class="btn" href="#/">На главную</a></p></div></section>`;
 /* generic after-render: reveal, counters, accordions */
 let IO;
 function after() {
@@ -77,7 +79,7 @@ function after() {
 }
 function countUp(el) {
   const to = parseInt(el.dataset.count, 10), s = el.dataset.suf || "", t0 = performance.now(), d = 1100;
-  if (isNaN(to) || to > 9999) { el.textContent = el.dataset.count + s; return; }
+  if (!/^\d+$/.test(el.dataset.count) || to > 9999) { el.textContent = el.dataset.count + s; return; }
   const f = (t) => { const p = Math.min(1, (t - t0) / d); el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + s; if (p < 1) requestAnimationFrame(f); };
   requestAnimationFrame(f);
 }
@@ -94,6 +96,21 @@ function theme(t) { if (t) LS.set("tcs-theme", t); const v = LS.get("tcs-theme",
 /* ===== editable UI texts: static strings in templates become editable ===== */
 const D0 = "\uE000", D1 = "\uE001";
 const E = (s) => D0 + esc(s) + D1, H = (s) => D0 + (s == null ? "" : s) + D1;
+/* Любой HTML, собранный через E()/H(), нужно пропускать через uiProcess() перед вставкой в DOM:
+   именно он убирает служебные символы /. Короткая обёртка для таких мест: */
+const ui = (html) => uiProcess(html);
+/* ===== кадрирование картинок: точка фокуса + масштаб.
+   Хранится рядом с полем картинки как <поле>Pos = { x, y, z } (x,y: 0..100 %, z: 1..4). ===== */
+const CROP0 = { x: 50, y: 50, z: 1 };
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const cropOf = (o, f) => {
+  const c = o && o[f + "Pos"]; if (!c || typeof c !== "object") return null;
+  const x = clamp(+c.x, 0, 100), y = clamp(+c.y, 0, 100), z = clamp(+c.z, 1, 4);
+  return isFinite(x + y + z) ? { x, y, z } : null;
+};
+const cstyle = (c) => c && (c.x !== 50 || c.y !== 50 || c.z !== 1) ? `object-position:${c.x}% ${c.y}%;transform-origin:${c.x}% ${c.y}%;transform:scale(${c.z})` : "";
+/* картинка внутри рамки: рамка должна быть position:relative + overflow:hidden */
+const fimg = (src, c, alt, eager) => { if (!src) return ""; const s = cstyle(c); return `<img class="pic" src="${E(src)}" alt="${E(alt || "")}"${eager ? "" : ' loading="lazy"'}${s ? ` style="${s}"` : ""}>`; };
 const cnt = (t, c) => t.split(c).length - 1;
 const btnKey = (inner) => inner.replace(/<[^>]*>/g, "").replace(/[\uE000\uE001]/g, "").trim();
 function uiProcess(html) {

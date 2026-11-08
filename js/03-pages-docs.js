@@ -1,7 +1,7 @@
 /* ===== pages: documents, press, forms, board ===== */
 route("docs", () => {
   const T = [["all", "Все"], ["order", "Приказы"], ["briefing", "Брифинги"], ["memo", "Служебные записки"]];
-  return { title: "Документы", init: docsInit, html: `${phead("Служебные документы", "Приказы, брифинги и нормативы", "Официальные документы центральной станции Трамонтана. Каждый офицер обязан быть ознакомлен с актуальными приказами и последним брифингом.", S.meta.hero)}
+  return { title: "Документы", init: docsInit, html: `${phead("Служебные документы", "Приказы, брифинги и нормативы", "Официальные документы центральной станции Трамонтана. Каждый офицер обязан быть ознакомлен с актуальными приказами и последним брифингом.", S.meta.hero, null, cropOf(S.meta, "hero"))}
   <section class="sec"><div class="wrap"><div class="filt">${T.map((t, i) => `<button data-df="${t[0]}" class="${i ? "" : "on"}">${t[1]}</button>`).join("")}<input id="dq" placeholder="Поиск по номеру и названию…" aria-label="Поиск документов"></div><div id="dl">${docList("all", "")}</div>${addb("docs", "Документ")}</div></section>` };
 }, "docs");
 function docList(t, q) {
@@ -11,7 +11,7 @@ function docList(t, q) {
 }
 function docsInit(app) {
   let t = "all";
-  const up = () => { $("#dl", app).innerHTML = docList(t, $("#dq", app).value); };
+  const up = () => { $("#dl", app).innerHTML = ui(docList(t, $("#dq", app).value)); };
   $(".filt", app).addEventListener("click", (e) => { const b = e.target.closest("[data-df]"); if (!b) return; t = b.dataset.df; $$("[data-df]", app).forEach((x) => x.classList.toggle("on", x === b)); up(); });
   $("#dq", app).addEventListener("input", up);
 }
@@ -24,7 +24,7 @@ route("doc/:id", (id) => {
     <div class="tools"><a class="btn ghost" href="#/${d.type === "press" ? "press" : "docs"}">← К списку</a><button id="pr">Печать</button><button id="cp">Копировать ссылку</button><button class="ed" data-ed="docs:${d.id}">✎ Править</button></div>
     <article class="paper">${stamp ? `<div class="stamp">${stamp}</div>` : ""}<svg class="wm" viewBox="0 0 64 64">${BADGE.replace(/^<svg[^>]*>|<\/svg>$/g, "")}</svg>
       <div class="ptop"><div class="st">★ TRAMONTANE CENTRAL STATION — SFPD — 2nd AREA COMMAND ★</div><b>${E(m.name)}</b><span>${E(m.org)} · ${E(m.address)}</span></div>
-      <h2>${E(d.title)}</h2>
+      <h1>${E(d.title)}</h1>
       ${d.meta && d.meta.length ? `<div class="meta">${d.meta.map((x) => `<div><span>${E(x[0])}</span>${E(x[1])}</div>`).join("")}</div>` : ""}
       <div class="prose">${H(d.body)}</div>
       ${d.quote ? `<div class="q2">${E(d.quote)}</div>` : ""}
@@ -34,10 +34,10 @@ route("doc/:id", (id) => {
     init(app) { $("#pr", app).onclick = () => print(); $("#cp", app).onclick = () => { try { navigator.clipboard.writeText(location.href); toast("Ссылка скопирована"); } catch (e) {} }; } };
 }, "docs");
 
-route("press", () => ({ title: "Пресс-центр", html: `${phead("Пресс-центр", "Пресс-релизы станции", E(S.meta.pressIntro || ""), S.meta.hero)}
+route("press", () => ({ title: "Пресс-центр", html: `${phead("Пресс-центр", "Пресс-релизы станции", E(S.meta.pressIntro || ""), S.meta.hero, null, cropOf(S.meta, "hero"))}
   <section class="sec"><div class="wrap"><div class="grid g3">${S.docs.filter((d) => d.type === "press").map((d) => `<a class="card lnk reveal" href="#/doc/${d.id}"><div class="pad"><div class="ref">${E(d.num)}</div><h3 style="margin:10px 0 12px;font-size:17px">${E(d.title)}</h3><span class="chip ${d.draft ? "warn" : "ok"}">${d.draft ? "Готовится" : E(d.status || "Опубликован")}</span></div>${eb("docs", d.id)}</a>`).join("")}</div>${addb("press", "Пресс-релиз")}</div></section>` }), "press");
 
-route("forms", () => ({ title: "Формуляры", html: `${phead("Формуляры", "Заявления, рапорты и обращения", "Заполните форму на странице: готовый текст в установленном формате можно скопировать и отправить командованию.", S.meta.hero)}
+route("forms", () => ({ title: "Формуляры", html: `${phead("Формуляры", "Заявления, рапорты и обращения", "Заполните форму на странице: готовый текст в установленном формате можно скопировать и отправить командованию.", S.meta.hero, null, cropOf(S.meta, "hero"))}
   <section class="sec"><div class="wrap"><div class="grid g3">${S.forms.map((f) => `<a class="card lnk reveal" href="#/form/${f.id}"><div class="pad"><div class="ref">${E(f.ref || "—")}</div><h3 style="margin:10px 0 8px;font-size:18px">${E(f.title)}</h3><p style="margin:0">${E(f.desc || "")}</p></div>${eb("forms", f.id)}</a>`).join("")}</div>
   <div class="prose reveal" style="margin-top:44px;max-width:760px"><h3>Куда обращаться</h3><p>${E(S.meta.contactIntro || "")}</p></div>${addb("forms", "Формуляр")}</div></section>` }), "forms");
 
@@ -75,7 +75,7 @@ route("form/:id", (id) => {
       const els = $$("[data-k]", app);
       els.forEach((el) => { const v = vals[el.dataset.k]; if (el.type === "checkbox") el.checked = !!v; else if (v != null) el.value = v; });
       const up = () => { els.forEach((el) => { vals[el.dataset.k] = el.type === "checkbox" ? el.checked : el.value; }); LS.set(key, JSON.stringify(vals)); $("#fo", app).textContent = formOut(f, vals); };
-      app.addEventListener("input", up); app.addEventListener("change", up);
+      const fgEl = $(".fg", app); fgEl.addEventListener("input", up); fgEl.addEventListener("change", up);
       $("#fcp", app).onclick = () => { try { navigator.clipboard.writeText($("#fo", app).textContent); toast("Текст скопирован"); } catch (e) { toast("Не удалось скопировать"); } };
       $("#fpr", app).onclick = () => print();
       $("#fclr", app).onclick = () => { LS.set(key, "{}"); render(); };
@@ -83,7 +83,7 @@ route("form/:id", (id) => {
     } };
 }, "forms");
 
-route("board", () => ({ title: "Доска станции", init: boardInit, html: `${phead("Жизнь станции", "Доска станции", E(S.meta.lifeIntro || ""), S.meta.lifeImg)}
+route("board", () => ({ title: "Доска станции", init: boardInit, html: `${phead("Жизнь станции", "Доска станции", E(S.meta.lifeIntro || ""), S.meta.lifeImg, null, cropOf(S.meta, "lifeImg"))}
   <section class="sec"><div class="wrap two"><div class="bcol">
     <div class="post compose" id="cmp"><div class="av">✎</div><div class="cbody"><button class="cmp-t" id="cmpt" aria-expanded="false">Оставить записку на доске…</button>
       <div class="cmp-b"><div><div class="cf"><div class="fld"><label>Кто (звание, имя)</label><input id="bw" placeholder="Офицер Имя Фамилия"></div><div class="fld"><label>Что делает / где</label><input id="ba" placeholder="оставил записку на доске объявлений станции"></div></div>

@@ -72,6 +72,7 @@ document.addEventListener("keydown", (e) => {
   try { await ownerCheck(); } catch (e) {}
   try { await loadData(); } catch (e) { $("#app").innerHTML = `<section class="sec"><div class="wrap"><h2>Не удалось загрузить данные</h2><p class="lead">${esc(e.message)}</p></div></section>`; return; }
   chrome(); ownerBar();
-  addEventListener("hashchange", render);
+  addEventListener("hashchange", () => { ROOM_I = 0; render(); });
+  const sk = $(".skip"); if (sk) sk.addEventListener("click", (e) => { e.preventDefault(); $("#app").focus(); });
   render();
 })();

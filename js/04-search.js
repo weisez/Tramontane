@@ -13,6 +13,7 @@ function sIndex() {
 function sOpen() {
   const o = ovOpen("srov", `<div class="md" id="sr"><input id="sq" placeholder="Поиск по сайту: документы, люди, звания…" autocomplete="off" aria-label="Поиск"><div class="sr-l" id="sl"></div></div>`);
   const IDX = sIndex(); let cur = 0, res = [];
+  const go = (u) => { ovClose("srov"); if (location.hash === u || (u === "#/" && !location.hash.replace("#", "").replace(/^\//, ""))) render(); else location.hash = u; };
   const draw = () => {
     const q = $("#sq").value.toLowerCase().trim().split(/\s+/).filter(Boolean);
     res = IDX.map((x) => { const h = (x.n + " " + x.s).toLowerCase(); let sc = 0; for (const w of q) { if (!h.includes(w)) return null; sc += x.n.toLowerCase().includes(w) ? 2 : 1; } return { x, sc }; }).filter(Boolean).sort((a, b) => b.sc - a.sc).slice(0, 30).map((r) => r.x);
@@ -25,8 +26,8 @@ function sOpen() {
   $("#sq").addEventListener("keydown", (e) => {
     if (e.key === "ArrowDown") { e.preventDefault(); cur = Math.min(res.length - 1, cur + 1); mark(); }
     else if (e.key === "ArrowUp") { e.preventDefault(); cur = Math.max(0, cur - 1); mark(); }
-    else if (e.key === "Enter" && res[cur]) { location.hash = res[cur].u; ovClose("srov"); }
+    else if (e.key === "Enter" && res[cur]) { go(res[cur].u); }
   });
-  o.addEventListener("click", (e) => { if (e.target === o || e.target.closest(".sri")) ovClose("srov"); });
+  o.onclick = (e) => { const a = e.target.closest(".sri"); if (a) { e.preventDefault(); go(a.getAttribute("href")); } else if (e.target === o) ovClose("srov"); };
   draw(); $("#sq").focus();
 }
