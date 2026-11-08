@@ -1,16 +1,16 @@
 {
   "meta": {
-    "name": "Tramontane Central Station",
+    "name": "Tramontane",
     "org": "San Fierro Police Department · 2nd Area Command",
     "address": "101 Downtown Avenue, San Fierro, SA 94102",
     "motto": "Порядок рождается там, где закон работает без сбоев.",
     "mottoBy": "из обращения капитана Э. Делакруа к личному составу",
-    "hero": "https://imgfy.ru/ib/AmUCmcL5bcbQ7hF_1780886959.webp",
+    "hero": "img/vyf-0oq7.webp",
     "intro": "<p>Центральная станция Трамонтана — административный и тактический центр второй зоны территориальной ответственности полицейского департамента Сан-Фиерро. Станция стоит на стыке финансового центра и промышленного сектора и отвечает за самый сложный район города: днём здесь десятки тысяч офисных работников, ночью — огромный поток грузов через портовый терминал.</p><p>Задача Трамонтаны — держать всё это под контролем и обеспечивать покой жителям города.</p>",
     "about": "<p>Долгое время Трамонтана была обычным портовым участком. Пьяные драки у доков, кражи из контейнеров, локальные разборки банд. Потом порт Сан-Фиерро вырос в один из главных грузовых хабов Федерации, и всё изменилось. К середине 2010-х старая система патрулирования перестала справляться. Через доки начал проходить поток наркотиков, нелегального оружия, серые финансовые схемы. Станция теряла улицы, внутренние отчёты кишели коррупционными скандалами и утечками. Критической точкой стала серия проваленных операций в портовом секторе. Федеральные суды раз за разом отпускали крупных контрабандистов из-за процессуальных ошибок. Городские власти и крупные инвесторы потребовали реформ. Трамонтане нужен был не тактик, а человек, способный починить систему. Руководство города вступило начало действовать, и вскоре решение было принято: Трамонтану превратить в технически оснащённую по последнему слову полицейскую станцию.</p><p>В 2026-ом году командиром станции стал капитан Эскаль Делакруа, 35-тилетний выходец из офиса прокурора. За плечами нет ни одного года обычной патрульной службы, юрист до мозга костей. Самый молодой капитан в истории департамента. Старая гвардия встретила его враждебно. «Кабинетный назначенец», «ставленник корпораций» — это ещё мягкие формулировки. Профсоюзы выражали недоверие открыто. Журналисты пытались раскопать его прошлое, большая часть которого закрыта федеральным правительством. Первые несколько месяцев заставили скептиков замолчать. Делакруа перестроил работу станции по принципу жёсткого операционного менеджмента. При финансовой и технической поддержке городской власти и департамента, станция получила обновлённый автопарк, новейшую экипировку для офицеров и аналитические комплексы.</p>",
     "building": "Центральная станция Трамонтана располагается в большом для своего подразделения здании, позволяя спокойно уместить в себе одновременно несколько десятков офицеров, включая все секции и программы.",
-    "careerImg": "https://imgfy.ru/ib/vbWrl4BWOCTmLGD_1780901780.webp",
-    "lifeImg": "https://imgfy.ru/ib/BzMu9KVaNnDdf2x_1782575202.webp",
+    "careerImg": "img/chatgpt-image-28-iyun-2026-g-00-22-24-n9mp.webp",
+    "lifeImg": "img/vyf-0oq7.webp",
     "deptImg": "https://imgfy.ru/ib/cpOBfgmh9OnYXeF_1782575202.webp",
     "pressIntro": "Руководство центральной станции Трамонтана прикладывает все усилия для обеспечения прозрачности повседневной деятельности станции. В связи с этим, кабинет административного координатора станции ведёт разработку, учёт и представление пресс-релизов о всех значимых ситуациях, связанных с полицией Сан-Фиерро. Государственные и частные средства массовой информации имеют право пользоваться медиа-контентом из данного раздела по принципу \"fair-use\", с указанием источников.",
     "lifeIntro": "Данная площадка создана для симуляции повседневной, неформальной жизни внутри станции и департамента, общения между персонажами, публикации слухов, внутренних текстовых ролевых ситуаций и локального бэкстейджа, который обычно остается за рамками официальных рапортов. Здесь вы можете от лица своего персонажа запустить текстовую ситуацию на станции, обсудить с коллегами утренний инцидент на смене, пустить слух про нового супервайзера, оставить записку на шкафчике коллеги или поделиться мыслями вашего офицера после тяжелой смены.",
@@ -23,31 +23,24 @@
     "contactIntro": "Центральная станция Трамонтана находится под руководством капитана полиции Эскаля Делакруа. Для отправки обращения, жалобы или заявления на отпуск, вы можете воспользоваться одной из заполняемых форм ниже.\n Руководство станции рассматривает все входящие сообщения в рабочем порядке, с обязательным уведомлением об ответе. Отправляя сообщение, вы соглашаетесь с политикой обработки личных данных.",
     "stats": [
       {
-        "n": "2",
-        "l": "зона ответственности"
+        "n": "5",
+        "l": "вакантных должностей"
       },
       {
         "n": "5",
         "l": "подразделений и программ"
       },
       {
-        "n": "2024",
-        "l": "основана секция бандподавления"
+        "n": "$76.322",
+        "l": "средняя зарплата в год"
       },
       {
-        "n": "24",
-        "l": "часа на оформление личного дела"
+        "n": "35",
+        "l": "суток оплачиваемого отпуска"
       }
     ],
-    "topline": "Официальный сайт центральной станции",
-    "brandSub": "Central Station · SFPD 2nd Area Command",
-    "staffOrder": [
-      "cmd",
-      "ged",
-      "swat",
-      "patrol",
-      "fto"
-    ]
+    "brandSub": "Central Station of SFPD",
+    "topline": "СТАТУС САЙТА: UP"
   },
   "people": [
     {
@@ -57,7 +50,7 @@
       "rank": "Капитан полиции",
       "title": "Командующий офицер, командир станции",
       "unit": "cmd",
-      "photo": "https://imgfy.ru/ib/ONNRgL2Z8dKoqbF_1780886963.webp",
+      "photo": "data:image/webp;base64,UklGRto3AABXRUJQVlA4WAoAAAAgAAAAVwEA/gEASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDgg7DUAABD5AJ0BKlgB/wE+USSPRiOiI6Mj8qqgcAoJZ23EqLiSneNlxi+T8vfORYLrHyD9lsL7H1dfbCgx3Z/IeTY+z6gf7VvCPM1+3HrM+lP/Lekl1TPoh+dH6yX96wjfuhdf/nX+K+7PxZYh7Tfsl/Q/xXtM/wPEv5Zf6nqNfl39H/2fqFxwuwn1//g/0PsQe532D/cf4j13pz31N+v9gPv0PIMoHeMP/1+eD6i/+f+w+A/+h/4P/rdj793PZo/dQgHMpYa4dzSdcO5pOwWNMJVm/2LzN/tu2vla6BH9HFmzK4248htogEc+wNz9aX5jmfSmcyfVzjSuEO7BQz62Tl3I6UFAsRqtcjSljB52coxBfEu0CvERR4+nK+TKJNvp2nivhVASyvMNl3WNrP+b9yc28Q9446EZ0Viy5eqRxswwkPQ4kcZhthZprQcXwPoI4tMRbTW2hVaOHejOTl9SLtjhECBdXDRC+OtYWpD6/grwzDQiaTRFRglK6bIgVmf4YbLrQG2LVLnj32DJc/QqKPL0mu2CIAqGzyVXObsVjm8buLNH779svocFXW38KJlMUUSSQYk+r3NPtaRgTgSyJbPDQk3M16Wn5o1V9BwslmgBwJVJKYcsQu67F6jPhvUBfGoHcpfSJmmDjs70RewDiJehSNeQu3IHrYR5WTZ7o/ap4afDKRq55dXEBABZRqhGdv4juy3c3X61AuFof5xEQTd8YvAjNOyuAp/iPm2mur8EcUtgkGFL1KZAgHMAPbNBCd2ZtdKb5RyvpZmzqTIeN3QzlydIpdPyZ06onZ3z2LP4GiASyJIqg6CuVKqopVOJmjDDzstHlKZZSEqcyDyjpR74WyZV831bSMriRMz/JcIY4fi5//y7ki4fflhR2Rf+S3zH2eGE8OUzE87NTDd26X+2+P7U0niuZIrSUkk2y0riIlll8xjSGnLP3UTkBAwd6Nm3ht+4vMXbYMeRXYRObyYtcIfzRlPJ3grzveSl95f4ZgpAbCQpQx0wdoCdRnhqykzSR9HLIPvCN2V9tKU5IWC7+EYbrzQvbZisPZu+bouCkSUcjlytkoU0a3aApLi1iW+g7F1L8R5V9hmpYIjwjd8P9mD4GZyKvsahq/TWlv2u3rWJXbWbESW7DmZ1Yh/XK+JKfJpgs/I4MSSzQbjirVuY0pxGIxuJ1qkCXa/jlzFaDhv5/0H2m83zHjavQwswS4kVVP4vjCRhz2JyVduNZkg7krxFt2/xJtS9WWD899TCjjvRCVKzq9xcZoaYKj5cXSeSgvRRRYbuzkA/8cK08J9sUTuwo8dhGfShsFquNvCkTbPSSC3yKjsDlIKUrsoAO/6oyRSmgU7eXOwX8EM1J7WAx+uuhb0tBo5wr8DsPgWbgdA3Vvc+JwEdNJb8ikTzEjIXIL4rUF1ZJ4kR8nsqIxjIFSzOGvRcl7QPzi2ybh0sno5uIjr1tE/rqkNreSarbRyIPytpkxMN6PUiEzqVNBTzXM5lCqRxHSRXgbj16FmlwVnRTduscfhfUMcdy23N/qd8DK5IPxsX66HEvCXXvhbdVWW1mCR9s176aTlOb14442Z00tNZfTyOdJISLIogfwMatEwjlQo1CIY3AhopZuhOxDKI5t9ROt6pw0nAAzT86HaQvzxI/Z7s9UCEpVlKxRQNHoIETBgd3JsCyQziTirARJNWM1TXifskd6CIfJv6OSafvbXfWxpxnfw57db84DSuLuGav6RKASxvFRnv7dpVJrVwwvqDQrKUTzJzuHf1oVnTUiph1SfNR2h2nUVsjMGx+zGyCA2kAzp7r90CLTg/1GrIL7va1EXhPCtiR+/8KoJYEp7sJMhwUFXkVM77RBQQWRvJFFexNsWiZPylZriDJCEXkCxqNCXDDqXa+wZBcYAEFplyX8PkirODtl7nn5i32k7eFhB2bnlwcK1YuDx9enTSHvEOKCctGqlbC1g4x4nXBRmGf+MlVYxBP8yFkBNE33qpPj/NRXwfC+Zx5G3eRsduzJSTqd+1AKfrTwlprYigeoeSHGuoQFEQLRRgpoG6n4NusdnS2dFNsXQiIluEO5VWHx/0Mv8CnP7vJGIhfrdEih2KjIYSo/F4L9PoUzAspfVpUBqQFzLYXPLAu7NxazuMidkD1AIMyGuNv+8cVIegfB4z7IbWrkciBPbNe4KZqrWtGYHSHmexZbopSNg3n6ABxgd5dGeJszuwDdUnDbW/XcsJww12imeaZIBFfwuuPiyf///wtZw/iPhO2nS1iczGVx0xpQQJR4Lfxys+SydfdYjkX1BM3H5ta1GgxYr3+gEGLSWSDQIvxu5A0r0Eian2182oJTBmVJjBzT7As4D0DicwU93sIHafuIYyNx1t0Lxv5TD0e+QHkdd889i6kODyRAZ1yqX6ozSLTliayd42Wh4JPVcfySbQVd524shiouwShG291oWa4x6ZayEFCoHvhCX/qTuPq6G23MbYGFgHjJnEtlT6cmHV6Pn9tq89ltjpCb9LNU+u9j1LFNA/f/EYz+OUL64oU6eyUj+4HVCs12YQEmM5ygk+mAPG30bsYIWvE+gRpSAIN+L0NH+6Pe3S4G8Pd680wdZoFwHSE6WMep2ShOVFX9VFYFiTuEo0RGvTm/tWagxiNriq9YYLfwhKtOuHc0nXDuaTql7jXkewAAD+/4wDR/OD/kafx7f/RUP2G3+0d+v+Y1qaGwU9GE8QxpzCFga9N18Mmp3adPX9qkKd4zgs4PVOImR6Vmf/1xb//854Xw1Hf1B9uIUCEHBQsXNw0HSaSF0AEk07UEQa2YCwZq1z7OFpFCfGSoXTEk026Uov9sF/mcmwuQtEq+x/ehia8G/csmHWoncXOlYgBozhbQDmAQu55j0xYL2b+RtvIFcFg6AkgY0xGo850Uofqnw23TMPjoV+b0dH/OD0vhpRGD3IxPvnBu1lywCIIZUgdlC43AAMeAzWmPyHOOSmaAffBITHScW9960Y8uGSR5XjT7L8t/vwD1KaJGPKEFzl5sEMqFdC3SqEW43uGnkSNU+95HcUh6v7+gEvtY1+ihhAiNEhjNu0lGiX2E1GyVHGf8JpUuKtl/WitkDFZ0VeeQ9So3A7c/TZ7xUaACQV3AxtlMccYG+cMkafCiCnx8KGicDUtWQWUGKPx1HrFN9bSZGpYP0kmuYEfgevZxMBjWEclp+VrhhnnD654zSIUYm31FBZ8gla8SKToS9AroQiqz5DM/63tRYAmX8613IIABQrQwe1hWtF8u4kRJSxyx3AfbbpBs/EcMkAvWkctwbA+0WqHALqPaCUI6w1HK1mOK33knkiqPLTMdUgMvbtcPQ1iAEG9SLqMNH+zYXEh1osYQ2eTDNNe44u1bMaQQcxpek8Ophv4YV2Z0Vf3PUSxmgAPw6rmlLpgveSc95AOjkrSR2hgzQfCj8N9/hWSzof3oz1LDGpUMAOsv/3PhJJYzyBgW+k0bw4Rg2eu5KIddrc5cLUTLMfKtDt69mi/d0qIy4QpcxkLwzKbgTnZM6zzA4e3TikSHCwE+dM1Ozuz06I4f5m8S8wjYTZlc7+TMaWoaywo83EPWrG84K7CHxXPcaRREjuOBEvwpdztoDYmZVkoVFX6YZIOxO4aQm9nnxR7o84whu78BVxf5ZETQPu8Nv0xM3gvsi8JfCBjQIsprklCUL3+wDbCpTAhDmNFCcScNkhhya6KIZzZpBDTuZiXo0YjcMT0krAkZpA1O9vbEwPdcndgRBbJzsLt2lDP7GGGBlptEt70hhdaTdoLVYTsBooUxharZf0vZCMhPW6Cte7znJD7f7BtPfUsa0C6JXjNOWKgyLQeBiYNZh1DCxsJ9rejrEHAVMq1dYVw1IMNp0B9kO47iWjgMKehBt3LKbS2rjaBuvt7J+IfS3QmkO+Oevl3WkK7djf+M5XC5X4KoT/NkH7OgMArpk9YklJBoigdZHF4GwNvqv0N6PiDB/du8Pf3309unZmr85OrMEDOds0Lpg0g0zdnsZKp3xheF/W1bWVvX0LvvjCYQ2rioD2g/EeXCufeuaSKKaQU0ismpD60h2v3EAWw2VRnOxqunBN9y4s4rdmMbAbgYs0yt/GnmnHR3pIUkvD+eIifvI6O2z2IpZwn9jYbEHx+LPLqexR7CEVwehmgDEPSu2NUq5NJ0B0mBrn3r9PRffTci6IlmDLKmciN02KlJ3xP0UEWSYQfT68Z3QyPuKExkV/wf4lw35OZGpPKncnylTtizOPIn5OGDwPXoWopg29XOfauUfjWef7L8Pv9WTLpOuyJ5zU65Tg/a7xIOXvgKxXoHdhh5PQ9fSbqIwCxVl2V5ILAEBftgRMqjFfrnbBorL3d1oosvwSo3SPutOfEQusihVUYZGRns8TAtMNgIZ6qogb3uSJhqCASM371Ah/i6nKSJ10YdagaN5kVwoYmNuWfImeGB8G4N+eTlf8jBWtz3E3u4/NfmUryZS8Oda06pewGgz19/VqyBiELo4eRkBrA9sNKJqfXd+wsuPCyYc6GH7VUxaHU4iQ2l8HCL0npTrxf6/RYJqJvDTUAUf4zCNoV69key5+C6xSyoXWDOYxUGyCSZGA+CezWs1jBsh2EVTGXtXC6DpDFh9sCa+x1gIbcuVow0KsxENT/ZeN/RCZzioNpD3fCR0TrOpiXs+ju6tZdMpofrhbJGL7Tsbvr0dI/qR3bvZRixsrmbwnS/Geq/iNRDbUJNG7fyhpcphU5RoDlljj9njIqgf5I7lHGeDUgu979Odw2gFF06i3ej0zbjUNAoxp7LJ7p/+rC5yo2GRUIeaXuFJHiE6eo83oahhAXHt1KIilt4Setex7yLyg+dewxPzvuwmbhHai12yXWfisGwRlyBhM1Qky/toxZ7WJZOVWCokV5/PaFI0CzFnJUbJqndHpKMmtwPjP8He3d7GgmAguN1dx24GKB+VpH/mzxmbb+DywDBiHx5lS7e0b+pgpGXnMwqNLXhvPy/47LGlglQ6lENtfNFdWocSNWDkVjgqKr3KqElIFDDYzvXooHPv6zlHY/PTELwb4Bl5pSIr7fWmbwN4BlM4V6hU+mia48kjOIUpUhkzpTcJVfy1yvID/FerN6WG7qmxi54AR0Sd5iGUWwXqDqqY/enyCevJ5MfdrZNoKdz7WuuKCxqnphIe+MPU0s4c2DX/HjYTesyoDaVsu2Z/TZuqTmug+EPg3HBNSZBWdmv95THxw1RVmA6aL6lJc/fegh1+78AittgTRTNohhJs9fGedHUQLdghUtYb5VLp/ye9mtV4xgKXeSELrbiKirnMTUAmYvpkkomBJmlg2+K34qVdkmtap/oPgqIoWCS21ewROxdRb0niMrxNq7HYq1crHbfsRIRMysrL26jX8MTot5MBggxZ8ZZc/3Mu/dLpmbyasO8C849nKMmdjR6d/yL/0L97Waqd72cNOyEVvKsdVWjpr5OKIVzyoVQThEj+Uyu0stKBIsl2f8dsD5qcGDPdqCQcBa5Iy8fJovGLCLBXW9J+gk+z7qs15CxZkxN0ua5XdWcGabb1L5WMHqxZ3eFxhop3FqdPsN0o7P2OZbeLbqgd6k2JWqevISU5ODBqU8NYV53PCQdRR1o6u3OHoPH5EDnSJ5Kk4WTGvc+ZHBVCArBAdcrBuwuxyW6dpVrx2ZshHvtY4J7CyiUhFSsjiS1+eA2gOFEoaDPpK6nox8mW0zk4x64TxTYiDO9XzX6s6i72RMv6ce1x1inffJWOuAHoOxdK6PUc3xfxwIfh/fDYQQ9K3gTpY1fUQuNwRrzy4wzYoRlRKTFNJt8DifKh6j0C/p19cx4NP9yT0wXX7tazeNYMTBoLDAbL6BK0gpHLHgl/RD1hs7TsZ+dgxHoKg06YJDWwYUO5UdilA0+iLIjIwdlX95PUzv03nqDX9/JC8i3qflugDmfkb12B/5eDo3pXiJABJBDa7qwow+eSsqWm+6Ni3E6s0oXpJBoqvlUG+XXcdzIgaIlAm/zXypGLl0uNDWR6m3RU6QG3X/lqvEs3qYYP4UGNQzwwxCdsEJaz6PPirwqHhWGht+Siq04VPOqrLeCM2Rt8wZCCN5zs9qsvXg9Z4bOdGC0jzG9JInKsd76huWl5XfeaFVu3n3JgoglYbJFfPrOuilk0qRXV9LO+i1xSf0R8RJv6P7KGwq1FuoXjudVe2YBQQcfZpUWLSNIayy/zRv5kP5gYWrP7rajlXf6IWg8LNMbPjEGjsRUqu0p4E+Jxp4MQjB/erDQni9Jr1w8yOuF8TNiEbzejabBJFDIm76oWW6WICusQUkJln91p43rYPLCHj9m58sbAdudqtfXe6LmIDhfPoawUXzp6OuP4u00QhTn8Erdqv7G/c5t7j+IO68zMzO/Sfc//kBnv2yrtdp36tBuyHkxNSHEFb+Z+qvxj+JmXpW2jlPe1sb84qp8qJGMlkkFbSqzbBlPdM3lEGnI/zSQDg7YLEq8qoDCNp8N5vVWuBtcxG+ybqCeu0TXlp6k8ii3Szyt8goePYYCJ9UfMurdvYXqbem8yGz46OWVTDwhy0eD2JZC46Ext7UWve7gOeBsdPmMkFdFhjqCCvW8jWZRe09wKbTtyMCNkF/w0qkmP0cIgMrv7gAEOmDyqEJLlN5bksTfS53TvYbD92vvD1Ee80/rQbC6ZxQ3pqSVUZbjza46F2FsVGmHznrIojFulXikO31im3kNqYy4o9mLCYwQ74h9oSzco/ccfEyXkr78saNIJZbp7ldbbEuu+0hoOEgwJnjmfzxAQ+tuTxZml62LksUekCsPsCr1KwpcJCNoyXJjKCOhr/o7rdpARlP547v4lmZRCYEVO5/pZusk5pnEnb0cddCHg63xZctXVVx9viwkt7D12Gd8zdV/iMc7RR9yQGubledEyzNZn4yPqKnLGk75sp3vs7dCYGynhraNsYPlu/en6LwrXRU/XF+TImvS/AqoA/adeG5HOB/Z8Y38qAFXHyzGssngt4pv5/v+Aa/rMrYpOUIr8Hk5NQr+Idh1XrIba51Bea4TE2wt6O+9jy4XAgofMxt07Pm7wEE+g5DFlJRIUZe7cSIUPOBDzQUo0dhbaClPV8R67v/fHuR7A0yNGSGGF4L4zBVU9RtIKC/VIEGbxpPfo7FZI+iyFr0QNCQekjt6yhoiyYtfkgXZ+ooh9o6n1b7FR8xuGiOXx7jMwwFiiamWJkptXQj11pmJKkWAsBlqaA+NLzLiHTn2agnV72YakogPKsbzvqQwkWTNy2rThuWeYdlDByWAr7gzOjcHNxODcls3n9kBVhvNHKoTJfFick9tq03DuyYCjGEGfzD9qnGk39JcSgOzgIkJz6kGTIvZ3vfrtGemhBKXzzwsRidIYNMbIAooX4lQfjPQzudXunA7dPMt4NJt7QsKZPtIt0RrwRc+hQo4OQY5l+nh0MGNGqd/8d0WjXuDSsSLobvwpc9VvvxuwUbJ5LEBv9C7lhgAFxpl618RQGx9hDQ3jQeFoZ3Vw1ZEFbBCt6vE0NFPK+DiDMPTwvMyCKXusKze4SPscG5Y5qpAtaqBrOgDFf2EUE7B5fEt7nt4X6grcQZUr9jYIWqbP1tQrWwljjGmce2zzBRjAwYqhgBec3v1JX0kNPP6U5ZFhxW2rpoJNAjCrR7vxw0+etc4KQCb4U86HkLJ3X3M5/x4sW1ngog/oo06Pb0tiKq+cj9iw9fXrwPKPI+je6dK648m3c/m7DGLfLtFNAqg1vZxznu0kMmcc+DVD+SF5yUW3ppIJctWMP8Zlo9zIBRnr5WhlhkHK42nDelyW/7pz3zDUvUELr6W+jYie16w7hXNfyQSv72fH7aPdw3RiCj5NG+KXyFi0RHD5+2l3Sp2chZ7eZXvt2MwggKyE4WEAj7FERCUAeCJV1iw4NhJr7k1GF8U7xEp6aSKLmj5/4PDKHOnIW0Q2WFehjRsuDVs5KdEb/Ro3SuSBISD6y6pOLkrysHeVWcpFxLiTZ2xXxs5rvxXvXnZcNwq6BJhfPt0rLXlBYXDlgFAUVPDj26iUcsk36baiGRZwIWIKDW2bpxQ5yfHtA/PzO4CilYeaBFpcELyXkIoqulBwTGMCdxDMGfsrb9qFLxgjqGn6WoywND0biA04SyMNCxWBrqFIZ2f7Dl17z3cf/rETgGpXcqrwaU5u6v7/8F51nQJtiunHxeH91QmM99qxIfghTteKgctJ/u02hURbGTrYgMnb/oQqny898A+sIpUrj7Ye2JML5mi1mpu+HYZlqpD6CFIou4SXpt2fFttbyGSX8j9wS8vsynzJtaOeQZDPbkiVBQmoiegcy3VyfN+YkMh62yU+oOD1qpBTtafJg3rrORHsjAaCOd3Ds147Jkwk5xjUyP2oIIqXgx5WknWpLitDM2wK2zNM+yBb+i1RpaNTixjkptSa0c7tNp4QuiDkMAkykSHOMKkBG+57EbaHJ+6OUhOvz2LT2jFHwXsfoqwLjjcOVw1ZutA88G9bysLxxxsLagjzL4wIWABUIkg7i8ro798NfQ20850dmJ+HlmRIGOnhz01lCPU4SFdDy9dVs8gkyN1Liae8UOEFPXVDCSu5rKcDVtI+Dt/s8tOrOJF/JdCoAe5jTXojMaCJTCG76cB4hMT/N0bUAR/LfoAOFrxhWfALNxp2+F9LSIWrHBzd1gWEvlqo5Ny5nI6icUC29Ka+vYmPl7gCStSR5GPI2WOGj0rzYVGmOYknxYyq2MtvQVlS/08jFD/8yDMJfNuudlpT09tFpecsbD3gswfj8yxxESXYI2u6+eqaXWabcAsdbtbEnmh8ehsmINpzmojWKDGctsM0Go6lF4teRmnKyJrI/20bwQP/YC4cCAsizZh1ynZzGrjobQAy2ohsJorL1jcpcH2OvgVppqbdTiyKMLOPthzv4rX74cZYP/f8ZBINBpGbtchZeZVmPhaJVTqrazOOyogAsJ4/jtS9j4irnDf4JMktN4NvlNQXDzVFNoHes1gs3FWVrc9dPUezXrYNYgTKAQo+sRMPPD/A2AZbhCrwwUQCIRRup5sTHutsmPnKnJScaHhJp6uS6W9tCoGBHNaYzQ4ayNOHFkjZHh9iHiJOL0KOsq5yIcyLU5aQKdD9bJkH+HBVEOc20mOS+h0Ve7pbj6MdoZ6ug9IQz+7dIG6+d/1gjBpoh0qZN9w09HzEq8edmatygRjm5NWhWAinLH/saN/Nxs9fM/BzPTWBIdci3C9hmhlK0Gv4mEJjeEayOq5Go8SmSUBNgTRQk5Qoeg+3Hkykus5oIaZHVpjfnbTryNGCvy4R8LCA8jB0nvTmTjRI8OJEKgcvGLnE4GjWHuQGq3oZebDjaHuCEK4Zfyt4ODrk00jH+xzRE0Ssm+4uCIt0PbNPv1X5lVVPr9cqVlKNm6Ky/rrJQfJdglG/NxvOMI9IVYRoi9hWLLlHb8vmXAIw1Sg4EhtKYuqyeGEqtq2hTq6PqHZfaJ73uU65ZcjfpeNLB+8NQXJvFanaNnUqhpTpVDdwIon/Lv0yZi4kA0S6fjb98BftLI/nWdcyyaHPrX3BdDh/UTqhqElB8hAdv64k9CPkLe1vWmGA5/qmRaQe5yne8pyaOcsOQ+lEptY2Tus2kQrpyH7OQJMzCsI7zeqWKv8QQSMF4MAiHSM7lT34rMvt4sgikb+Dh1sqXOzNyRfNHK7Ic/PK/v0F6z7lYvQbcbZi4QAr6D+oF7LO+riJy3wO6NCFisbGzqTh6E79ejHp4uR9ndX/42NhTR0KDBI6pXPPqKxdxvPX9Lat++tOF0FEyhyvMtTJVWxKqe4/XlnBtJ7pMALX2Tm8HSny2D4gHqFdHGMDha6GAmWLTFtxlR2qamDRP/x3bEUhFF7sX++exRbDxsOm6bPxAC4yVpH8ZB4bXfsdcM3Z9JYNKepxKnuM0yXzezGFqUG/cU4Py9QrnMd/FMqDrsCb8XDpDao93zQ4bBv7PxdpirVAPU/MbhqEoMm+U+wkANyHwPhfeZoSG6HhcREbrn6vmmU8h3h1flJ1mpRkrdX4AUI29MIUIWwIgHsQyDb+jXTon2P50J7TwoMP9pRuvfpVSLJAW2uHrPKJYXcX+EXPzEmJ5zQOIdnMkTFd9DZHexKaPC1Ypmh/GAULEBxD/XtS5ZOMeIqhwrB66VnR9td72FQLpB7IaTXm62kEPrIguRFZcbVkQ4AIhb0iafNpGGhWxa5aa8Nb7tqgV8iikAMjVcgykLcPXxdoxbK1wMGcnmAbrt+MAFhrqJdAaRsPofA+REQhPaxP/LIbx89NNCkPoqfbfH3lw8AF53QNk/lOpaClnPgkuFPY0NYUER3L39rCPpCgJBZ3klXSaxu5zTLOUiZN4vFWK52uqcgesiZi/+AUTwtYE69CiUSMOk71C1LqnbaKFmRDXFo/COOb5m+Jvqu0SfSeNRVRT3qkAelumlBfZchwm0K3PNHNMmNwYemm1Tm4AcOub1DRLE+8QziYUDlqTIH7+3hdE6tIjoyohl4oTWEFrZ8OyMDnyu/NqfgiCRLvqoyLK55TY7hZWIBwF4FnOSGJqlZ/9jbnIsOy1iOgfYYx341XxnQaZrPBG8DwI//4JwVa2XrP7XSi7+DNFgTAq1aeKe7FOfVCKkYMHFC+FKlvt7ej7IzNxLnLGZYfeQKywlTBkm5iaJBA1bim/z0Q6+PmvawokQ/xLP4s5qL6GklrjOHaIqkEJ9TRru6gtmEOv04Xhqnv0Tf0tvGp+UuQrmyHBhfL/Wy1JM3R4bafcSjdGww+NBw8NEBdupy2K1+XKB+aDv3UI/FxbSGwrMbb483quYKyW/lpSrauA/ibcd5VBQdxyaF1pCtcG+95r3yjAnqCwj/mVm/CE8saxxc5KqGw3KPnb7vJO4PXnXwZ5HtZn9FDRy0VGJ8jdgAjqNjYlpGifE1wRV1e6d40P82ztag3v1F3OGqmaLcglef+eLEdx68IyKdif8yCzsjqvGdplW7xU+leIHw+yNh3XAoO02ibG50zXAnPpJ8oJZABgUmA8koOvX4CuAQJIXTka7y5aRghQm0YmR8iwb2Skz5c/T+2PT5Crn92Yd0vkNTrsO4vgiZRt8V7FtcOeK0wMWxRRi21BJCKFITTxv8EuhzV7runmaKh2IjvDMtfzykeHJomQn6X0ptT/1m0CVogcPp1NKxsjppAeCPGqNsajcyRDCEotii+SzxcPk9shn8MRJ2jSmFs+POb4d0qFmPzJEbEnkJRXnRzqMM6LJrlOHw4bP/pLikSrgbuc9nqJdMMYs4NMFaz5qEasq7XioCeCabVR9gfWMs0zE9fis0fuilBxDOK3Hp8pPN91UpVxg2agw344ETR1TPB26e+XRVfmJcLGbOQYdixuNS1QkAhH8GK8Gt5wsa69oCEWizej3LNYb/D3brFtuI2gniadK0c9V2Ke3/5sDpV3bhGGIa7LQm4n/cjOMJmoAF2hex1+C8ms7XLmfoFjKNEtMGbZ/RVIv9zV0dEEjsc/eA+HCcvHasyNzrXy/5/U/kmIHXVIKnwUnYW98GpH8ZC/1rQPNT2pNzayyHneW2CwAyh9Knw/MCLZ6Fkv3CfwMjRcTpqEy/ETZWvyErerEV56QwVpV7fQMKRmAa0Kcw4WswDHCJd+ID1V1jyE9aKJfn/ioRb+uXkDHjgIDcB+NJ+WoPzj88NTTdVxxdYLbxtwkJ2o889TGmv8Mc9hcbzR6SE8kUqXbiHm5EV8j6mln0IM0mJu7wp3XyfMVHSmZLPoczBpbK6Ek1O0pxdgGtiosz1KtAioJ0DgnO86VTreAPjbppBs/ywQioqsxGmCXkluvALvoa7M27833wwCduRysOHIuMkKvBSgkaCZYR50dq1Yw8V9cB7n+WqLEShKyxwwV5LRmV9E2S4D0EhdhNdsCgjheRQBB8rAF/uXIOvyqF8JCbCVqjJQwgO2f2W90OoNTMBMnx82c5yuNASAH2i37lFdZwKLzUEy+zWHEsQ/yqE5em/xow08EpQJjeEJpu3UoQ9J+xJ3Slc3AsUJhdjygQgzQFw4QN2VFe9luP3w6KEAXem8dHHb7lDv+FxKKXWmhb2XR8s1NRLTZTALdoSlgiuUjufywHvC8UA+W8Et7EYzOPwxiDsPgaoNJxk4jwVa7La/yYE0FPlQHQpPSfcNXTz92C407acvGjUduFqj1bsTidTHGRSuGPmvlDdmtLwLgffJNpbgVIpXk5N02VWqg9ODOWCEkK6Ip7tgjmW5l1WP+ncPSny0OcOd3lrwrq0YA9po3d67uhrjQLS8Jg7LlB2lgN4n4ndFHgFnueWgTea0dhIPQ8Ir3tlGWj21UV+HA74u54STGycVpnMRvRcbYtG++Y09o+iT+wR7SHBcWNT5NBFfMYYXmGxua8wP16pCYrOHpZZV3ZNAP4TzLmV6kqb/b2riIzEUwLC/KkzPH4TQbvA3U2egPULG/yJKJ4uAY7Zt18QDzdggoFZqDEkdgumrXcqx+9X11PqUPGAz+fUnTiyM6dVhekVa6b7xuCtr7gS1X2BpG7Xpz0TNLpsRrQ3SXDb9HrOg8XiW1xD+VogOQahURiELy6nbRJFwFT7O7FpHTdQd2Y/WuhxlTqUnySk+cAOW8dSgjMQYyshq1ooI65/G6hA6C7PbdfeAzg+poNojThg/f7p6gTz7Th5KHDQMw2Hp6RpTEuoVYmVNSbJLEoW51RYCQIvZqKrqr8vUEUhCmQUMMLoNAl81lqegRe+PG0FQW70goTLKIWYEkGqZmu/fCnr58/ONpfUkPlqvX1DQun+fYfzKOCQk3tI/SsH//x0v6LfmeJX2fg81zqfmcCMqwh1+SwSh3O/T2D1dVFVgO02bZHBdDawZ3E28YBEc03vAVUKuYcVfSR9cBGK2qxQl1g4Gh/x/OMim4YUGGA4U1M2kKscLkqgsk0X22Swxj0Kn0BzBfD/fIKA3n/OrBFiwe5rkzZHzE3rXmVJRBL0i7aA6lef6KXieKp0JhFe4tUORQjLEJneSfMFTA5X00+KcMsXQhbR1KRtRtBJaInyp6ookGJmFuRkuZD2RSeN0gDazQZtS86V534a9en/rR7/JNNpvGwDv1brx+W74zgTQZLWG2jNTzm98xYLDfA82lYRYiN8fMf7P6er1FjyY7BCjA0zfuVRBiLNfA4TfKEdGWxdIn/+Y/nG/x64hTc398cXEH8zGTRwKXXDWreuZHiQk44Vc8tn+JuO+LHp7DAyDr1OlWJCwCQKlKoa43Ad5e3GmqURjV3hI6LopyGJk/8QVGDtK8d8qBlRXiP79sMZ/XH+ofUhD3eAfdIkGUgtOf2nXA/MlTb4QCC6O2TNpXWgR8Ux4n9Vzho7ovtQZ/8l7/PfZ0dBS4FvGH640N33tmEHntXOjpbUZjcLOgnSZ51XA5gaA/mz+QeUXtfTzyqVIvOfsg+aOa55sLnMnCwRD33VMPtlOMs+PZEXlvzk2FYm/tqfxe80HJ6v/HdFX39TN+rmSn+en/a+NovZxEZHefPrRqSPuVxeMrPmuJelGtbrh7Ok1qNRThEey466WI2bYhkG8FUbnwm2++gVnxM39DXVfLcrA0JsySlGBkqYqvtamsGE/bq7IYzcvp7XijZL68OEO5hxP7ite3XOMjEpxF3qaa+NeRZ49fb/k37ujssIlSnJMEKkr8diK5GRmhLKKWiccfvfVBKxuODfCZ7uCXo2ojmR9y1fFt71fdYpiVPJ2xtd58ofs+Cdnz0o5yX258jg+qcq0oFWuBPFb2plbMw2V0FZZU9jKGxA4NFdjSyJEOEL/cYGp4Qk3g5F64VmgR3pzWLznHLIOMlj0Kftm9kZmZvmjMcNRMw1d3xVKyG5gmmT50ul1S2LqIaFrM/ttlnNq+bAVVyg7tPrcKTnKXFwRJMteTGHgMMlOsiOKFKKb4TCLunofVTjg0vpeWWXAPynkYa7TP/TqqXkmIhT3ppeJxFECpX1sAlMN1mrrND5K9K8iH8AcuG8MSyF0t3jsxvo9pPK6p/gCJLse0mnPho9QUGEUUrOiPa99G60gnX8Z5Ukz95v5CE30u/BCocsquOsCEDt+9uh++p90VUpS1BbWKI3JO9i8Ozu9F0Rwj600ceo2jk2RlYo6AVaTa2/vwhARIpTxdtxTENwdzix6A58mVmETLcZLwiLVTbXkDkA/tqf1Si9yMJ8zVJeObaOL6csryPee6WEtWRZ70TBDpRbCNuyCr38bga1arXiU9vsUhj8ItFW1YBwOwH8B94zmVFlJQvmIoW2pX5/SXGfJVjrbuLEleUtFB7sXa928Ge0qWth6ZEWz9Gx0AWGARlMKeIevwcvOOL8DZ8S4PlmI8i1oSoO/H+WKaG6svGlNLeSzIItKnuO0cUeBR5JEyeVBe8KeCdAIGVjMUL6ch6tYL2GNLTmWn8qFAY+cQTqfnrYZrU16ktWUYtlTKdSmyqRwUOpen/vpMOA+AbaedkQuWC/sq2F1ph8z9TJ2f/4DZJJIs79GkIzWK/0ACyPuy1dQVCf6HieNRufhyH1bSKM3I1nrtuoUdkPVZJKG2yCLv1aZEmvlpEdUSzdWB/y9/TeXxM8o4F1aHhyFBb0KYDUF4sybO9KECyGTDFSMKliSVa/8yMhvrnJfmCZt0kVO3sHSixcB1QHj4vOwB2V/ZutFVg3IfmNedMbV0VwRecfQ4YOmZmZqU3IVR5WItJKYfdfD7QPqyGug+qZYLJvNwOtj2mZ9r/3uCHgx39hqTanpBJKFwiBdhNQF3kC02lQDmaREkcY5xDGUMKrKdipHXKkL8vsB/PReDO7WljnW+AmzdpMIjYXsYIV85emftuFzhqBnk/2T8FEU3ASGitMEct/344U2mnxUEA7WK5bPkKfUNiQVaXbv2WarzWpC75sSxG9PT39iZUGQjhhEQGtkqlso2iR2lxMbkPwaP3xunwQAcRMjlX3D+o2FQE3WMv274DkCS9evBxLH94wwZ+OduecGbSu1CFcvd5JP/nEkG4au8xBPgh7At2oW0qqnfLbJrYQ8hxemoD2O9u3zDA2A7vLrD9r9RGCiZttbUGxRhG9PSTdUmVdICB6xBeHYXV2OOmwfveDLguES+lw89TOxH0QIaebkij4cuTcuNv9q2M54VoWurWLRt4iHsoQdOdF5Ei9X5f+RfCXRglVXo3R4In3ZS+Z2L0nVeiMX2s6a3MUnAppfM5BvmMuUt16FUwBOvV+i0v78p1/1ohRzpGJn4HnvDRA5WALHRiu8fNjdFLofq0gJuxrWI5L4a/apnZqhRilLshHMUpEH8xbg2be06BKckIuUuZoLmbS5VaCN8caBtKshxx109jQZb95Rf2RtsrVZ8UT02sPhAJAs7rZgZXh4P/v32trvR6ipXfDDdGw+u5EnuWPiLzAzJsrPyFlMrqIGQ+6nSuVTcLXelC58Il3eNw8MrZPxwawfYWl5/eTgOoSxnnnVp5uGmwZEGz0bEPFrv2P4XVclFM0Lke/ohZRAg+cw8I99dWB4FDSXdwcc2e6mpee5JO/xe4M2PREQYUR+kGfmiWda0gwRopFRDtPESOwIa/1v6V3pQ9zkIkGCvFD54x63DpG5QMGAoBgBbqe9ULyco0aRYs9CwJNpg2rfitnNiv3GWVv39jcZAbsuG9g8JQg+fGFfBkNCa9q7RP+2mAJnqL0pCjy3v7zVqXKTQ1/7pyuzewullfCgMqcCZR6QcZVkbS8EqM2VrzsZkzkqh6B9BGV+5jklinHotdmAaHLKBxh8ywby6slB6Ss+0TVL1qboPSyzZjllU/UsDYsQGSoGnjWnWhm2DgHyqO/1Fitwot6UnGv3gXyppwB1AtnQcw5C4XxgbhzO9iPiNkRwda1b7yVrRBrADZVdeSzuriPWSngpsOADOUTxyeJh7mTY5AZuZIdQcSmJyPB24yJclvlcUUOZktezzl5pFsFOg7X7ikiefCq3rVATsRosuII+zIjg6c4Lcf2NPxbV/N3N9tBOVSCka4jvL/jJzkIx5nd2WgsQzGoe28uwzrNGF7p5RxBI/8RLQaHwXwAY38hV7N3aEwQXylqoKQ4+Gm8smrXxmJXubBXHbMpsPiAInsb2Z4b25lrKq0gikN4zVaFzwfH4HsWbtI6VpVmURFPAe73B2DS2aXfiWu2t5lfO5fv3aTGEzeUVmZrTvOnWAg8Pfkv/wlS1WsIzVQZgWuv3evcpX6kp8J24XhO6/5KExpOKhlhiu46fqR441nDNs/oGlq3jZXg01n7D8jMXSkUMrDe2ACOSa3vJg+0iVUWkVmhp4cJ9dl1BuZXMQGxBdmY5jtGn2I3gy0ul52sOW8k3/CQmWRxh4UQC45Q6JrcYgWU+o8j2t4RMWmIZcPEn7BhIX6anbNBl1K7mbMQeyb8NZcwlDdoX44Y0NGAsvYEEK6cQHgt8z7WbxChobas33vWbEVOz9LtmwPqoZ7FqLSeN2NYCggBFr6C47Y5x4nosklbXwJRwC6kEFJeOGsohJN/eTzEOIsrKxrFF6ue7QPzO7kduJdhQgXaWQOy+0iGMbV7WkgsOGEUuKtIADdCY0ecIF7vtYk7qvdSC26Qx1QVe/7oi0BMs09/JQ1qfLTAjs+FsFsmvK7xQaj5K7A6HQIl3qEPTyZUeASCb4jA0iS+cNtYzKzdkYIWpaczlfyh3cB9F0pt8zALxbK8zNQlyWP0PVN/YRt9GGh/6YJdzJZC/5BzSK8L95AqMFDkWwn0/MFpZ4StCKqX/yuFbNjT2GWVD4eSLks+DC0WGEKxhj2wsyaXn1LlKh4B5WapcWk6zx6nGJ1CdlkHGYhQgUgiU/PyztLvOlS1fx/gHLgjr+pWr1VWBPk2BGRuXLhcmnL4bCSfgK1bBhRn2ImS8pMw5Revh9a+9iO2Ojk3FgdUiXji2tgTtuRcnK6JkXCOiF24+w1snwwq9G5tZymkgRHU9YDopwtl/boRhifZfstEn2FWZ8eh0Sw/IyG8zt4WW7b4poHhBDjQs/yE/i7hBqDIFEi2HcK9fIq4wlyLNCAwsfX9UeP4FbTPH56yYzUQLtUyp/Kgzg6REBKpn7EuDQqRHsfMde1cIWFzz11Fq8f3AFteTfhTSaf4Xs6jB+n3RmJ9QM6jDtGktzaU4+z280B4TZTGE8RHtwLkWe/UjjDcwXRMFS0XKzrdGQj+dliMyVt0ZY9yFzfDOAtZZ22bYf/OabjfRzcCX100zMFwOUrXHeRNmwlrcIwK3MjRy3qYmUPqABWKZN2QSsrkQt4GXJ2zd25uCl8ZixybhqHC1HZethkbZItHAJtBcAXez0x+sFEBUayDdvfxqryvZNkxgTcVLz7I2UOw/QKfplW/YDptGACuNoeNwe7RREb1R+oAD1LAzlfKbFElaMp/d4NeOytxZW4m070I5d3tgMCJbrMYXu7IWtQdGEqzcfcAsnCyEh3KEDmfJhV23PWMsRk6BWlwZCxcTbeskcp7VEH3/3KA3MAtTfuth7ngcy2z5bdNKf0K1kTHG4kHpyElTWuIeIuPIctH2wIr8u5YvllFgb8tsuoTd7tLr9PBM+62TedAMCftpJS/oCcR3jyiuqi5WoV/AFtJBWMhLvcJO4euAtWXGim0G9F0CvZvkcUBA1b3dWX7F2CLQ/L0cPI3BHAk50AKnpVbhvdvvxZGdZOqnkJK+7NjstNIXY1IXf2rCsO8E0M7kFXOdn25vTT3ZMvXbbC3zAGi8ckpv4qqryNPdH9SsgGrF44s30Nhr1+LnTSmAXeAIUye8bXPHxClPckjerebk86kV8SYaS6kwbaX3Li1r3X/JAJ9vU40uKlACFsB+sFVmsdyvDeaFG635V5YsEaimIrP40toBZOUuCZP0uHbmt6FBsz5lypTjCeTBNrgbSVdUFy6Wa0zy5D9Ix7DbxHa7mKRanpGUhrMEJK3cmo+mDWUrjvRN5oPcUjdAUs1gliPHoEb2XKo2jBn2d7Z3djmebMMkpFGsU9usupMuec/GrksHAKJhY+IoaGGCjUaUysvGPSVgdbqWQKiGZH81eZPo7Oag4Y/YI69GVFQyEj1/sFoS6ZaH1/3uRG44q4Z4+f6yztBsb51inOMO+rh7fETCwGW1jU1kbsv+KMFbUT9+PH/RZh+GUm4Y+2Gifp6heL3t/iuPhKvXKDR1RG61fmwER/ur2GDtqu8gcshMDzTmFhiYVLKhzVF6Ab9BXZYhLHlbwefbsKMa8Sz1aJB5oOaZV4C8AjlOUABc8AZgFN1ZNT6m1cu34O+yZkFDQ7O8z6UEbgABkbob+VmyElF2IN5hCNHUusHJJwAAHQZ4UQAAAAALjuYG49AAAAAAAAAAAAAAAA3+LwABWHrGKPAAAAAAAAAAAAzCIAAAHkTEJ8jxM8ZYY/cK+d/4hkYPpxgwzSwAAFSmjOZAAAAAAI0WIMfDmStypAAAAAA=",
       "bio": "35 лет. Выходец из офиса прокурора, юрист до мозга костей: за плечами нет ни одного года обычной патрульной службы. Самый молодой капитан в истории департамента. Командует станцией с 2026 года.",
       "status": "active"
     },
@@ -1084,6 +1077,20 @@
       "dist": "",
       "quote": "",
       "draft": true
+    },
+    {
+      "id": "d-y5ks8qm",
+      "type": "briefing",
+      "num": "выф",
+      "title": "выф",
+      "date": "08.11.2026",
+      "status": "В силе",
+      "draft": false,
+      "body": "<p></p>",
+      "meta": [],
+      "sign": [],
+      "dist": "",
+      "quote": ""
     }
   ],
   "forms": [
@@ -1839,6 +1846,7 @@
     }
   ],
   "vacancies": {
+    "status": "Закрыто",
     "title": "Смотр личного состава на назначение на должности",
     "rows": [
       [
@@ -1880,8 +1888,8 @@
       "Не менее 7 лет проживания в Федерации для [7]-го ранга, 8 лет для [8], 9 лет для [9].",
       "Исправный микрофон и установленное приложение Discord."
     ],
-    "state": "closed",
-    "msg": "Вакантных мест нет. Следите за новостями."
+    "state": "soon",
+    "msg": ""
   },
   "steps": [
     {
@@ -1925,62 +1933,11 @@
   ],
   "careerIntro": "<p>Полицейский департамент Сан-Фиерро — одна из крупнейших правоохранительных структур Федерации. Департамент несёт ответственность за безопасность всего города и его округа, разделённых на зоны территориальной ответственности. Каждая зона обслуживается отдельной станцией с собственным командованием, структурой и специализацией. Служба в SFPD — это карьера с чёткой вертикалью роста. Каждое звание имеет конкретные требования, функции и перспективы. Продвижение по карьерной лестнице основано на выслуге, профессиональных показателях и решении командования.</p>",
   "specs": "<h3>V. СПЕЦИАЛИЗИРОВАННЫЕ НАПРАВЛЕНИЯ</h3><p>Помимо линейной карьеры, департамент предлагает два специализированных направления службы на центральной станции.</p><ul><li><strong>S.W.A.T. Detail, Секция полицейского спецназа</strong> — операторы совмещают стандартную патрульную службу с функциями полицейского спецназа. Подробные критерии отбора размещены в профильном разделе станции</li><li><strong>Gang Enforcement Detail, Секция бандподавления</strong> — детективное направление станции. Подробные критерии отбора размещены в профильном разделе станции</li><li><strong>Field Training Operations, Программа полевой подготовки</strong> — подразделение для обучения, переподготовки и аттестации личного состава станции.</li></ul>",
-  "nav": [
-    [
-      "",
-      "Главная",
-      "#/",
-      ""
-    ],
-    [
-      "Станция",
-      "О станции",
-      "#/about",
-      "История, здание, зоны ответственности"
-    ],
-    [
-      "Станция",
-      "Подразделения",
-      "#/units",
-      "Патруль, бандподавление, спецназ, FTO"
-    ],
-    [
-      "Станция",
-      "Личный состав",
-      "#/staff",
-      "Командование, состав и вакансии"
-    ],
-    [
-      "",
-      "Карьера",
-      "#/career",
-      ""
-    ],
-    [
-      "Документы",
-      "Документы",
-      "#/docs",
-      "Приказы, брифинги, служебные записки"
-    ],
-    [
-      "Документы",
-      "Пресс-центр",
-      "#/press",
-      "Пресс-релизы станции"
-    ],
-    [
-      "Документы",
-      "Формуляры",
-      "#/forms",
-      "Заявления, рапорты, обращения"
-    ],
-    [
-      "",
-      "Доска",
-      "#/board",
-      ""
-    ]
-  ],
-  "txt": {},
-  "lnk": {}
+  "txt": {
+    "Служебные документы": "Новости",
+    "Путь от кадета до командного состава: академия, полевая подготовка, специализированные секции. Станция принимает на службу и ищет сильных офицеров в старший состав.": "Путь от кадета до командного состава: подайте заявление на прохождение обучения в полицейской академии Сан-Фиерро и встаньте на стражу правопорядка любимого города."
+  },
+  "lnk": {
+    "#/docs|Служебные документы": "#/press"
+  }
 }
