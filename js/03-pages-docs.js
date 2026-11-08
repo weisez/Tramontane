@@ -18,28 +18,28 @@ function docsInit(app) {
 route("doc/:id", (id) => {
   const d = dById(id), m = S.meta;
   if (!d) return { html: notFound() };
-  const sg = (d.sign || []).map((s) => { const p = s.pid ? pById(s.pid) : s; return p ? `<div class="sg"><i>${esc((p.en || p.name || "").split(" ").pop())}</i><b>${esc(p.name)}</b><div>${esc(p.rank || "")}${p.title ? " · " + esc(p.title) : ""}</div></div>` : ""; }).join("");
+  const sg = (d.sign || []).map((s) => { const p = s.pid ? pById(s.pid) : s; return p ? `<div class="sg"><i>${E((p.en || p.name || "").split(" ").pop())}</i><b>${E(p.name)}</b><div>${E(p.rank || "")}${p.title ? " · " + E(p.title) : ""}</div></div>` : ""; }).join("");
   const stamp = d.draft ? "Готовится" : d.type === "order" ? "В силе" : "";
   return { title: d.title, html: `<section class="sec" style="padding-top:34px"><div class="wrap">
     <div class="tools"><a class="btn ghost" href="#/${d.type === "press" ? "press" : "docs"}">← К списку</a><button id="pr">Печать</button><button id="cp">Копировать ссылку</button><button class="ed" data-ed="docs:${d.id}">✎ Править</button></div>
     <article class="paper">${stamp ? `<div class="stamp">${stamp}</div>` : ""}<svg class="wm" viewBox="0 0 64 64">${BADGE.replace(/^<svg[^>]*>|<\/svg>$/g, "")}</svg>
-      <div class="ptop"><div class="st">★ TRAMONTANE CENTRAL STATION — SFPD — 2nd AREA COMMAND ★</div><b>${esc(m.name)}</b><span>${esc(m.org)} · ${esc(m.address)}</span></div>
-      <h2>${esc(d.title)}</h2>
-      ${d.meta && d.meta.length ? `<div class="meta">${d.meta.map((x) => `<div><span>${esc(x[0])}</span>${esc(x[1])}</div>`).join("")}</div>` : ""}
-      <div class="prose">${d.body || ""}</div>
-      ${d.quote ? `<div class="q2">${esc(d.quote)}</div>` : ""}
+      <div class="ptop"><div class="st">★ TRAMONTANE CENTRAL STATION — SFPD — 2nd AREA COMMAND ★</div><b>${E(m.name)}</b><span>${E(m.org)} · ${E(m.address)}</span></div>
+      <h2>${E(d.title)}</h2>
+      ${d.meta && d.meta.length ? `<div class="meta">${d.meta.map((x) => `<div><span>${E(x[0])}</span>${E(x[1])}</div>`).join("")}</div>` : ""}
+      <div class="prose">${H(d.body)}</div>
+      ${d.quote ? `<div class="q2">${E(d.quote)}</div>` : ""}
       ${sg ? `<div class="sigs">${sg}</div>` : ""}
-      ${d.dist ? `<div class="dist">Рассылка: ${esc(d.dist)}</div>` : ""}
+      ${d.dist ? `<div class="dist">Рассылка: ${E(d.dist)}</div>` : ""}
     </article></div></section>`,
     init(app) { $("#pr", app).onclick = () => print(); $("#cp", app).onclick = () => { try { navigator.clipboard.writeText(location.href); toast("Ссылка скопирована"); } catch (e) {} }; } };
 }, "docs");
 
-route("press", () => ({ title: "Пресс-центр", html: `${phead("Пресс-центр", "Пресс-релизы станции", esc(S.meta.pressIntro || ""), S.meta.hero)}
-  <section class="sec"><div class="wrap"><div class="grid g3">${S.docs.filter((d) => d.type === "press").map((d) => `<a class="card lnk reveal" href="#/doc/${d.id}"><div class="pad"><div class="ref">${esc(d.num)}</div><h3 style="margin:10px 0 12px;font-size:17px">${esc(d.title)}</h3><span class="chip ${d.draft ? "warn" : "ok"}">${d.draft ? "Готовится" : esc(d.status || "Опубликован")}</span></div>${eb("docs", d.id)}</a>`).join("")}</div>${addb("press", "Пресс-релиз")}</div></section>` }), "press");
+route("press", () => ({ title: "Пресс-центр", html: `${phead("Пресс-центр", "Пресс-релизы станции", E(S.meta.pressIntro || ""), S.meta.hero)}
+  <section class="sec"><div class="wrap"><div class="grid g3">${S.docs.filter((d) => d.type === "press").map((d) => `<a class="card lnk reveal" href="#/doc/${d.id}"><div class="pad"><div class="ref">${E(d.num)}</div><h3 style="margin:10px 0 12px;font-size:17px">${E(d.title)}</h3><span class="chip ${d.draft ? "warn" : "ok"}">${d.draft ? "Готовится" : E(d.status || "Опубликован")}</span></div>${eb("docs", d.id)}</a>`).join("")}</div>${addb("press", "Пресс-релиз")}</div></section>` }), "press");
 
 route("forms", () => ({ title: "Формуляры", html: `${phead("Формуляры", "Заявления, рапорты и обращения", "Заполните форму на странице: готовый текст в установленном формате можно скопировать и отправить командованию.", S.meta.hero)}
-  <section class="sec"><div class="wrap"><div class="grid g3">${S.forms.map((f) => `<a class="card lnk reveal" href="#/form/${f.id}"><div class="pad"><div class="ref">${esc(f.ref || "—")}</div><h3 style="margin:10px 0 8px;font-size:18px">${esc(f.title)}</h3><p style="margin:0">${esc(f.desc || "")}</p></div>${eb("forms", f.id)}</a>`).join("")}</div>
-  <div class="prose reveal" style="margin-top:44px;max-width:760px"><h3>Куда обращаться</h3><p>${esc(S.meta.contactIntro || "")}</p></div>${addb("forms", "Формуляр")}</div></section>` }), "forms");
+  <section class="sec"><div class="wrap"><div class="grid g3">${S.forms.map((f) => `<a class="card lnk reveal" href="#/form/${f.id}"><div class="pad"><div class="ref">${E(f.ref || "—")}</div><h3 style="margin:10px 0 8px;font-size:18px">${E(f.title)}</h3><p style="margin:0">${E(f.desc || "")}</p></div>${eb("forms", f.id)}</a>`).join("")}</div>
+  <div class="prose reveal" style="margin-top:44px;max-width:760px"><h3>Куда обращаться</h3><p>${E(S.meta.contactIntro || "")}</p></div>${addb("forms", "Формуляр")}</div></section>` }), "forms");
 
 const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
 const ruDate = (v) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ""); return m ? m[3] + "." + m[2] + "." + m[1] : v; };
@@ -60,13 +60,13 @@ route("form/:id", (id) => {
   let sec = "";
   const fields = f.fields.map((x) => {
     let h = "";
-    if (x.sec && x.sec !== sec) { sec = x.sec; h += `<div class="fsec">${esc(sec)}</div>`; }
-    const lab = `<label for="f_${x.k}">${esc(x.l)}${x.ooc ? "<em>OOC</em>" : ""}</label>`;
-    const inp = x.t === "area" || x.t === "list" ? `<textarea id="f_${x.k}" data-k="${x.k}" placeholder="${esc(x.ph || "")}"></textarea>` : x.t === "check" ? `<input type="checkbox" id="f_${x.k}" data-k="${x.k}">` : `<input id="f_${x.k}" data-k="${x.k}" type="${x.t === "date" ? "date" : x.t === "number" ? "number" : "text"}" placeholder="${esc(x.ph || "")}">`;
+    if (x.sec && x.sec !== sec) { sec = x.sec; h += `<div class="fsec">${E(sec)}</div>`; }
+    const lab = `<label for="f_${x.k}">${E(x.l)}${x.ooc ? "<em>OOC</em>" : ""}</label>`;
+    const inp = x.t === "area" || x.t === "list" ? `<textarea id="f_${x.k}" data-k="${x.k}" placeholder="${E(x.ph || "")}"></textarea>` : x.t === "check" ? `<input type="checkbox" id="f_${x.k}" data-k="${x.k}">` : `<input id="f_${x.k}" data-k="${x.k}" type="${x.t === "date" ? "date" : x.t === "number" ? "number" : "text"}" placeholder="${E(x.ph || "")}">`;
     return h + (x.t === "check" ? `<div class="fld ck">${inp}${lab}</div>` : `<div class="fld">${lab}${inp}</div>`);
   }).join("");
-  return { title: f.title, html: `${phead(esc(f.ref || "Формуляр"), esc(f.title), esc(f.desc || ""), null, `<a href="#/">Главная</a> / <a href="#/forms">Формуляры</a>`)}
-  <section class="sec"><div class="wrap fg"><div><div class="note" style="margin-bottom:14px">Адресат: ${esc(f.to || "")}. Поля сохраняются в вашем браузере.</div>${fields}<button id="fclr">Очистить форму</button> <button class="ed" data-ed="forms:${f.id}">✎ Править формуляр</button></div>
+  return { title: f.title, html: `${phead(E(f.ref || "Формуляр"), E(f.title), E(f.desc || ""), null, `<a href="#/">Главная</a> / <a href="#/forms">Формуляры</a>`)}
+  <section class="sec"><div class="wrap fg"><div><div class="note" style="margin-bottom:14px">Адресат: ${E(f.to || "")}. Поля сохраняются в вашем браузере.</div>${fields}<button id="fclr">Очистить форму</button> <button class="ed" data-ed="forms:${f.id}">✎ Править формуляр</button></div>
     <div class="col2"><div class="stk"><div class="outh"><button class="pri" id="fcp">Скопировать текст</button><button id="fpr">Печать</button></div><div class="out" id="fo"></div></div></div></div></section>`,
     init(app) {
       const key = "tcs-f-" + f.id; let vals = {};
@@ -83,12 +83,19 @@ route("form/:id", (id) => {
     } };
 }, "forms");
 
-route("board", () => ({ title: "Доска станции", init: boardInit, html: `${phead("Жизнь станции", "Доска станции", esc(S.meta.lifeIntro || ""), S.meta.lifeImg)}
-  <section class="sec"><div class="wrap two"><div>${S.notes.map((n) => `<div class="post reveal"><div class="av">${esc(ini(n.author))}</div><div><div class="who">${esc(n.role ? n.role + " " : "")}${esc(n.author)}</div><div class="where">${esc(n.place || "")}${n.date ? " · " + esc(n.date) : ""}</div><p>${esc(n.text)}</p></div>${eb("notes", n.id)}${mvb("notes", n.id)}</div>`).join("") || `<p class="note">Записок пока нет.</p>`}${addb("notes", "Записка")}</div>
-    <div class="aside"><div class="box reveal"><h4>Правила площадки</h4><ol class="rules">${(S.meta.lifeRules || []).map((r) => `<li>${esc(r.replace(/^\d+\.\s*/, ""))}</li>`).join("")}</ol></div>
-    <div class="box reveal"><h4>Оставить записку</h4><div class="fld"><label>Кто (звание, имя)</label><input id="bw" placeholder="Офицер Имя Фамилия"></div><div class="fld"><label>Что делает / где</label><input id="ba" placeholder="оставил записку на доске объявлений станции"></div><div class="fld"><label>Текст</label><textarea id="bt"></textarea></div><div class="out" id="bo" style="min-height:0;max-height:200px"></div><p><button class="pri" id="bc">Скопировать</button></p></div></div></div></section>` }), "board");
+route("board", () => ({ title: "Доска станции", init: boardInit, html: `${phead("Жизнь станции", "Доска станции", E(S.meta.lifeIntro || ""), S.meta.lifeImg)}
+  <section class="sec"><div class="wrap two"><div class="bcol">
+    <div class="post compose" id="cmp"><div class="av">✎</div><div class="cbody"><button class="cmp-t" id="cmpt" aria-expanded="false">Оставить записку на доске…</button>
+      <div class="cmp-b"><div><div class="cf"><div class="fld"><label>Кто (звание, имя)</label><input id="bw" placeholder="Офицер Имя Фамилия"></div><div class="fld"><label>Что делает / где</label><input id="ba" placeholder="оставил записку на доске объявлений станции"></div></div>
+        <div class="fld"><label>Текст записки</label><textarea id="bt"></textarea></div><div class="out small" id="bo"></div><p class="cact"><button class="pri" id="bc">Скопировать</button><button id="bx">Свернуть</button></p></div></div></div></div>
+    ${S.notes.map((n) => `<div class="post reveal"><div class="av">${E(ini(n.author))}</div><div><div class="who">${E(n.role ? n.role + " " : "")}${E(n.author)}</div><div class="where">${E(n.place || "")}${n.date ? " · " + E(n.date) : ""}</div><p>${E(n.text)}</p></div>${eb("notes", n.id)}${mvb("notes", n.id)}</div>`).join("") || `<p class="note">Записок пока нет.</p>`}${addb("notes", "Записка")}</div>
+    <div class="aside"><details class="box rl" id="rl" open><summary>Правила площадки</summary><ol class="rules">${(S.meta.lifeRules || []).map((r) => `<li>${E(r.replace(/^\d+\.\s*/, ""))}</li>`).join("")}</ol></details></div></div></section>` }), "board");
 function boardInit(app) {
+  const c = $("#cmp", app), t = $("#cmpt", app);
   const up = () => { $("#bo", app).textContent = `*${$("#bw", app).value || "Офицер"} ${$("#ba", app).value || "оставил записку на доске объявлений станции"}*\n${$("#bt", app).value}`; };
+  t.onclick = () => { const o = c.classList.toggle("open"); t.setAttribute("aria-expanded", o); if (o) $("#bw", app).focus(); };
+  $("#bx", app).onclick = () => { c.classList.remove("open"); t.setAttribute("aria-expanded", "false"); };
   ["bw", "ba", "bt"].forEach((i) => $("#" + i, app).addEventListener("input", up)); up();
   $("#bc", app).onclick = () => { try { navigator.clipboard.writeText($("#bo", app).textContent); toast("Скопировано"); } catch (e) {} };
+  if (innerWidth < 940) $("#rl", app).open = false;
 }

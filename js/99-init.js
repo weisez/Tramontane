@@ -1,44 +1,74 @@
-/* ===== init ===== */
-const NAV = [["home", "", "Главная"], ["about", "about", "О станции"], ["units", "units", "Подразделения"], ["staff", "staff", "Состав"], ["career", "career", "Карьера"], ["docs", "docs", "Документы"], ["press", "press", "Пресс-центр"], ["forms", "forms", "Формуляры"], ["board", "board", "Доска"]];
-function chrome() {
-  const m = S.meta;
-  $("#nav").innerHTML = NAV.map((n) => `<a href="#/${n[1]}" data-n="${n[0]}">${n[2]}</a>`).join("");
-  $("#ftr").innerHTML = `<div class="wrap"><div class="fi"><div><div class="brand" style="margin-bottom:12px">${BADGE}<span><b>TRAMONTANE</b><i>Central Station</i></span></div><p style="margin:0">${esc(m.org)}<br>${esc(m.address)}</p></div>
-  <div><h4>Разделы</h4>${NAV.slice(1, 5).map((n) => `<a href="#/${n[1]}">${n[2]}</a>`).join("")}</div><div><h4>Документы</h4>${NAV.slice(5).map((n) => `<a href="#/${n[1]}">${n[2]}</a>`).join("")}</div></div>
-  <div class="copy">© ${new Date().getFullYear()} ${esc(m.name)} · ${esc(m.org)} · Игровой проект, все события вымышлены</div></div>`;
-  $(".brand", $("#hdr")).innerHTML = `${BADGE}<span><b>TRAMONTANE</b><i>Central Station · SFPD 2nd Area Command</i></span>`;
+/* ===== header, footer, init ===== */
+const IC = {
+  search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg>',
+  menu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+};
+function navHTML() {
+  const out = [], groups = {};
+  navData().forEach((r) => {
+    const [g, l, h, d] = r; if (!l) return;
+    if (!g) out.push({ t: "l", l, h });
+    else { if (!groups[g]) { groups[g] = { t: "g", g, items: [] }; out.push(groups[g]); } groups[g].items.push({ l, h, d }); }
+  });
+  return out.map((x) => x.t === "l"
+    ? `<a class="nl" href="${esc(x.h)}" data-h="${esc(x.h)}">${esc(x.l)}</a>`
+    : `<div class="ng"><button class="nl" aria-haspopup="true" aria-expanded="false">${esc(x.g)}<i class="car"></i></button><div class="dd">${x.items.map((i) => `<a class="di" href="${esc(i.h)}" data-h="${esc(i.h)}"><b>${esc(i.l)}</b>${i.d ? `<small>${esc(i.d)}</small>` : ""}</a>`).join("")}</div></div>`).join("");
 }
+function chrome() {
+  const m = S.meta, [a] = (m.name || "Tramontane").split(" ");
+  $("#util").innerHTML = `<div class="uw"><span><i class="pulse"></i>${esc(m.topline || "")}</span><span>${esc(m.address || "")}</span></div>`;
+  $("#brand").innerHTML = `${BADGE}<span><b>${esc(a.toUpperCase())}</b><i>${esc(m.brandSub || m.org || "")}</i></span>`;
+  $("#nav").innerHTML = navHTML();
+  const light = document.documentElement.dataset.theme === "light";
+  $("#hact").innerHTML = `<button id="b-search" class="pill" title="Поиск (Ctrl+K)" aria-label="Поиск">${IC.search}<span>Поиск</span><kbd>Ctrl K</kbd></button><button id="b-theme" class="ic" title="${light ? "Тёмная тема" : "Светлая тема"}" aria-label="Сменить тему">${light ? IC.moon : IC.sun}</button><button id="b-menu" class="ic" title="Меню" aria-label="Меню" aria-expanded="false">${IC.menu}</button>`;
+  $("#b-search").onclick = sOpen;
+  $("#b-theme").onclick = () => { theme(light ? "dark" : "light"); chrome(); };
+  $("#b-menu").onclick = (e) => { const o = $("#nav").classList.toggle("open"); e.currentTarget.setAttribute("aria-expanded", o); };
+  const flat = navData().filter((r) => r[1]), half = Math.ceil(flat.length / 2);
+  const col = (L) => L.map((r) => `<a href="${esc(r[2])}">${esc(r[1])}</a>`).join("");
+  $("#ftr").innerHTML = uiProcess(`<div class="wrap"><div class="fi"><div><div class="brand" style="margin-bottom:12px">${BADGE}<span><b>${esc(a.toUpperCase())}</b><i>${esc(m.brandSub || "")}</i></span></div><p style="margin:0">${E(m.org)}<br>${E(m.address)}</p></div>
+    <div><h4>Разделы</h4>${H(col(flat.slice(0, half)))}</div><div><h4>Документы и формы</h4>${H(col(flat.slice(half)))}</div></div>
+    <div class="copy">© ${new Date().getFullYear()} ${E(m.name)} · ${E(m.org)} · Игровой проект, все события вымышлены</div></div>`);
+  setActive();
+}
+$("#nav").addEventListener("click", (e) => {
+  const g = e.target.closest(".ng > button");
+  if (g) { const open = !g.parentElement.classList.contains("open"); $$("#nav .ng.open").forEach((x) => { x.classList.remove("open"); $("button", x).setAttribute("aria-expanded", "false"); }); if (open) { g.parentElement.classList.add("open"); g.setAttribute("aria-expanded", "true"); } return; }
+  if (e.target.closest("a")) { $$("#nav .ng.open").forEach((x) => x.classList.remove("open")); $("#nav").classList.remove("open"); }
+});
+document.addEventListener("click", (e) => { if (!e.target.closest("#nav,#b-menu")) { $$("#nav .ng.open").forEach((x) => x.classList.remove("open")); if (!e.target.closest("#hdr")) $("#nav").classList.remove("open"); } });
 function ownerBar() {
   const on = OWN && !VIEW();
   document.body.classList.toggle("own", on);
   if (!on) return;
-  $("#ownbar").innerHTML = `<b>Режим владельца</b><button id="b-edit">Режим правки: выкл</button><button id="b-set" class="ed">Настройки сайта</button><span class="sp"></span><button id="b-media">Медиа</button><button id="b-pub" class="pri">Опубликовать</button><button id="b-data">Данные</button>`;
+  $("#ownbar").innerHTML = `<b>Режим владельца</b><button id="b-edit">Режим правки: выкл</button><button id="b-set" class="ed">Настройки сайта</button><button id="b-nav" class="ed">Меню</button><span class="sp"></span><button id="b-media">Медиа</button><button id="b-pub" class="pri">Опубликовать</button><button id="b-data">Данные</button>`;
   $("#b-edit").onclick = (e) => { const v = document.body.classList.toggle("editing"); e.currentTarget.classList.toggle("on", v); e.currentTarget.textContent = "Режим правки: " + (v ? "вкл" : "выкл"); };
   $("#b-set").onclick = () => openEd("meta");
+  $("#b-nav").onclick = () => openEd("nav");
   $("#b-media").onclick = () => mlOpen(null);
   $("#b-pub").onclick = pbOpen;
   $("#b-data").onclick = dataOpen;
   if (GH.token) pbSync().catch(() => {});
 }
 document.addEventListener("click", (e) => {
-  const t = e.target.closest("[data-ed],[data-add],[data-mv],[data-rank]");
+  const t = e.target.closest("[data-ed],[data-add],[data-mv],[data-mvs],[data-rank]");
   if (!t) return;
-  if (t.dataset.rank !== undefined) { t.classList.toggle("open"); return; }
+  if (t.dataset.rank !== undefined) { const was = t.classList.contains("open"); $$(".rank.open").forEach((r) => r.classList.remove("open")); if (!was) t.classList.add("open"); return; }
   e.preventDefault(); e.stopPropagation();
   if (t.dataset.ed) { const [c, id] = t.dataset.ed.split(":"); SCHEMA[c] && SCHEMA[c].single ? openEd(c) : openEd(c, id); }
   else if (t.dataset.add) { const c = t.dataset.add; if (c === "press") { openEd("docs", "new"); ED.pressNew = true; const s = $('#edb [data-f="type"]'); if (s) s.value = "press"; } else openEd(c, "new"); }
   else if (t.dataset.mv) { const [c, id, d] = t.dataset.mv.split(":"); mvItem(c, id, +d); }
+  else if (t.dataset.mvs) { const [id, d] = t.dataset.mvs.split(":"), ids = staffOrder().map((u) => u.id), i = ids.indexOf(id), j = i + +d; if (i < 0 || j < 0 || j >= ids.length) return; [ids[i], ids[j]] = [ids[j], ids[i]]; S.meta.staffOrder = ids; save(); keepScroll(render); }
 }, true);
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") { for (const id of ["mlov", "edov", "pbov", "dtov", "srov"]) { const o = $("#" + id); if (o && o.classList.contains("open")) { ovClose(id); e.stopPropagation(); return; } } $("#nav").classList.remove("open"); }
+  if (e.key === "Escape") { for (const id of ["txov", "mlov", "edov", "pbov", "dtov", "srov"]) { const o = $("#" + id); if (o && o.classList.contains("open")) { ovClose(id); e.stopPropagation(); return; } } $("#nav").classList.remove("open"); $$("#nav .ng.open").forEach((x) => x.classList.remove("open")); }
   else if (((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") || (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !document.activeElement.isContentEditable)) { e.preventDefault(); sOpen(); }
-  else if (e.key === "Enter" && e.target.dataset && e.target.dataset.rank !== undefined) e.target.classList.toggle("open");
+  else if (e.key === "Enter" && e.target.dataset && e.target.dataset.rank !== undefined) { const was = e.target.classList.contains("open"); $$(".rank.open").forEach((r) => r.classList.remove("open")); if (!was) e.target.classList.add("open"); }
 });
 (async function init() {
   theme();
-  $("#b-search").onclick = sOpen;
-  $("#b-theme").onclick = () => theme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
-  $("#b-menu").onclick = () => $("#nav").classList.toggle("open");
   try { await ownerCheck(); } catch (e) {}
   try { await loadData(); } catch (e) { $("#app").innerHTML = `<section class="sec"><div class="wrap"><h2>Не удалось загрузить данные</h2><p class="lead">${esc(e.message)}</p></div></section>`; return; }
   chrome(); ownerBar();

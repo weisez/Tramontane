@@ -44,9 +44,9 @@ const ini = (n) => (n || "?").replace(/[^\p{L}\s]/gu, "").trim().split(/\s+/).sl
 const dkey = (d) => { const m = /(\d{2})\.(\d{2})\.(\d{4})/.exec(d || ""); return m ? m[3] + m[2] + m[1] : "0"; };
 const TYPES = { order: "Приказ", briefing: "Брифинг", memo: "Служебная записка", press: "Пресс-релиз" };
 /* edit helpers (rendered only in edit mode via CSS) */
-const eb = (c, id) => `<button class="ed edb" data-ed="${c}:${id}" title="Править" aria-label="Править">✎</button>`;
-const mvb = (c, id) => `<button class="ed edb mv" data-mv="${c}:${id}:-1" title="Выше">↑</button><button class="ed edb mv2" data-mv="${c}:${id}:1" title="Ниже">↓</button>`;
-const addb = (c, l) => `<button class="ed addb" data-add="${c}">+ ${l}</button>`;
+const eb = (c, id) => H(`<button class="ed edb" data-ed="${c}:${id}" title="Править" aria-label="Править">✎</button>`);
+const mvb = (c, id) => H(`<button class="ed edb mv" data-mv="${c}:${id}:-1" title="Выше">↑</button><button class="ed edb mv2" data-mv="${c}:${id}:1" title="Ниже">↓</button>`);
+const addb = (c, l) => H(`<button class="ed addb" data-add="${c}">+ ${l}</button>`);
 /* router */
 const ROUTES = [];
 const route = (pat, fn, nav) => ROUTES.push({ re: new RegExp("^" + pat.replace(/:\w+/g, "([^/]+)") + "$"), fn, nav });
@@ -60,9 +60,9 @@ function render() {
   catch (e) { console.error(e); out = { html: `<section class="sec"><div class="wrap"><h2>Ошибка страницы</h2><p class="lead">${esc(e.message)}</p></div></section>`, title: "Ошибка" }; }
   if (typeof out === "string") out = { html: out };
   app.classList.remove("pg"); void app.offsetWidth;
-  app.innerHTML = out.html; app.classList.add("pg");
+  app.innerHTML = uiProcess(out.html); app.classList.add("pg");
   document.title = (out.title ? out.title + " — " : "") + (S.meta.name || "Tramontane Central Station");
-  $$("#nav a").forEach((a) => a.classList.toggle("on", !!r && r.nav && a.dataset.n === r.nav));
+  curNav = (r && r.nav) || ""; setActive();
   $("#nav").classList.remove("open");
   scrollTo(0, 0);
   after(); if (out.init) out.init(app);
@@ -90,3 +90,56 @@ const ovClose = (id) => { const o = $("#" + id); if (o) { o.classList.remove("op
 function arm(b, ok) { if (b.classList.contains("arm")) { clearTimeout(b._t); ok(); return; } b.dataset.t = b.textContent; b.textContent = "Точно?"; b.classList.add("arm"); b._t = setTimeout(() => { b.classList.remove("arm"); b.textContent = b.dataset.t; }, 3000); }
 /* theme */
 function theme(t) { if (t) LS.set("tcs-theme", t); const v = LS.get("tcs-theme", matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); document.documentElement.dataset.theme = v; return v; }
+
+/* ===== editable UI texts: static strings in templates become editable ===== */
+const D0 = "\uE000", D1 = "\uE001";
+const E = (s) => D0 + esc(s) + D1, H = (s) => D0 + (s == null ? "" : s) + D1;
+const cnt = (t, c) => t.split(c).length - 1;
+const btnKey = (inner) => inner.replace(/<[^>]*>/g, "").replace(/[\uE000\uE001]/g, "").trim();
+function uiProcess(html) {
+  S.txt = S.txt || {}; S.lnk = S.lnk || {};
+  html = html.replace(/<a class="(btn[^"]*)" href="([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g, (m, c, h, r, inner) => {
+    const key = h + "|" + btnKey(inner), o = S.lnk[key];
+    return `<a class="${c}" href="${esc(o || h)}"${r} data-lk="${esc(key)}">${inner}</a>`;
+  });
+  let depth = 0, skip = 0, edBtn = 0, out = "", m;
+  const re = /(<[^>]*>)|([^<]+)/g;
+  while ((m = re.exec(html))) {
+    if (m[1]) {
+      const t = m[1]; depth += cnt(t, D0) - cnt(t, D1);
+      if (/^<(textarea|option|script|style|select)\b/i.test(t)) skip++;
+      else if (/^<\/(textarea|option|script|style|select)>/i.test(t)) skip = Math.max(0, skip - 1);
+      if (/^<(button|a|span)\b[^>]*class="[^"]*\bed\b/.test(t)) edBtn = 1;
+      else if (edBtn && /^<\/(button|a|span)>/.test(t)) edBtn = 0;
+      out += t;
+    } else {
+      const t = m[2];
+      if (skip || edBtn) { out += t; for (const ch of t) { if (ch === D0) depth++; else if (ch === D1) depth--; } continue; }
+      t.split(/([\uE000\uE001])/).forEach((part) => {
+        if (part === D0) { depth++; out += part; }
+        else if (part === D1) { depth--; out += part; }
+        else if (depth === 0 && /[A-Za-zА-Яа-яЁё]/.test(part) && !/\d/.test(part)) {
+          const mm = /^(\s*)([\s\S]*?)(\s*)$/.exec(part), key = mm[2], v = S.txt[key];
+          out += mm[1] + `<span data-t="${esc(key)}">${v != null ? esc(v) : key}</span>` + mm[3];
+        } else out += part;
+      });
+    }
+  }
+  return out.replace(/[\uE000\uE001]/g, "");
+}
+/* nav */
+const DEFAULT_NAV = [["", "Главная", "#/", ""], ["Станция", "О станции", "#/about", ""], ["Станция", "Подразделения", "#/units", ""], ["Станция", "Личный состав", "#/staff", ""], ["", "Карьера", "#/career", ""], ["Документы", "Документы", "#/docs", ""], ["Документы", "Пресс-центр", "#/press", ""], ["Документы", "Формуляры", "#/forms", ""], ["", "Доска", "#/board", ""]];
+const navData = () => (S.nav && S.nav.length ? S.nav : DEFAULT_NAV);
+let curNav = "";
+function setActive() {
+  const n = (h) => String(h || "").replace(/^#\/?/, "").replace(/\/$/, ""), want = curNav === "home" ? "" : curNav;
+  $$("#nav [data-h]").forEach((a) => a.classList.toggle("on", !!curNav && n(a.dataset.h) === want));
+  $$("#nav .ng").forEach((g) => g.classList.toggle("on", !!$(".di.on", g)));
+}
+function routeList() {
+  const L = [["#/", "Главная"], ["#/about", "О станции"], ["#/units", "Подразделения"], ["#/staff", "Личный состав"], ["#/career", "Карьера"], ["#/docs", "Документы"], ["#/press", "Пресс-центр"], ["#/forms", "Формуляры"], ["#/board", "Доска"]];
+  S.units.forEach((u) => L.push(["#/unit/" + u.id, "Подразделение: " + u.name]));
+  S.docs.forEach((d) => L.push(["#/doc/" + d.id, d.num + " " + d.title]));
+  S.forms.forEach((f) => L.push(["#/form/" + f.id, "Формуляр: " + f.title]));
+  return L;
+}
