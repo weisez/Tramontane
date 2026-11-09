@@ -189,7 +189,7 @@ body.shot #shot{display:grid;justify-items:center;align-content:start;min-height
 :root[data-theme=light] .mapui{--mw:#b7cfe3;--ml:#f0efe6;--ml2:#e4e5da;--ms-line:rgba(16,42,71,.22)}
 @media(max-width:1000px){.mapui{grid-template-columns:minmax(0,1fr)}}
 .mapbox{position:relative;min-width:0}
-#mapsvg{display:block;width:100%;height:auto;aspect-ratio:1000/680;background:var(--mw);border:1px solid var(--line);box-shadow:var(--sh);cursor:grab;touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-select:none;--ms:1}
+#mapsvg{display:block;width:100%;height:auto;aspect-ratio:var(--ar,1.47);background:var(--mw);border:1px solid var(--line);box-shadow:var(--sh);cursor:grab;touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-select:none;--ms:1}
 #mapsvg.zoomed{touch-action:none}#mapsvg.grab{cursor:grabbing}
 .mp-water{fill:var(--mw)}.mp-wave{fill:none;stroke:var(--ms-line);stroke-width:1;opacity:.35}
 .mp-land{fill:var(--ml)}.mp-shore{fill:none;stroke:var(--ms-line);stroke-width:7;opacity:.5;stroke-linejoin:round}
@@ -259,3 +259,10 @@ body.editing #mapsvg .mk{cursor:move}
 @media(max-width:480px){.pagehead h1{font-size:27px;overflow-wrap:anywhere}}
 @media(max-width:640px){#mapsvg .mk.st:not(.sel) .mkt{opacity:0}#mapsvg:not(.has) .mk.st .mkt{opacity:1}#mapsvg.has .mk.st:not(.sel) .mkt{opacity:0}.mkt{font-size:12px}}
 @media(max-width:640px){#mapsvg .mk:not(.sel) .mkt{opacity:0}#mapsvg:not(.has) .mk.st .mkt{opacity:1}.mkt{font-size:11px}}
+
+.mapwrap{position:relative;width:min(100%,calc((100vh - var(--hh) - 56px)*var(--ar,1.47)));margin:0 auto}
+#mapsvg.custom{background:#7d9fc4}
+@media(max-width:1000px){.mapwrap{width:100%}}
+#mapsvg.custom .mz .zf{fill-opacity:.26;stroke-width:3}#mapsvg.custom .mz.sel .zf{fill-opacity:.4}#mapsvg.custom.has .mz:not(.sel) .zf{fill-opacity:.08}
+#mapsvg.custom .zn{opacity:.6;paint-order:stroke;stroke:rgba(0,0,0,.35);stroke-width:2px}
+#mapsvg.custom #mbase image{filter:drop-shadow(0 0 10px rgba(0,0,0,.45))}

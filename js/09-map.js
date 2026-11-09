@@ -5,7 +5,9 @@
    - S.pois    — объекты на карте: станции и всё остальное ({ id, kind, zone, name, x, y, text, img }).
    Карта нарисована схемой по описаниям зон, это не копия игровой карты. Контуры и маркеры правятся мышью
    в режиме правки; вместо схемы можно подставить свою картинку («Фон карты»). */
-const MAP_W = 1000, MAP_H = 680;
+/* размеры «мира» карты: у встроенной схемы 1000×680, у картинки ширина 1000, высота по её пропорциям.
+   Окно просмотра (камера) имеет пропорцию MAP_AR, мир может быть выше окна — тогда карту можно двигать. */
+let MAP_W = 1000, MAP_H = 680, MAP_AR = 1000 / 680, MAP_FW = 1000;
 const MAP_PAL = ["#4f84c4", "#d2a94a", "#4fa37a", "#c0607a", "#8f72cf", "#d08a4b"];
 const MAP_KINDS = {
   station: "Станция", bridge: "Мост", port: "Порт", district: "Район", town: "Населённый пункт",
@@ -21,34 +23,42 @@ const MAP_ICON = {
   landmark: '<path d="M0 -8L8 0L0 8L-8 0Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
   station: '<path d="M0 -9L8 -6V1C8 6 4 8.5 0 10C-4 8.5 -8 6 -8 1V-6Z" fill="currentColor"/><path d="M0 -4.5L1.4 -1.4L4.8 -1.1L2.2 1L3 4.3L0 2.5L-3 4.3L-2.2 1L-4.8 -1.1L-1.4 -1.4Z" fill="#14100a"/>',
 };
-/* стартовые контуры и объекты */
-const MAP_DEF = { img: "", rings: {
-  z1: [[[30, 315], [650, 315], [650, 400], [520, 400], [470, 455], [30, 470]]],
-  z2: [[[30, 470], [470, 455], [520, 400], [750, 400], [750, 600], [330, 640], [250, 590], [30, 570]]],
-  z3: [[[0, 0], [1000, 0], [1000, 300], [0, 300]], [[30, 570], [250, 590], [330, 640], [750, 600], [750, 700], [30, 700]]],
+/* стартовые контуры и объекты: примерная раскладка по карте San Andreas (картинка 541×937, умноженная на 1000/541).
+   Это отправная точка: контуры и маркеры двигаются в режиме правки. */
+const sc = (a) => a.map((q) => [Math.round(q[0] * 1.8484 * 10) / 10, Math.round(q[1] * 1.8484 * 10) / 10]);
+const MAP_DEF = { img: "img/map-sanfierro.webp", w: 1000, h: 1732, rings: {
+  z1: [sc([[18, 250], [240, 250], [320, 262], [350, 340], [250, 410], [190, 470], [18, 400]])],
+  z2: [sc([[18, 400], [190, 470], [250, 410], [330, 440], [320, 560], [18, 590]])],
+  z3: [sc([[18, 28], [175, 28], [185, 115], [110, 145], [64, 150], [64, 250], [18, 250]]), sc([[18, 760], [200, 740], [320, 770], [300, 925], [18, 925]])],
 } };
 const POI_DEF = [
-  { id: "p-st1", kind: "station", zone: "z1", name: "Станция моста Гант", x: 392, y: 357, text: "Северный въезд в город, у основания моста через залив в направлении Бэйсайда." },
-  { id: "p-st2", kind: "station", zone: "z2", name: "Центральная станция Трамонтана", x: 548, y: 506, text: "На стыке финансового центра и промышленного сектора, в непосредственной близости от портового терминала." },
-  { id: "p-st3", kind: "station", zone: "z3", name: "Офис шерифа", x: 765, y: 128, text: "Отдельная структура внутри департамента, расположена в Бэйсайде. Шериф избирается населением." },
-  { id: "p-bridge", kind: "bridge", zone: "z1", name: "Мост Гант", x: 348, y: 290, text: "Мост через залив в сторону Бэйсайда. Высокий транзитный трафик, транзитная контрабанда, угоны и ДТП с тяжёлыми последствиями." },
-  { id: "p-front", kind: "district", zone: "z1", name: "Туристическая набережная", x: 222, y: 352, text: "Карманные кражи, мошенничество и публичные беспорядки в вечернее время." },
-  { id: "p-north", kind: "district", zone: "z1", name: "Северные жилые кварталы", x: 176, y: 418, text: "Расширяющийся жилой сектор: нагрузка на станцию последовательно растёт." },
-  { id: "p-ind1", kind: "industry", zone: "z1", name: "Промышленная полоса у залива", x: 585, y: 366, text: "Прилегающая к мосту промышленная полоса вдоль залива." },
-  { id: "p-fin", kind: "district", zone: "z2", name: "Финансовый центр", x: 405, y: 508, text: "Днём здесь десятки тысяч офисных работников и сотрудников государственных учреждений, штаб-квартиры крупных корпораций." },
-  { id: "p-ind2", kind: "industry", zone: "z2", name: "Промышленный сектор", x: 622, y: 548, text: "Контрабандные сети, корпоративный шпионаж и уличный криминал." },
-  { id: "p-port", kind: "port", zone: "z2", name: "Портовый терминал", x: 696, y: 492, text: "Один из главных грузовых хабов Федерации. Ночью огромный поток грузов идёт через доки и транзитные узлы." },
-  { id: "p-angel", kind: "town", zone: "z3", name: "Энджел Пайн", x: 205, y: 118, text: "Посёлок округа Флинт, юрисдикция шерифа." },
-  { id: "p-hills", kind: "mountain", zone: "z3", name: "Горные районы", x: 118, y: 196, text: "Незаконные лаборатории и свалки, контрабанда по горным дорогам в обход городских постов, туристы, теряющиеся на серпантинах." },
-  { id: "p-farms", kind: "landmark", zone: "z3", name: "Фермерские угодья", x: 610, y: 78, text: "Сельские трассы и угоны сельскохозяйственной техники." },
+  { id: "p-st1", kind: "station", zone: "z1", name: "Станция моста Гант", x: 370, y: 810, text: "Северный въезд в город, у основания моста через залив в направлении Бэйсайда." },
+  { id: "p-st2", kind: "station", zone: "z2", name: "Центральная станция Трамонтана", x: 240, y: 776, text: "На стыке финансового центра и промышленного сектора, в непосредственной близости от портового терминала." },
+  { id: "p-st3", kind: "station", zone: "z3", name: "Офис шерифа", x: 157, y: 176, text: "Отдельная структура внутри департамента, расположена в Бэйсайде. Шериф избирается населением." },
+  { id: "p-bridge", kind: "bridge", zone: "z1", name: "Мост Гант", x: 470, y: 665, text: "Мост через залив в сторону Бэйсайда. Высокий транзитный трафик, транзитная контрабанда, угоны и ДТП с тяжёлыми последствиями." },
+  { id: "p-front", kind: "district", zone: "z1", name: "Туристическая набережная", x: 385, y: 505, text: "Карманные кражи, мошенничество и публичные беспорядки в вечернее время." },
+  { id: "p-north", kind: "district", zone: "z1", name: "Северные жилые кварталы", x: 110, y: 600, text: "Расширяющийся жилой сектор: нагрузка на станцию последовательно растёт." },
+  { id: "p-ind1", kind: "industry", zone: "z1", name: "Промышленная полоса у залива", x: 420, y: 750, text: "Прилегающая к мосту промышленная полоса вдоль залива." },
+  { id: "p-fin", kind: "district", zone: "z2", name: "Финансовый центр", x: 205, y: 650, text: "Днём здесь десятки тысяч офисных работников и сотрудников государственных учреждений, штаб-квартиры крупных корпораций." },
+  { id: "p-ind2", kind: "industry", zone: "z2", name: "Промышленный сектор", x: 285, y: 1010, text: "Контрабандные сети, корпоративный шпионаж и уличный криминал." },
+  { id: "p-port", kind: "port", zone: "z2", name: "Портовый терминал", x: 440, y: 960, text: "Один из главных грузовых хабов Федерации. Ночью огромный поток грузов идёт через доки и транзитные узлы." },
+  { id: "p-road", kind: "landmark", zone: "z3", name: "Трасса к Бэйсайду", x: 95, y: 370, text: "Дорога от города на север вдоль побережья к Бэйсайду: длинные перегоны, редкая поддержка." },
+  { id: "p-angel", kind: "town", zone: "z3", name: "Энджел Пайн", x: 245, y: 1553, text: "Посёлок округа Флинт, юрисдикция шерифа." },
+  { id: "p-hills", kind: "mountain", zone: "z3", name: "Горные районы", x: 150, y: 1295, text: "Незаконные лаборатории и свалки, контрабанда по горным дорогам в обход городских постов, туристы, теряющиеся на серпантинах." },
 ];
 const MAP_INTRO = "Карта показывает зоны территориальной ответственности SFPD. Выберите станцию, объект или зону: контур подсветится, справа появится описание.";
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const zColor = (z, i) => (/^#[0-9a-f]{3,8}$/i.test((z && z.color) || "") ? z.color : MAP_PAL[i % MAP_PAL.length]);
+function mapDims() {
+  const m = S.map;
+  if (m.img) { MAP_W = 1000; MAP_H = clamp(+m.h || 680, 300, 4000); } else { MAP_W = 1000; MAP_H = 680; }
+  MAP_AR = Math.max(0.8, MAP_W / MAP_H); MAP_FW = Math.max(MAP_W, MAP_H * MAP_AR);
+}
 function mapEnsure() {
   if (!S.map || typeof S.map !== "object") S.map = clone(MAP_DEF);
   if (!S.map.rings || typeof S.map.rings !== "object") S.map.rings = {};
   if (!Array.isArray(S.pois)) S.pois = clone(POI_DEF);
+  mapDims();
   S.pois.forEach((p) => { p.x = clamp(+p.x || 0, 0, MAP_W); p.y = clamp(+p.y || 0, 0, MAP_H); if (!MAP_KINDS[p.kind]) p.kind = "landmark"; });
 }
 const mzRings = (id) => (S.map.rings[id] || []).filter((r) => Array.isArray(r) && r.length >= 3);
@@ -108,15 +118,15 @@ function mapBase() {
 
 /* ===== страница ===== */
 const MP = { svg: null, vb: { x: 0, y: 0, w: MAP_W }, sel: { z: null, p: null }, off: new Set(), anim: 0, ro: null, moved: false, px: 1 };
-const mvH = () => MP.vb.w * MAP_H / MAP_W;
+const mvH = () => MP.vb.w / MAP_AR;
 const mEditing = () => document.body.classList.contains("editing");
 const mTitle = (p) => (p.name || MAP_KINDS[p.kind] || "Объект");
 function mapMarkup() {
-  return `<div class="mapui reveal"><div class="mapbox" id="mapbox">
-    <svg id="mapsvg" viewBox="0 0 ${MAP_W} ${MAP_H}" role="group" aria-label="Карта зон ответственности"><g id="mbase"></g><g id="mzones"></g><g id="mhandles"></g><g id="mpois"></g></svg>
+  return `<div class="mapui reveal"><div class="mapbox" id="mapbox"><div class="mapwrap" id="mapwrap" style="--ar:${MAP_AR}">
+    <svg id="mapsvg" viewBox="0 0 ${MAP_FW} ${MAP_FW / MAP_AR}" role="group" aria-label="Карта зон ответственности"><g id="mbase"></g><g id="mzones"></g><g id="mhandles"></g><g id="mpois"></g></svg>
     <div class="mtip" id="mtip" hidden></div>
     <div class="mctl"><button type="button" data-mz="1" aria-label="Приблизить" title="Приблизить">+</button><button type="button" data-mz="-1" aria-label="Отдалить" title="Отдалить">−</button><button type="button" data-mz="0" aria-label="Вся карта" title="Вся карта">⌂</button></div>
-    <div class="mhint" id="mhint">Ctrl + колесо мыши — масштаб · перетаскивание — сдвиг</div>
+    <div class="mhint" id="mhint">Ctrl + колесо мыши — масштаб · перетаскивание — сдвиг</div></div>
     <div class="mleg" id="mleg"></div>
     <div class="mtool ed"><button type="button" data-mt="addp">+ Объект</button><button type="button" data-mt="addr">+ Контур выбранной зоны</button><button type="button" data-mt="bg">Фон карты</button><button type="button" data-mt="reset">Вернуть исходную схему</button><span class="note">Тяните маркеры и точки контура. Двойной щелчок по линии добавляет точку, по точке удаляет её.</span></div>
   </div><aside class="mpanel aside" id="mpanel" aria-live="polite"></aside></div>`;
@@ -133,7 +143,7 @@ function mapPage(id) {
 /* --- рисование --- */
 function paintZones() {
   const g = $("#mzones"); if (!g) return;
-  g.innerHTML = S.zones.map((z, i) => { const c = zColor(z, i), d = zonePath(z.id), at = zLabelAt(z.id); if (!d) return ""; return `<g class="mz${z.home ? " home" : ""}" data-z="${esc(z.id)}" style="--zc:${c}" clip-path="url(#mclipland)"><path class="zf" d="${d}"/>${at ? `<text class="zn" x="${at[0].toFixed(0)}" y="${at[1].toFixed(0)}">${esc(z.n || "")}</text>` : ""}</g>`; }).join("");
+  g.innerHTML = S.zones.map((z, i) => { const c = zColor(z, i), d = zonePath(z.id), at = zLabelAt(z.id); if (!d) return ""; return `<g class="mz${z.home ? " home" : ""}" data-z="${esc(z.id)}" style="--zc:${c}"${S.map.img ? "" : ' clip-path="url(#mclipland)"'}><path class="zf" d="${d}"/>${at ? `<text class="zn" x="${at[0].toFixed(0)}" y="${at[1].toFixed(0)}">${esc(z.n || "")}</text>` : ""}</g>`; }).join("");
   syncSel();
 }
 function paintPois() {
@@ -164,24 +174,24 @@ function syncSel() {
 /* --- камера --- */
 function applyVB() {
   const v = MP.vb, svg = MP.svg; if (!svg) return;
-  v.w = clamp(v.w, 200, MAP_W); const h = mvH();
-  v.x = clamp(v.x, 0, MAP_W - v.w); v.y = clamp(v.y, 0, MAP_H - h);
+  v.w = clamp(v.w, 200, MAP_FW); const h = mvH();
+  v.x = v.w >= MAP_W ? (MAP_W - v.w) / 2 : clamp(v.x, 0, MAP_W - v.w); v.y = h >= MAP_H ? (MAP_H - h) / 2 : clamp(v.y, 0, MAP_H - h);
   svg.setAttribute("viewBox", `${v.x.toFixed(2)} ${v.y.toFixed(2)} ${v.w.toFixed(2)} ${h.toFixed(2)}`);
-  const px = svg.getBoundingClientRect().width || MAP_W; MP.px = px;
+  const px = svg.getBoundingClientRect().width || MAP_FW; MP.px = px;
   svg.style.setProperty("--ms", (v.w / px * (px < 560 ? 0.85 : 1)).toFixed(4));
-  svg.classList.toggle("zoomed", v.w < MAP_W * 0.92); svg.classList.toggle("close", v.w < 520);
+  svg.classList.toggle("zoomed", v.w < MAP_FW * 0.92); svg.classList.toggle("close", v.w < 520);
 }
 function flyTo(x, y, w, quick) {
   cancelAnimationFrame(MP.anim);
-  const v = MP.vb; w = clamp(w, 200, MAP_W);
-  const to = { w, x: x - w / 2, y: y - (w * MAP_H / MAP_W) / 2 }, from = { x: v.x, y: v.y, w: v.w };
+  const v = MP.vb; w = clamp(w, 200, MAP_FW);
+  const to = { w, x: x - w / 2, y: y - (w / MAP_AR) / 2 }, from = { x: v.x, y: v.y, w: v.w };
   if (quick || matchMedia("(prefers-reduced-motion: reduce)").matches) { Object.assign(v, to); applyVB(); return; }
   const t0 = performance.now(), D = 520;
   const step = (t) => { const k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 3); v.w = from.w + (to.w - from.w) * e; v.x = from.x + (to.x - from.x) * e; v.y = from.y + (to.y - from.y) * e; applyVB(); if (k < 1) MP.anim = requestAnimationFrame(step); };
   MP.anim = requestAnimationFrame(step);
 }
-function fitBox(b, quick) { const pad = 50, w = Math.max(b[2] - b[0] + pad * 2, (b[3] - b[1] + pad * 2) * MAP_W / MAP_H); flyTo((b[0] + b[2]) / 2, (b[1] + b[3]) / 2, Math.min(MAP_W, w), quick); }
-function zoomAt(f, cx, cy) { /* f > 1 — приблизить; cx, cy — доли окна, куда смотрим */ const v = MP.vb, nw = clamp(v.w / f, 200, MAP_W), px = v.x + v.w * cx, py = v.y + mvH() * cy; cancelAnimationFrame(MP.anim); v.w = nw; v.x = px - nw * cx; v.y = py - (nw * MAP_H / MAP_W) * cy; applyVB(); }
+function fitBox(b, quick) { const pad = 50, w = Math.max(b[2] - b[0] + pad * 2, (b[3] - b[1] + pad * 2) * MAP_AR); flyTo((b[0] + b[2]) / 2, (b[1] + b[3]) / 2, Math.min(MAP_FW, w), quick); }
+function zoomAt(f, cx, cy) { /* f > 1 — приблизить; cx, cy — доли окна, куда смотрим */ const v = MP.vb, nw = clamp(v.w / f, 200, MAP_FW), px = v.x + v.w * cx, py = v.y + mvH() * cy; cancelAnimationFrame(MP.anim); v.w = nw; v.x = px - nw * cx; v.y = py - (nw / MAP_AR) * cy; applyVB(); }
 const toMap = (e) => { const r = MP.svg.getBoundingClientRect(), v = MP.vb; return [v.x + ((e.clientX - r.left) / r.width) * v.w, v.y + ((e.clientY - r.top) / r.height) * mvH()]; };
 /* --- выбор --- */
 function mapSelect(sel, opt) {
@@ -195,7 +205,7 @@ function mapSelect(sel, opt) {
   if (opt.noFly) return;
   if (p && p.kind !== "station") flyTo(p.x, p.y, Math.min(MP.vb.w, 440), opt.quick);
   else if (z && zBox(z)) fitBox(zBox(z), opt.quick);
-  else if (!z) flyTo(MAP_W / 2, MAP_H / 2, MAP_W, opt.quick);
+  else if (!z) flyTo(MAP_W / 2, MAP_H / 2, MAP_FW, opt.quick);
 }
 function mapPanel() {
   const el = $("#mpanel"); if (!el) return;
@@ -268,9 +278,9 @@ function mapTool(a) {
 /* --- подключение --- */
 function mapInit(app, startId) {
   const svg = $("#mapsvg", app); if (!svg) return;
-  MP.svg = svg; MP.sel = { z: null, p: null }; MP.vb = { x: 0, y: 0, w: MAP_W };
+  MP.svg = svg; MP.sel = { z: null, p: null }; MP.vb = { x: 0, y: 0, w: MAP_FW };
   if (MP.ro) MP.ro.disconnect();
-  $("#mbase", app).innerHTML = S.map.img ? `<rect class="mp-water" width="${MAP_W}" height="${MAP_H}"/><image href="${esc(S.map.img)}" width="${MAP_W}" height="${MAP_H}" preserveAspectRatio="xMidYMid slice"/>` : mapBase();
+  $("#mbase", app).innerHTML = S.map.img ? `<image href="${esc(S.map.img)}" width="${MAP_W}" height="${MAP_H}" preserveAspectRatio="none"/>` : mapBase();
   svg.classList.toggle("custom", !!S.map.img);
   paintZones(); paintPois(); paintLegend(); applyVB();
   if (window.ResizeObserver) { MP.ro = new ResizeObserver(applyVB); MP.ro.observe(svg); }
@@ -337,7 +347,7 @@ function mapHover(e) {
   const t = $("#mtip"), svg = MP.svg; if (!t) return;
   const mk = e.target.closest(".mk"), mz = e.target.closest(".mz");
   $$(".mz.hov", svg).forEach((x) => x !== mz && x.classList.remove("hov")); if (mz) mz.classList.add("hov");
-  const box = $("#mapbox").getBoundingClientRect();
+  const box = $("#mapwrap").getBoundingClientRect();
   let txt = "";
   if (mk) { const p = S.pois.find((x) => x.id === mk.dataset.p); txt = p ? mTitle(p) + " · " + MAP_KINDS[p.kind] : ""; }
   else if (mz) { const z = S.zones.find((x) => x.id === mz.dataset.z); txt = z ? (z.n ? z.n + ". " : "") + z.name : ""; }
