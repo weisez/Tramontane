@@ -55,6 +55,7 @@ route("about", () => {
   <section class="sec alt"><div class="wrap">${sech("Хронология", "История станции")}<div class="tl">${S.timeline.map((t) => `<div class="tli"><time>${E(t.year)}</time><div><h3>${E(t.title)}</h3><p>${E(t.text)}</p></div>${eb("timeline", t.id)}${mvb("timeline", t.id)}</div>`).join("")}</div>${addb("timeline", "Событие")}</div></section>
   <section class="sec"><div class="wrap">${sech("Станция изнутри", "Здание и помещения", `<p class="lead">${E(m.building || "")}</p>`)}${roomsHTML()}${addb("rooms", "Помещение")}</div></section>
   <section class="sec alt"><div class="wrap">${sech("Департамент", "Зоны ответственности SFPD")}
+    <p class="reveal" style="margin:-6px 0 26px"><a class="btn" href="#/zones">Открыть интерактивную карту зон →</a></p>
     <div class="grid" style="gap:18px">${S.zones.map((z) => `<div class="card zc reveal${z.home ? " hl" : ""}"><div class="zi">${fimg(z.img, cropOf(z, "img"), "")}</div><div class="pad"><h3><span>${E(z.n)}.</span> ${E(z.name)}</h3><div class="sub">${E(z.station)}${z.home ? " · наша зона" : ""}</div><p style="font:400 15px/1.7 var(--ff-s)">${E(z.text)}</p></div>${eb("zones", z.id)}</div>`).join("")}</div>
     <div class="grid g2" style="gap:44px;margin-top:54px"><div class="prose reveal">${H(S.deptText)}</div><div class="reveal"><h3 style="margin-bottom:16px;color:var(--brass2)">Структура департамента</h3>${treeHTML(S.dept)}<button class="ed addb" data-ed="dept:-">✎ Править структуру</button></div></div></div></section>` };
 }, "about");

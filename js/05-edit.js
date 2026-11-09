@@ -17,19 +17,21 @@ function clean(html) {
 const ST = { type: [["order", "Приказ"], ["briefing", "Брифинг"], ["memo", "Служебная записка"], ["press", "Пресс-релиз"]] };
 const unitOpts = () => S.units.map((u) => [u.id, u.name]), formOpts = () => [["", "—"]].concat(S.forms.map((f) => [f.id, f.title])), pOpts = () => S.people.map((p) => [p.id, p.name === "VACANT" ? "VACANT — " + p.title : p.name]);
 const SCHEMA = {
-  meta: { title: "Настройки сайта", single: 1, fields: [["name", "Название (первое слово крупно в шапке)", "text"], ["brandSub", "Подпись под названием в шапке", "text"], ["topline", "Верхняя строка шапки", "text"], ["org", "Подзаголовок (департамент)", "text"], ["address", "Адрес", "text"], ["motto", "Девиз / цитата", "area"], ["mottoBy", "Автор цитаты", "text"], ["hero", "Главное изображение", "image", { fr: [["Шапка страниц", 3.5], ["Главный экран", 1.7]] }], ["careerImg", "Изображение «Карьера»", "image", { fr: [["Блок на главной", 0.75], ["Шапка «Карьера»", 3.5]] }], ["lifeImg", "Изображение «Доска станции»", "image", { fr: [["Шапка страницы", 3.5]] }], ["intro", "Вступление на главной", "html"], ["about", "Текст «О станции»", "html"], ["building", "О здании", "area"], ["pressIntro", "Вступление пресс-центра", "area"], ["lifeIntro", "Вступление доски", "area"], ["lifeRules", "Правила доски (по строке)", "lines"], ["contactIntro", "Контакты и обращения", "area"], ["stats", "Показатели главной", "rows", { keys: ["n", "l"], ph: ["Число", "Подпись"] }]] },
+  meta: { title: "Настройки сайта", single: 1, fields: [["name", "Название (первое слово крупно в шапке)", "text"], ["brandSub", "Подпись под названием в шапке", "text"], ["topline", "Верхняя строка шапки", "text"], ["org", "Подзаголовок (департамент)", "text"], ["address", "Адрес", "text"], ["motto", "Девиз / цитата", "area"], ["mottoBy", "Автор цитаты", "text"], ["hero", "Главное изображение", "image", { fr: [["Шапка страниц", 3.5], ["Главный экран", 1.7]] }], ["careerImg", "Изображение «Карьера»", "image", { fr: [["Блок на главной", 0.75], ["Шапка «Карьера»", 3.5]] }], ["lifeImg", "Изображение «Доска станции»", "image", { fr: [["Шапка страницы", 3.5]] }], ["intro", "Вступление на главной", "html"], ["about", "Текст «О станции»", "html"], ["building", "О здании", "area"], ["pressIntro", "Вступление пресс-центра", "area"], ["lifeIntro", "Вступление доски", "area"], ["lifeRules", "Правила доски (по строке)", "lines"], ["mapIntro", "Вступление раздела «Зоны ответственности»", "area"], ["contactIntro", "Контакты и обращения", "area"], ["stats", "Показатели главной", "rows", { keys: ["n", "l"], ph: ["Число", "Подпись"] }]] },
   vacancies: { title: "Кадровый смотр", single: 1, fields: [["state", "Состояние набора", "select", () => [["open", "Идёт набор (показать таблицу)"], ["closed", "Вакантных мест нет"], ["soon", "Следите за новостями"], ["none", "Набор не ведётся"]]], ["msg", "Сообщение (когда набор не идёт)", "text"], ["title", "Заголовок", "text"], ["rows", "Должности", "arr2", { n: 4, ph: ["Должность", "Ранг", "Вакансий", "Мин. звание"] }], ["req", "Требования (по строке)", "lines"]] },
   people: { title: "Сотрудник", fields: [["name", "Имя и фамилия (VACANT для вакансии)", "text"], ["en", "Имя латиницей", "text"], ["rank", "Звание", "text"], ["title", "Должность", "text"], ["unit", "Подразделение", "select", unitOpts], ["status", "Статус", "select", () => [["active", "В штате"], ["vacant", "Вакансия"]]], ["photo", "Фото", "image", { fr: [["Портрет", 0.75], ["Аватар (круг)", 1]] }], ["bio", "Описание", "area"]], blank: () => ({ name: "", en: "", rank: "", title: "", unit: "patrol", photo: "", bio: "", status: "active" }) },
   units: { title: "Подразделение", fields: [["name", "Название", "text"], ["en", "Название латиницей", "text"], ["tag", "Девиз / короткое описание", "text"], ["banner", "Баннер", "image", { fr: [["Шапка страницы", 3.5], ["Карточка", 16 / 7]] }], ["quote", "Цитата", "area"], ["quoteBy", "Автор цитаты", "text"], ["summary", "Описание", "html"], ["roster", "Состав", "roster"], ["criteria", "Критерии отбора (по строке)", "lines"], ["form", "Формуляр заявления", "select", formOpts], ["docs", "Документы (id, по строке)", "lines"], ["gallery", "Галерея (ссылки, по строке)", "lines"]], blank: () => ({ name: "", en: "", tag: "", banner: S.meta.hero, summary: "", roster: [], criteria: [], form: "", docs: [], gallery: [] }) },
   ranks: { title: "Звание", fields: [["group", "Группа", "text"], ["name", "Название", "text"], ["desc", "Описание", "area"]], blank: () => ({ group: "Полевая служба", name: "", desc: "" }) },
   timeline: { title: "Событие истории", fields: [["year", "Дата / период", "text"], ["title", "Заголовок", "text"], ["text", "Описание", "area"]], blank: () => ({ year: "", title: "", text: "" }) },
   rooms: { title: "Помещение", fields: [["title", "Название", "text"], ["text", "Описание", "area"], ["img", "Изображение", "image", { fr: [["Рамка помещения", 1552 / 264], ["На телефоне", 2.3]] }]], blank: () => ({ title: "", text: "", img: "" }) },
-  zones: { title: "Зона ответственности", fields: [["n", "Номер (I, II…)", "text"], ["name", "Название", "text"], ["station", "Станция", "text"], ["img", "Изображение", "image", { fr: [["Карточка зоны", 1.3]] }], ["text", "Описание", "area"], ["home", "Наша зона", "bool"]], blank: () => ({ n: "", name: "", station: "", img: "", text: "" }) },
+  zones: { title: "Зона ответственности", fields: [["n", "Номер (I, II…)", "text"], ["name", "Название", "text"], ["station", "Станция", "text"], ["img", "Изображение", "image", { fr: [["Карточка зоны", 1.3]] }], ["text", "Описание", "area"], ["color", "Цвет на карте (#rrggbb, пусто — авто)", "text"], ["home", "Наша зона", "bool"]], blank: () => ({ n: "", name: "", station: "", img: "", text: "" }) },
+  pois: { title: "Объект на карте", fields: [["name", "Название", "text"], ["kind", "Тип", "select", () => Object.entries(MAP_KINDS)], ["zone", "Зона", "select", () => [["", "— без зоны —"], ...S.zones.map((z) => [z.id, (z.n ? z.n + ". " : "") + z.name])]], ["text", "Описание", "area"], ["img", "Изображение", "image", { fr: [["Карточка объекта", 16 / 9]] }], ["x", "X (0–1000)", "text"], ["y", "Y (0–680)", "text"]], blank: () => ({ name: "", kind: "landmark", zone: "", text: "", img: "", x: 500, y: 340 }) },
+  map: { title: "Фон карты", single: 1, get: () => ({ img: S.map.img || "" }), set: (v) => { S.map.img = v.img; }, fields: [["img", "Своя картинка вместо схемы (пусто — встроенная схема). Пропорции карты 1000×680", "image", { fr: [["Карта", 1000 / 680]] }]] },
   docs: { title: "Документ", fields: [["type", "Тип", "select", () => ST.type], ["num", "Номер", "text"], ["title", "Название", "text"], ["date", "Дата (дд.мм.гггг)", "text"], ["status", "Статус", "text"], ["draft", "Черновик / готовится", "bool"], ["body", "Текст", "html"], ["meta", "Реквизиты", "arr2", { n: 2, ph: ["Поле", "Значение"] }], ["sign", "Подписи", "pids"], ["dist", "Рассылка", "text"], ["quote", "Цитата", "area"]], blank: () => ({ type: "order", num: "", title: "", date: "", status: "В силе", draft: false, body: "<p></p>", meta: [], sign: [], dist: "", quote: "" }) },
   forms: { title: "Формуляр", fields: [["title", "Название", "text"], ["ref", "Номер формы", "text"], ["to", "Адресат", "text"], ["desc", "Описание", "area"], ["tpl", "Шаблон ({ключ} — поля)", "area"], ["fields", "Поля (JSON)", "json"]], blank: () => ({ title: "", ref: "", to: "", desc: "", tpl: "", fields: [] }) },
   nav: { title: "Меню сайта", single: 1, get: () => ({ rows: navData().map((r) => r.slice()) }), set: (v) => { S.nav = v.rows; }, fields: [["rows", "Пункты меню. Группа пустая = отдельная ссылка; одинаковая группа = выпадающее меню", "arr2", { n: 4, ph: ["Группа", "Название", "Ссылка", "Описание"], list: 2 }]] },
   dept: { title: "Структура департамента", single: 1, get: () => ({ tree: treeToText(S.dept), deptText: S.deptText || "" }), set: (v) => { S.dept = textToTree(v.tree); S.deptText = v.deptText; }, fields: [["tree", "Структура: отступ в 2 пробела = вложенность, «*» в начале = выделить", "tree"], ["deptText", "Текст слева от схемы", "html"]] },
-  notes: { title: "Записка", fields: [["author", "Автор", "text"], ["role", "Звание / роль", "text"], ["place", "Где", "text"], ["date", "Дата", "text"], ["text", "Текст", "area"]], blank: () => ({ author: "", role: "", place: "", date: "", text: "" }) },
+  notes: { title: "Объявление", fields: [["title", "Заголовок (необязательно)", "text"], ["author", "Автор", "text"], ["role", "Звание / роль", "text"], ["place", "Где / подпись", "text"], ["date", "Дата (пусто — подставится текущая)", "text"], ["text", "Текст", "area"]], blank: () => ({ title: "", author: "", role: "", place: "", date: "", text: "" }) },
 };
 const treeToText = (n, d = 0) => !n ? "" : "  ".repeat(d) + (n.hl ? "* " : "") + n.name + "\n" + (n.kids || []).map((k) => treeToText(k, d + 1)).join("");
 function textToTree(t) {
@@ -79,7 +81,7 @@ let ED = null;
 function openEd(coll, id) {
   const sc = SCHEMA[coll]; if (!sc) return;
   const single = !!sc.single, isNew = !single && id === "new";
-  const item = single ? (sc.get ? sc.get() : S[coll]) : isNew ? sc.blank() : S[coll].find((x) => x.id === id);
+  const item = single ? (sc.get ? sc.get() : S[coll]) : isNew ? sc.blank() : (coll === "notes" ? BOARD.notes : S[coll]).find((x) => x.id === id);
   if (!item) return;
   ED = { coll, id, isNew, single, item };
   const o = ovOpen("edov", `<div class="md wide"><div class="mh"><h3>${esc(sc.title)}${isNew ? " — новый" : ""}</h3><button data-edx aria-label="Закрыть">✕</button></div><div class="mb" id="edb">${sc.fields.map((f) => fieldHTML(f, item[f[0]], item)).join("")}</div><div class="mf">${single || isNew ? "" : `<button class="dng" data-edel>Удалить</button>`}<span class="sp"></span><button data-edx>Отмена</button><button class="pri" data-edsave>Сохранить</button></div></div>`);
@@ -110,6 +112,9 @@ function collect() {
 }
 function edSave() {
   const v = collect(); if (!v) return;
+  if (ED.coll === "notes") { if (boardSaveEd(v, ED.isNew, ED.id)) ovClose("edov"); return; } /* объявления: сразу в board.json */
+  if (ED.coll === "pois") { v.x = Math.max(0, Math.min(MAP_W, parseFloat(String(v.x).replace(",", ".")) || 0)); v.y = Math.max(0, Math.min(MAP_H, parseFloat(String(v.y).replace(",", ".")) || 0)); }
+  if (ED.coll === "zones" && v.color && !/^#[0-9a-f]{3,8}$/i.test(v.color.trim())) { toast("Цвет: формат #rrggbb"); return; }
   let tgt = null;
   if (ED.single) { const sc = SCHEMA[ED.coll]; if (sc.set) sc.set(v); else Object.assign((tgt = S[ED.coll]), v); }
   else if (ED.isNew) { const it = Object.assign({ id: (ED.coll === "docs" ? "d-" : ED.coll[0] + "-") + uid() }, v); if (ED.pressNew) it.type = "press"; S[ED.coll].push(it); tgt = it; }
@@ -117,7 +122,7 @@ function edSave() {
   if (tgt) Object.keys(tgt).forEach((k) => { if (/Pos$/.test(k) && !tgt[k]) delete tgt[k]; });
   save(); ovClose("edov"); chrome(); render(); toast("Сохранено");
 }
-function mvItem(c, id, d) { const a = S[c], i = a.findIndex((x) => x.id === id), j = i + d; if (i < 0 || j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; if (c === "rooms") ROOM_I = j; save(); render(); }
+function mvItem(c, id, d) { if (c === "notes") { boardMv(id, d); return; } const a = S[c], i = a.findIndex((x) => x.id === id), j = i + d; if (i < 0 || j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; if (c === "rooms") ROOM_I = j; save(); render(); }
 /* modal-level events */
 document.addEventListener("click", (e) => {
   const ov = e.target.closest("#edov"); if (!ov) return;
@@ -125,7 +130,7 @@ document.addEventListener("click", (e) => {
   const d = b.dataset;
   if ("edx" in d) ovClose("edov");
   else if ("edsave" in d) edSave();
-  else if ("edel" in d) arm(b, () => { S[ED.coll] = S[ED.coll].filter((x) => x.id !== ED.id); save(); ovClose("edov"); render(); toast("Удалено"); });
+  else if ("edel" in d) arm(b, () => { if (ED.coll === "notes") { boardDel(ED.id); ovClose("edov"); return; } S[ED.coll] = S[ED.coll].filter((x) => x.id !== ED.id); save(); ovClose("edov"); render(); toast("Удалено"); });
   else if ("rm" in d) b.closest(".rowi").remove();
   else if ("rup" in d) { const r = b.closest(".rowi"), p = r.previousElementSibling; if (p) r.parentNode.insertBefore(r, p); }
   else if ("rdn" in d) { const r = b.closest(".rowi"), n = r.nextElementSibling; if (n) r.parentNode.insertBefore(n, r); }
@@ -171,6 +176,7 @@ document.addEventListener("click", (e) => {
   if (!document.body.classList.contains("editing")) return;
   const t = e.target.closest("[data-t],a.btn[data-lk]");
   if (!t || !(t.closest("#app") || t.closest("#ftr"))) return;
+  if (t.closest(".mctl,.mleg,.mtool,.mo,.mzc,.mp-more,.mp-back")) return; /* управление картой: клик работает как обычно, не открывает редактор подписи */
   e.preventDefault(); e.stopPropagation();
   const a = t.closest("a.btn[data-lk]");
   if (a) btnEd(a); else textEd(t.dataset.t);

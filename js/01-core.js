@@ -30,6 +30,8 @@ async function loadData() {
   S = local || remote;
   if (!S) throw new Error("data.json не загрузился. Откройте сайт через веб-сервер (python3 -m http.server).");
   ["people", "units", "ranks", "timeline", "rooms", "zones", "docs", "forms", "notes", "steps"].forEach((k) => { S[k] = S[k] || []; });
+  if (typeof mapEnsure === "function") mapEnsure();
+  S.notes = []; /* объявления живут в board.json (js/08-board.js), не в data.json */
   S.meta = S.meta || {}; S.vacancies = S.vacancies || { rows: [], req: [] }; S.dept = S.dept || { name: "", kids: [] };
 }
 let saveT;
@@ -68,6 +70,7 @@ function render() {
   $("#nav").classList.remove("open");
   scrollTo(0, 0);
   after(); if (out.init) out.init(app);
+  if (typeof stickyWatch === "function") stickyWatch();
 }
 const notFound = () => `<section class="sec"><div class="wrap"><div class="eb">404</div><h1 style="font-size:clamp(26px,3.6vw,40px)">Страница не найдена</h1><p class="lead">Такого раздела нет или документ перенесён в архив.</p><p><a class="btn" href="#/">На главную</a></p></div></section>`;
 /* generic after-render: reveal, counters, accordions */
@@ -145,7 +148,7 @@ function uiProcess(html) {
   return out.replace(/[\uE000\uE001]/g, "");
 }
 /* nav */
-const DEFAULT_NAV = [["", "Главная", "#/", ""], ["Станция", "О станции", "#/about", ""], ["Станция", "Подразделения", "#/units", ""], ["Станция", "Личный состав", "#/staff", ""], ["", "Карьера", "#/career", ""], ["Документы", "Документы", "#/docs", ""], ["Документы", "Пресс-центр", "#/press", ""], ["Документы", "Формуляры", "#/forms", ""], ["", "Доска", "#/board", ""]];
+const DEFAULT_NAV = [["", "Главная", "#/", ""], ["Станция", "О станции", "#/about", ""], ["Станция", "Подразделения", "#/units", ""], ["Станция", "Личный состав", "#/staff", ""], ["Станция", "Зоны ответственности", "#/zones", ""], ["", "Карьера", "#/career", ""], ["Документы", "Документы", "#/docs", ""], ["Документы", "Пресс-центр", "#/press", ""], ["Документы", "Формуляры", "#/forms", ""], ["", "Объявления", "#/board", ""]];
 const navData = () => (S.nav && S.nav.length ? S.nav : DEFAULT_NAV);
 let curNav = "";
 function setActive() {
@@ -154,7 +157,7 @@ function setActive() {
   $$("#nav .ng").forEach((g) => g.classList.toggle("on", !!$(".di.on", g)));
 }
 function routeList() {
-  const L = [["#/", "Главная"], ["#/about", "О станции"], ["#/units", "Подразделения"], ["#/staff", "Личный состав"], ["#/career", "Карьера"], ["#/docs", "Документы"], ["#/press", "Пресс-центр"], ["#/forms", "Формуляры"], ["#/board", "Доска"]];
+  const L = [["#/", "Главная"], ["#/about", "О станции"], ["#/units", "Подразделения"], ["#/staff", "Личный состав"], ["#/zones", "Зоны ответственности"], ["#/career", "Карьера"], ["#/docs", "Документы"], ["#/press", "Пресс-центр"], ["#/forms", "Формуляры"], ["#/board", "Объявления"]];
   S.units.forEach((u) => L.push(["#/unit/" + u.id, "Подразделение: " + u.name]));
   S.docs.forEach((d) => L.push(["#/doc/" + d.id, d.num + " " + d.title]));
   S.forms.forEach((f) => L.push(["#/form/" + f.id, "Формуляр: " + f.title]));

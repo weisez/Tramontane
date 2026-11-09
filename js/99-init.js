@@ -63,16 +63,34 @@ document.addEventListener("click", (e) => {
   else if (t.dataset.mvs) { const [id, d] = t.dataset.mvs.split(":"), ids = staffOrder().map((u) => u.id), i = ids.indexOf(id), j = i + +d; if (i < 0 || j < 0 || j >= ids.length) return; [ids[i], ids[j]] = [ids[j], ids[i]]; S.meta.staffOrder = ids; save(); keepScroll(render); }
 }, true);
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") { for (const id of ["txov", "mlov", "edov", "pbov", "dtov", "srov"]) { const o = $("#" + id); if (o && o.classList.contains("open")) { ovClose(id); e.stopPropagation(); return; } } $("#nav").classList.remove("open"); $$("#nav .ng.open").forEach((x) => x.classList.remove("open")); }
+  if (e.key === "Escape") { if ($("#shot")) { shotClose(); e.stopPropagation(); return; } for (const id of ["txov", "mlov", "edov", "pbov", "dtov", "srov"]) { const o = $("#" + id); if (o && o.classList.contains("open")) { ovClose(id); e.stopPropagation(); return; } } $("#nav").classList.remove("open"); $$("#nav .ng.open").forEach((x) => x.classList.remove("open")); }
   else if (((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") || (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !document.activeElement.isContentEditable)) { e.preventDefault(); sOpen(); }
   else if (e.key === "Enter" && e.target.dataset && e.target.dataset.rank !== undefined) { const was = e.target.classList.contains("open"); $$(".rank.open").forEach((r) => r.classList.remove("open")); if (!was) e.target.classList.add("open"); }
 });
+/* ===== липкие элементы =====
+   --hh = реальная высота шапки (у владельца к ней добавляется панель владельца, раньше было фиксированное 100px,
+   из-за чего кнопки и боковые колонки уезжали под шапку).
+   Если липкий блок выше экрана, его верх сдвигается так, чтобы до низа блока можно было долистать. */
+const STK = ".aside,.fg .col2 .stk,.post.compose";
+let stkRO;
+function stickyFit() {
+  const hh = $("#hdr").offsetHeight, vh = innerHeight;
+  document.documentElement.style.setProperty("--hh", hh + "px");
+  $$(STK).forEach((e) => { e.style.top = ""; if (getComputedStyle(e).position !== "sticky") return; const g = e.classList.contains("compose") ? 10 : 14; e.style.top = Math.min(hh + g, vh - e.offsetHeight - g) + "px"; });
+}
+function stickyWatch() {
+  stickyFit();
+  if (!window.ResizeObserver) return;
+  if (!stkRO) { stkRO = new ResizeObserver(stickyFit); stkRO.observe($("#hdr")); }
+  $$(STK).forEach((e) => stkRO.observe(e));
+}
+addEventListener("resize", stickyFit);
 (async function init() {
   theme();
   try { await ownerCheck(); } catch (e) {}
   try { await loadData(); } catch (e) { $("#app").innerHTML = `<section class="sec"><div class="wrap"><h2>Не удалось загрузить данные</h2><p class="lead">${esc(e.message)}</p></div></section>`; return; }
-  chrome(); ownerBar();
+  chrome(); ownerBar(); stickyFit();
   addEventListener("hashchange", () => { ROOM_I = 0; render(); });
   const sk = $(".skip"); if (sk) sk.addEventListener("click", (e) => { e.preventDefault(); $("#app").focus(); });
-  render();
+  render(); stickyWatch();
 })();

@@ -12,8 +12,8 @@ function pbInd() { const b = $("#b-pub"); if (b) b.classList.toggle("dirty", pbD
 function pbSoon() { clearTimeout(PUB.t); PUB.t = setTimeout(pbInd, 600); }
 function pbDiff(a, b) {
   const rows = []; let lost = 0;
-  const nm = { people: (x) => x.name + " — " + x.title, units: (x) => x.name, ranks: (x) => x.name, timeline: (x) => x.title, rooms: (x) => x.title, zones: (x) => x.name, docs: (x) => x.num + " " + x.title, forms: (x) => x.title, notes: (x) => x.author };
-  const L = { people: "Люди", units: "Подразделения", ranks: "Звания", timeline: "История", rooms: "Помещения", zones: "Зоны", docs: "Документы", forms: "Формуляры", notes: "Записки" };
+  const nm = { people: (x) => x.name + " — " + x.title, units: (x) => x.name, ranks: (x) => x.name, timeline: (x) => x.title, rooms: (x) => x.title, zones: (x) => x.name, pois: (x) => x.name, docs: (x) => x.num + " " + x.title, forms: (x) => x.title };
+  const L = { people: "Люди", units: "Подразделения", ranks: "Звания", timeline: "История", rooms: "Помещения", zones: "Зоны", pois: "Объекты карты", docs: "Документы", forms: "Формуляры" };
   Object.keys(nm).forEach((k) => {
     const A = new Map((a[k] || []).map((x) => [x.id, x])), B = new Map((b[k] || []).map((x) => [x.id, x])), add = [], del = [], chg = [];
     B.forEach((v, id) => { if (!A.has(id)) add.push(v); else if (pbN(A.get(id)) !== pbN(v)) chg.push(v); }); A.forEach((v, id) => { if (!B.has(id)) del.push(v); });
@@ -22,7 +22,7 @@ function pbDiff(a, b) {
     if (chg.length) rows.push({ c: "var(--brass)", t: L[k] + ": изменено " + chg.length, s: names(chg) });
     if (del.length) { lost += del.length; rows.push({ c: "var(--red)", t: L[k] + ": удалено " + del.length, s: names(del) }); }
   });
-  Object.keys({ ...a, ...b }).filter((k) => !nm[k] && pbN(a[k]) !== pbN(b[k])).forEach((k) => rows.push({ c: "var(--brass)", t: ({ meta: "Настройки сайта и главная", vacancies: "Кадровый смотр", dept: "Структура департамента", deptText: "Текст о департаменте", careerIntro: "Тексты карьеры", specs: "Тексты карьеры", steps: "Путь поступления" })[k] || "Поле «" + k + "»", s: "изменено" }));
+  Object.keys({ ...a, ...b }).filter((k) => !nm[k] && pbN(a[k]) !== pbN(b[k])).forEach((k) => rows.push({ c: "var(--brass)", t: ({ meta: "Настройки сайта и главная", vacancies: "Кадровый смотр", map: "Карта зон: контуры и фон", dept: "Структура департамента", deptText: "Текст о департаменте", careerIntro: "Тексты карьеры", specs: "Тексты карьеры", steps: "Путь поступления" })[k] || "Поле «" + k + "»", s: "изменено" }));
   return { rows, lost };
 }
 const pbClose = () => ovClose("pbov");

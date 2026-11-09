@@ -1,5 +1,5 @@
 /* ===== search palette (Ctrl+K or /) ===== */
-const PAGES = [["", "Главная"], ["about", "О станции"], ["units", "Подразделения"], ["staff", "Личный состав"], ["career", "Карьера"], ["docs", "Документы"], ["press", "Пресс-центр"], ["forms", "Формуляры"], ["board", "Доска станции"]];
+const PAGES = [["", "Главная"], ["about", "О станции"], ["units", "Подразделения"], ["staff", "Личный состав"], ["career", "Карьера"], ["docs", "Документы"], ["press", "Пресс-центр"], ["forms", "Формуляры"], ["board", "Объявления"], ["zones", "Зоны ответственности"]];
 function sIndex() {
   const L = PAGES.map((p) => ({ t: "Раздел", n: p[1], s: "", u: "#/" + p[0] }));
   S.docs.forEach((d) => L.push({ t: TYPES[d.type] || "Документ", n: d.title, s: d.num, u: "#/doc/" + d.id }));
