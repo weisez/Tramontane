@@ -137,8 +137,7 @@ function mapPage(id) {
   mapEnsure();
   const m = S.meta;
   return { title: "Зоны ответственности", init: (app) => mapInit(app, id), html: `${phead("Департамент", "Зоны ответственности", E(m.mapIntro || MAP_INTRO), m.deptImg || m.hero, null, cropOf(m, m.deptImg ? "deptImg" : "hero"))}
-  <section class="sec mapsec"><div class="wrap xl">${mapMarkup()}</div></section>
-  <section class="sec alt"><div class="wrap"><div class="grid g2" style="gap:44px"><div class="prose reveal">${H(S.deptText)}</div><div class="reveal"><h3 style="margin-bottom:16px;color:var(--brass2)">Структура департамента</h3>${treeHTML(S.dept)}<button class="ed addb" data-ed="dept:-">✎ Править структуру</button></div></div></div></section>` };
+  <section class="sec mapsec"><div class="wrap xl">${mapMarkup()}<button class="ed addb" data-ed="meta:-">✎ Обложка и вступление раздела</button></div></section>` };
 }
 /* --- рисование --- */
 function paintZones() {
