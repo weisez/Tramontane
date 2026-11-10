@@ -33,6 +33,7 @@ const SCHEMA = {
   nav: { title: "Меню сайта", single: 1, get: () => ({ rows: navData().map((r) => r.slice()) }), set: (v) => { S.nav = v.rows; }, fields: [["rows", "Пункты меню. Группа пустая = отдельная ссылка; одинаковая группа = выпадающее меню", "arr2", { n: 4, ph: ["Группа", "Название", "Ссылка", "Описание"], list: 2 }]] },
   dept: { title: "Структура департамента", single: 1, get: () => ({ tree: treeToText(S.dept), deptText: S.deptText || "" }), set: (v) => { S.dept = textToTree(v.tree); S.deptText = v.deptText; }, fields: [["tree", "Структура: отступ в 2 пробела = вложенность, «*» в начале = выделить", "tree"], ["deptText", "Текст слева от схемы", "html"]] },
   events: { title: "Событие", fields: [["title", "Заголовок", "text"], ["tag", "Рубрика (например: Собрание, Учения, День открытых дверей)", "text"], ["date", "Дата проведения (дд.мм.гггг)", "text"], ["time", "Время (например: 17:30)", "text"], ["place", "Место", "text"], ["summary", "Коротко для слайдера на главной (1–2 предложения)", "area"], ["banner", "Картинка-баннер", "image", { fr: [["Слайдер на компьютере", 2.4], ["Слайдер на телефоне", 16 / 9], ["Карточка в списке", 16 / 7]] }], ["body", "Полный текст страницы события", "html"], ["link", "Кнопка на странице: куда ведёт (#/form/… или https://…). Пусто — без кнопки", "text", { list: 1 }], ["linkLabel", "Надпись на кнопке (например: Подать заявление)", "text"], ["until", "Показывать до (дд.мм.гггг). Пусто — до даты проведения, а без неё — всегда", "text"], ["draft", "Черновик: не показывать посетителям", "bool"]], blank: () => ({ title: "", tag: "", date: "", time: "", place: "", summary: "", banner: "", body: "<p></p>", link: "", linkLabel: "", until: "", draft: false }) },
+  stories: { title: "История станции", fields: [["title", "Заголовок", "text"], ["tag", "Рубрика (например: Помощь детям, Спасение, Благодарность, Сообщество, Награждение)", "text"], ["date", "Дата (дд.мм.гггг)", "text"], ["place", "Место (необязательно)", "text"], ["who", "Кто участвовал (необязательно: экипаж, секция, звания)", "text"], ["img", "Фото", "image", { fr: [["Большая карточка на главной", 16 / 10], ["Малая карточка на главной", 4 / 3], ["Карточка в списке", 3 / 2]] }], ["summary", "Коротко для карточки (1–2 предложения)", "area"], ["body", "Полный текст истории (необязательно)", "html"], ["draft", "Черновик: не показывать посетителям", "bool"]], blank: () => ({ title: "", tag: "", date: "", place: "", who: "", img: "", summary: "", body: "<p></p>", draft: false }) },
   notes: { title: "Объявление", fields: [["title", "Заголовок (необязательно)", "text"], ["author", "Автор", "text"], ["role", "Звание / роль", "text"], ["place", "Где / подпись", "text"], ["date", "Дата (пусто — подставится текущая)", "text"], ["text", "Текст", "area"]], blank: () => ({ title: "", author: "", role: "", place: "", date: "", text: "" }) },
 };
 const treeToText = (n, d = 0) => !n ? "" : "  ".repeat(d) + (n.hl ? "* " : "") + n.name + "\n" + (n.kids || []).map((k) => treeToText(k, d + 1)).join("");
@@ -116,6 +117,7 @@ function edSave() {
   const v = collect(); if (!v) return;
   if (ED.coll === "notes") { if (boardSaveEd(v, ED.isNew, ED.id)) ovClose("edov"); return; } /* объявления: сразу в board.json */
   if (ED.coll === "events") { if (evSaveEd(v, ED.isNew, ED.id)) ovClose("edov"); return; } /* события: сразу в events.json */
+  if (ED.coll === "stories") { if (stSave(v, ED.isNew, ED.id)) ovClose("edov"); return; } /* истории: сразу в stories.json */
   if (ED.coll === "pois") { v.x = Math.max(0, Math.min(MAP_W, parseFloat(String(v.x).replace(",", ".")) || 0)); v.y = Math.max(0, Math.min(MAP_H, parseFloat(String(v.y).replace(",", ".")) || 0)); }
   if (ED.coll === "zones" && v.color && !/^#[0-9a-f]{3,8}$/i.test(v.color.trim())) { toast("Цвет: формат #rrggbb"); return; }
   let tgt = null;
@@ -125,7 +127,7 @@ function edSave() {
   if (tgt) Object.keys(tgt).forEach((k) => { if (/Pos$/.test(k) && !tgt[k]) delete tgt[k]; });
   save(); ovClose("edov"); chrome(); render(); toast("Сохранено");
 }
-function mvItem(c, id, d) { if (c === "notes") { boardMv(id, d); return; } if (c === "events") { evMv(id, d); return; } const a = S[c], i = a.findIndex((x) => x.id === id), j = i + d; if (i < 0 || j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; if (c === "rooms") ROOM_I = j; save(); render(); }
+function mvItem(c, id, d) { if (c === "notes") { boardMv(id, d); return; } if (c === "events") { evMv(id, d); return; } if (c === "stories") { stMv(id, d); return; } const a = S[c], i = a.findIndex((x) => x.id === id), j = i + d; if (i < 0 || j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; if (c === "rooms") ROOM_I = j; save(); render(); }
 /* modal-level events */
 document.addEventListener("click", (e) => {
   const ov = e.target.closest("#edov"); if (!ov) return;
@@ -133,7 +135,7 @@ document.addEventListener("click", (e) => {
   const d = b.dataset;
   if ("edx" in d) ovClose("edov");
   else if ("edsave" in d) edSave();
-  else if ("edel" in d) arm(b, () => { if (ED.coll === "notes") { boardDel(ED.id); ovClose("edov"); return; } if (ED.coll === "events") { evDel(ED.id); ovClose("edov"); return; } S[ED.coll] = S[ED.coll].filter((x) => x.id !== ED.id); save(); ovClose("edov"); render(); toast("Удалено"); });
+  else if ("edel" in d) arm(b, () => { if (ED.coll === "notes") { boardDel(ED.id); ovClose("edov"); return; } if (ED.coll === "events") { evDel(ED.id); ovClose("edov"); return; } if (ED.coll === "stories") { stDel(ED.id); ovClose("edov"); return; } S[ED.coll] = S[ED.coll].filter((x) => x.id !== ED.id); save(); ovClose("edov"); render(); toast("Удалено"); });
   else if ("rm" in d) b.closest(".rowi").remove();
   else if ("rup" in d) { const r = b.closest(".rowi"), p = r.previousElementSibling; if (p) r.parentNode.insertBefore(r, p); }
   else if ("rdn" in d) { const r = b.closest(".rowi"), n = r.nextElementSibling; if (n) r.parentNode.insertBefore(n, r); }

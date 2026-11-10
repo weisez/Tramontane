@@ -324,3 +324,23 @@ body.editing .evs-s.on{outline:1px dashed rgba(201,162,75,.6);outline-offset:-4p
 .evc.past .cimg{filter:grayscale(.85) brightness(.8)}
 .evc .evs-ph svg{width:64px;height:64px}
 @media print{.evs-sec{display:none}}
+
+/* ===== Жизнь станции: истории с фото ===== */
+.lf{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:stretch}.lf.one{grid-template-columns:minmax(0,1fr)}
+.lf-main,.lf-it,.lf-card{position:relative;display:block;color:inherit;text-decoration:none}
+.lf-img,.lf-th,.lf-ci{position:relative;overflow:hidden;background:var(--card2)}
+.lf-img{aspect-ratio:16/10}.lf-th{aspect-ratio:4/3}.lf-ci{aspect-ratio:3/2}
+.lf-txt{padding-top:16px;min-width:0}
+.lf-m{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;font:400 11px var(--ff-m);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.lf-tag{color:var(--brass2);font-weight:500}.lf-tag+time:before{content:"";display:inline-block;width:4px;height:4px;margin-right:10px;border-radius:50%;background:var(--mute);vertical-align:middle}
+.lf-main h3,.lf-it h3,.lf-card h3{font-size:clamp(17px,1.5vw,20px);transition:color .2s}.lf-main h3{font-size:clamp(22px,2.3vw,30px)}
+.lf-main p,.lf-it p,.lf-card p{margin:8px 0 0;color:var(--mute);font-size:15px;line-height:1.6}.lf-main p{font-size:16px}
+.lf-it p,.lf-card p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lf-more{display:inline-block;margin-top:14px;font:500 12px var(--ff-h);letter-spacing:.16em;text-transform:uppercase;color:var(--brass2)}.lf-more:after{content:" \2192"}
+.lf-main:hover h3,.lf-it:hover h3,.lf-card:hover h3{color:var(--brass2)}
+.lf-side{display:flex;flex-direction:column;justify-content:space-between;gap:22px}
+.lf-it{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;align-items:start;padding-top:22px;border-top:1px solid var(--line)}.lf-it:first-child{border-top:0;padding-top:0}.lf-it .lf-txt{padding-top:0}
+.lf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:38px 28px}
+@media(max-width:940px){.lf{grid-template-columns:1fr;gap:30px}.lf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.lf-grid{grid-template-columns:1fr}.lf-it{grid-template-columns:104px minmax(0,1fr);gap:14px}.lf-it p{display:none}}
+@media print{.lf-sec{display:none}}

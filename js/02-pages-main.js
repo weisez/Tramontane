@@ -14,7 +14,6 @@ const BADGE = `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3 55 12v
 
 route("", () => {
   const m = S.meta, [a, ...b] = (m.name || "").split(" "), br = latest("briefing", 1)[0], cap = pById("delacroix");
-  const stats = statsPick().map((s) => `<div class="stat"><b data-count="${E(s.n)}">${E(s.n)}</b><span>${E(s.l)}</span></div>`).join("");
   return { title: "", init: evsInit, html: `
   <section class="hero">${fimg(m.hero, cropOf(m, "hero"), "", true)}<div class="wrap hero-in">
     <div class="eb">${E(m.org)}</div>
@@ -31,9 +30,7 @@ route("", () => {
       <blockquote class="q" style="margin:0 0 26px">«${E(m.motto)}»<cite>${E(m.mottoBy)}</cite></blockquote>
       <div class="prose">${H(m.intro)}</div><p><a class="btn ghost" href="#/about">О станции</a></p></div>
   </div>${OWN ? `<div class="wrap">${`<button class="ed addb" data-ed="meta:-">✎ Настройки сайта и главной</button>`}</div>` : ""}</section>
-  <section class="sec alt"><div class="wrap">
-    <div class="stats reveal">${stats}</div>
-  </div></section>
+  ${lifeHome()}
   <section class="sec"><div class="wrap">${sech("Структура", "Подразделения станции")}
     <div class="grid g4">${S.units.filter((u) => u.id !== "cmd").map((u) => `<a class="card reveal" href="#/unit/${u.id}"><div class="cimgw"><div class="cimg">${unitCardImg(u)}</div></div><div class="pad"><h3>${E(u.name)}</h3><div class="sub">${E(u.en)}</div><p>${E(u.tag)}</p></div>${eb("units", u.id)}</a>`).join("")}</div>
   </div></section>

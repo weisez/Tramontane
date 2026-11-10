@@ -1,9 +1,10 @@
 /* ===== search palette (Ctrl+K or /) ===== */
-const PAGES = [["", "Главная"], ["about", "О станции"], ["units", "Подразделения"], ["staff", "Личный состав"], ["career", "Карьера"], ["docs", "Документы"], ["press", "Пресс-центр"], ["forms", "Формуляры"], ["events", "События"], ["board", "Объявления"], ["zones", "Зоны ответственности"]];
+const PAGES = [["", "Главная"], ["about", "О станции"], ["units", "Подразделения"], ["staff", "Личный состав"], ["career", "Карьера"], ["docs", "Документы"], ["press", "Пресс-центр"], ["forms", "Формуляры"], ["events", "События"], ["board", "Объявления"], ["zones", "Зоны ответственности"], ["life", "Жизнь станции"]];
 function sIndex() {
   const L = PAGES.map((p) => ({ t: "Раздел", n: p[1], s: "", u: "#/" + p[0] }));
   S.docs.forEach((d) => L.push({ t: TYPES[d.type] || "Документ", n: d.title, s: d.num, u: "#/doc/" + d.id }));
   (S.events || []).filter((e) => !e.draft).forEach((e) => L.push({ t: "Событие", n: e.title, s: [e.date, e.place, e.tag].filter(Boolean).join(" "), u: "#/event/" + e.id }));
+  (S.stories || []).filter((s) => !s.draft).forEach((s) => L.push({ t: "История", n: s.title, s: [s.date, s.place, s.tag, s.who, s.summary].filter(Boolean).join(" "), u: "#/story/" + s.id }));
   S.forms.forEach((f) => L.push({ t: "Формуляр", n: f.title, s: f.ref, u: "#/form/" + f.id }));
   S.units.forEach((u) => L.push({ t: "Подразделение", n: u.name, s: u.en, u: "#/unit/" + u.id }));
   S.people.filter((p) => p.status !== "vacant").forEach((p) => L.push({ t: "Сотрудник", n: p.name, s: p.title + " " + (p.en || ""), u: "#/staff" }));

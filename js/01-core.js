@@ -33,7 +33,7 @@ async function loadData() {
   ["people", "units", "ranks", "timeline", "rooms", "zones", "docs", "forms", "notes", "steps"].forEach((k) => { S[k] = S[k] || []; });
   if (typeof mapEnsure === "function") mapEnsure();
   S.notes = []; /* объявления живут в board.json (js/08-board.js), не в data.json */
-  if (typeof evInstall === "function") await evInstall(legacyEv); /* события живут в events.json (js/12-events.js), S.events — окно в них */
+  await Promise.all([typeof evInstall === "function" ? evInstall(legacyEv) : 0, typeof lifeInstall === "function" ? lifeInstall() : 0]); /* + stories.json (js/13-life.js) */ /* события живут в events.json (js/12-events.js), S.events — окно в них */
   S.meta = S.meta || {}; S.vacancies = S.vacancies || { rows: [], req: [] }; S.dept = S.dept || { name: "", kids: [] };
 }
 let saveT;
@@ -150,7 +150,7 @@ function uiProcess(html) {
   return out.replace(/[\uE000\uE001]/g, "");
 }
 /* nav */
-const DEFAULT_NAV = [["", "Главная", "#/", ""], ["Станция", "О станции", "#/about", ""], ["Станция", "Подразделения", "#/units", ""], ["Станция", "Личный состав", "#/staff", ""], ["Станция", "Зоны ответственности", "#/zones", ""], ["", "Карьера", "#/career", ""], ["Документы", "Документы", "#/docs", ""], ["Документы", "Пресс-центр", "#/press", ""], ["Документы", "Формуляры", "#/forms", ""], ["", "События", "#/events", ""], ["", "Объявления", "#/board", ""]];
+const DEFAULT_NAV = [["", "Главная", "#/", ""], ["Станция", "О станции", "#/about", ""], ["Станция", "Подразделения", "#/units", ""], ["Станция", "Личный состав", "#/staff", ""], ["Станция", "Зоны ответственности", "#/zones", ""], ["Станция", "Жизнь станции", "#/life", ""], ["", "Карьера", "#/career", ""], ["Документы", "Документы", "#/docs", ""], ["Документы", "Пресс-центр", "#/press", ""], ["Документы", "Формуляры", "#/forms", ""], ["", "События", "#/events", ""], ["", "Объявления", "#/board", ""]];
 const navData = () => (S.nav && S.nav.length ? S.nav : DEFAULT_NAV);
 let curNav = "";
 /* подвал: колонки ссылок. S.footer = [[колонка, название, ссылка], …]; пусто — колонки собираются из меню сайта */
@@ -172,8 +172,9 @@ function setActive() {
   $$("#nav .ng").forEach((g) => g.classList.toggle("on", !!$(".di.on", g)));
 }
 function routeList() {
-  const L = [["#/", "Главная"], ["#/about", "О станции"], ["#/units", "Подразделения"], ["#/staff", "Личный состав"], ["#/zones", "Зоны ответственности"], ["#/career", "Карьера"], ["#/docs", "Документы"], ["#/press", "Пресс-центр"], ["#/forms", "Формуляры"], ["#/events", "События"], ["#/board", "Объявления"]];
+  const L = [["#/", "Главная"], ["#/about", "О станции"], ["#/units", "Подразделения"], ["#/staff", "Личный состав"], ["#/zones", "Зоны ответственности"], ["#/life", "Жизнь станции"], ["#/career", "Карьера"], ["#/docs", "Документы"], ["#/press", "Пресс-центр"], ["#/forms", "Формуляры"], ["#/events", "События"], ["#/board", "Объявления"]];
   (S.events || []).forEach((e) => L.push(["#/event/" + e.id, "Событие: " + e.title]));
+  (S.stories || []).forEach((s) => L.push(["#/story/" + s.id, "История: " + s.title]));
   S.units.forEach((u) => L.push(["#/unit/" + u.id, "Подразделение: " + u.name]));
   S.docs.forEach((d) => L.push(["#/doc/" + d.id, d.num + " " + d.title]));
   S.forms.forEach((f) => L.push(["#/form/" + f.id, "Формуляр: " + f.title]));
