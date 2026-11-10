@@ -22,7 +22,7 @@ function pbDiff(a, b) {
     if (chg.length) rows.push({ c: "var(--brass)", t: L[k] + ": изменено " + chg.length, s: names(chg) });
     if (del.length) { lost += del.length; rows.push({ c: "var(--red)", t: L[k] + ": удалено " + del.length, s: names(del) }); }
   });
-  Object.keys({ ...a, ...b }).filter((k) => !nm[k] && pbN(a[k]) !== pbN(b[k])).forEach((k) => rows.push({ c: "var(--brass)", t: ({ meta: "Настройки сайта и главная", vacancies: "Кадровый смотр", map: "Карта зон: контуры и фон", dept: "Структура департамента", deptText: "Текст о департаменте", careerIntro: "Тексты карьеры", specs: "Тексты карьеры", steps: "Путь поступления" })[k] || "Поле «" + k + "»", s: "изменено" }));
+  Object.keys({ ...a, ...b }).filter((k) => !nm[k] && pbN(a[k]) !== pbN(b[k])).forEach((k) => rows.push({ c: "var(--brass)", t: ({ meta: "Настройки сайта и главная", vacancies: "Кадровый смотр", map: "Карта зон: контуры и фон", footer: "Ссылки подвала", dept: "Структура департамента", deptText: "Текст о департаменте", careerIntro: "Тексты карьеры", specs: "Тексты карьеры", steps: "Путь поступления" })[k] || "Поле «" + k + "»", s: "изменено" }));
   return { rows, lost };
 }
 const pbClose = () => ovClose("pbov");

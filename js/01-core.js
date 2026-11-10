@@ -151,6 +151,19 @@ function uiProcess(html) {
 const DEFAULT_NAV = [["", "Главная", "#/", ""], ["Станция", "О станции", "#/about", ""], ["Станция", "Подразделения", "#/units", ""], ["Станция", "Личный состав", "#/staff", ""], ["Станция", "Зоны ответственности", "#/zones", ""], ["", "Карьера", "#/career", ""], ["Документы", "Документы", "#/docs", ""], ["Документы", "Пресс-центр", "#/press", ""], ["Документы", "Формуляры", "#/forms", ""], ["", "Объявления", "#/board", ""]];
 const navData = () => (S.nav && S.nav.length ? S.nav : DEFAULT_NAV);
 let curNav = "";
+/* подвал: колонки ссылок. S.footer = [[колонка, название, ссылка], …]; пусто — колонки собираются из меню сайта */
+function footData() {
+  if (S.footer && S.footer.length) return S.footer;
+  const T = (t) => (S.txt && S.txt[t]) || t, flat = navData().filter((r) => r[1]), half = Math.ceil(flat.length / 2);
+  return flat.map((r, i) => [T(i < half ? "Разделы" : "Документы и формы"), r[1], r[2]]);
+}
+const okHref = (u) => !/^\s*(javascript|data|vbscript):/i.test(u || "");
+function footCols() {
+  const cols = [];
+  footData().forEach((r) => { const t = r[0] || "", l = r[1] || "", h = r[2] || ""; if (!l) return; let c = cols.find((x) => x.t === t); if (!c) cols.push((c = { t, links: [] })); c.links.push({ l, h }); });
+  return cols;
+}
+const footLink = (k) => { const ext = /^https?:/i.test(k.h); return `<a href="${esc(okHref(k.h) ? k.h : "#/")}"${ext ? ' target="_blank" rel="noopener noreferrer"' : ""}>${esc(k.l)}</a>`; };
 function setActive() {
   const n = (h) => String(h || "").replace(/^#\/?/, "").replace(/\/$/, ""), want = curNav === "home" ? "" : curNav;
   $$("#nav [data-h]").forEach((a) => a.classList.toggle("on", !!curNav && n(a.dataset.h) === want));

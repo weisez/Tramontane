@@ -26,10 +26,9 @@ function chrome() {
   $("#b-search").onclick = sOpen;
   $("#b-theme").onclick = () => { theme(light ? "dark" : "light"); chrome(); };
   $("#b-menu").onclick = (e) => { const o = $("#nav").classList.toggle("open"); e.currentTarget.setAttribute("aria-expanded", o); };
-  const flat = navData().filter((r) => r[1]), half = Math.ceil(flat.length / 2);
-  const col = (L) => L.map((r) => `<a href="${esc(r[2])}">${esc(r[1])}</a>`).join("");
-  $("#ftr").innerHTML = uiProcess(`<div class="wrap"><div class="fi"><div><div class="brand" style="margin-bottom:12px">${BADGE}<span><b>${esc(a.toUpperCase())}</b><i>${esc(m.brandSub || "")}</i></span></div><p style="margin:0">${E(m.org)}<br>${E(m.address)}</p></div>
-    <div><h4>Разделы</h4>${H(col(flat.slice(0, half)))}</div><div><h4>Документы и формы</h4>${H(col(flat.slice(half)))}</div></div>
+  const cols = footCols();
+  $("#ftr").innerHTML = uiProcess(`<div class="wrap"><div class="fi" style="--fc:${Math.max(1, cols.length)}"><div><div class="brand" style="margin-bottom:12px">${BADGE}<span><b>${esc(a.toUpperCase())}</b><i>${esc(m.brandSub || "")}</i></span></div><p style="margin:0">${E(m.org)}<br>${E(m.address)}</p></div>
+    ${cols.map((c) => `<div>${c.t ? `<h4>${H(esc(c.t))}</h4>` : ""}${H(c.links.map(footLink).join(""))}</div>`).join("")}</div>
     <div class="copy">© ${new Date().getFullYear()} ${E(m.name)} · ${E(m.org)} · Игровой проект, все события вымышлены</div></div>`);
   setActive();
 }
@@ -43,10 +42,11 @@ function ownerBar() {
   const on = OWN && !VIEW();
   document.body.classList.toggle("own", on);
   if (!on) return;
-  $("#ownbar").innerHTML = `<b>Режим владельца</b><button id="b-edit">Режим правки: выкл</button><button id="b-set" class="ed">Настройки сайта</button><button id="b-nav" class="ed">Меню</button><span class="sp"></span><button id="b-media">Медиа</button><button id="b-pub" class="pri">Опубликовать</button><button id="b-data">Данные</button>`;
+  $("#ownbar").innerHTML = `<b>Режим владельца</b><button id="b-edit">Режим правки: выкл</button><button id="b-set" class="ed">Настройки сайта</button><button id="b-nav" class="ed">Меню</button><button id="b-foot" class="ed">Подвал</button><span class="sp"></span><button id="b-media">Медиа</button><button id="b-pub" class="pri">Опубликовать</button><button id="b-data">Данные</button>`;
   $("#b-edit").onclick = (e) => { const v = document.body.classList.toggle("editing"); e.currentTarget.classList.toggle("on", v); e.currentTarget.textContent = "Режим правки: " + (v ? "вкл" : "выкл"); };
   $("#b-set").onclick = () => openEd("meta");
   $("#b-nav").onclick = () => openEd("nav");
+  $("#b-foot").onclick = () => openEd("footer");
   $("#b-media").onclick = () => mlOpen(null);
   $("#b-pub").onclick = pbOpen;
   $("#b-data").onclick = dataOpen;
