@@ -14,7 +14,7 @@ const BADGE = `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3 55 12v
 
 route("", () => {
   const m = S.meta, [a, ...b] = (m.name || "").split(" "), br = latest("briefing", 1)[0], cap = pById("delacroix");
-  const stats = (m.stats || []).map((s) => `<div class="stat"><b data-count="${E(s.n)}">${E(s.n)}</b><span>${E(s.l)}</span></div>`).join("");
+  const stats = statsPick().map((s) => `<div class="stat"><b data-count="${E(s.n)}">${E(s.n)}</b><span>${E(s.l)}</span></div>`).join("");
   return { title: "", html: `
   <section class="hero">${fimg(m.hero, cropOf(m, "hero"), "", true)}<div class="wrap hero-in">
     <div class="eb">${E(m.org)}</div>
