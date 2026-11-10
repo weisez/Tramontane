@@ -115,6 +115,7 @@ function collect() {
 function edSave() {
   const v = collect(); if (!v) return;
   if (ED.coll === "notes") { if (boardSaveEd(v, ED.isNew, ED.id)) ovClose("edov"); return; } /* объявления: сразу в board.json */
+  if (ED.coll === "events") { if (evSaveEd(v, ED.isNew, ED.id)) ovClose("edov"); return; } /* события: сразу в events.json */
   if (ED.coll === "pois") { v.x = Math.max(0, Math.min(MAP_W, parseFloat(String(v.x).replace(",", ".")) || 0)); v.y = Math.max(0, Math.min(MAP_H, parseFloat(String(v.y).replace(",", ".")) || 0)); }
   if (ED.coll === "zones" && v.color && !/^#[0-9a-f]{3,8}$/i.test(v.color.trim())) { toast("Цвет: формат #rrggbb"); return; }
   let tgt = null;
@@ -124,7 +125,7 @@ function edSave() {
   if (tgt) Object.keys(tgt).forEach((k) => { if (/Pos$/.test(k) && !tgt[k]) delete tgt[k]; });
   save(); ovClose("edov"); chrome(); render(); toast("Сохранено");
 }
-function mvItem(c, id, d) { if (c === "notes") { boardMv(id, d); return; } const a = S[c], i = a.findIndex((x) => x.id === id), j = i + d; if (i < 0 || j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; if (c === "rooms") ROOM_I = j; save(); render(); }
+function mvItem(c, id, d) { if (c === "notes") { boardMv(id, d); return; } if (c === "events") { evMv(id, d); return; } const a = S[c], i = a.findIndex((x) => x.id === id), j = i + d; if (i < 0 || j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; if (c === "rooms") ROOM_I = j; save(); render(); }
 /* modal-level events */
 document.addEventListener("click", (e) => {
   const ov = e.target.closest("#edov"); if (!ov) return;
@@ -132,7 +133,7 @@ document.addEventListener("click", (e) => {
   const d = b.dataset;
   if ("edx" in d) ovClose("edov");
   else if ("edsave" in d) edSave();
-  else if ("edel" in d) arm(b, () => { if (ED.coll === "notes") { boardDel(ED.id); ovClose("edov"); return; } S[ED.coll] = S[ED.coll].filter((x) => x.id !== ED.id); save(); ovClose("edov"); render(); toast("Удалено"); });
+  else if ("edel" in d) arm(b, () => { if (ED.coll === "notes") { boardDel(ED.id); ovClose("edov"); return; } if (ED.coll === "events") { evDel(ED.id); ovClose("edov"); return; } S[ED.coll] = S[ED.coll].filter((x) => x.id !== ED.id); save(); ovClose("edov"); render(); toast("Удалено"); });
   else if ("rm" in d) b.closest(".rowi").remove();
   else if ("rup" in d) { const r = b.closest(".rowi"), p = r.previousElementSibling; if (p) r.parentNode.insertBefore(r, p); }
   else if ("rdn" in d) { const r = b.closest(".rowi"), n = r.nextElementSibling; if (n) r.parentNode.insertBefore(n, r); }

@@ -29,9 +29,11 @@ async function loadData() {
   if (!VIEW()) { try { local = JSON.parse(LS.get(KEY, "null")); } catch (e) {} }
   S = local || remote;
   if (!S) throw new Error("data.json не загрузился. Откройте сайт через веб-сервер (python3 -m http.server).");
-  ["people", "units", "ranks", "timeline", "rooms", "zones", "docs", "forms", "notes", "steps", "events"].forEach((k) => { S[k] = S[k] || []; });
+  const legacyEv = Array.isArray(S.events) ? S.events : []; /* старые события из data.json — только как запасной вариант, пока нет events.json */
+  ["people", "units", "ranks", "timeline", "rooms", "zones", "docs", "forms", "notes", "steps"].forEach((k) => { S[k] = S[k] || []; });
   if (typeof mapEnsure === "function") mapEnsure();
   S.notes = []; /* объявления живут в board.json (js/08-board.js), не в data.json */
+  if (typeof evInstall === "function") await evInstall(legacyEv); /* события живут в events.json (js/12-events.js), S.events — окно в них */
   S.meta = S.meta || {}; S.vacancies = S.vacancies || { rows: [], req: [] }; S.dept = S.dept || { name: "", kids: [] };
 }
 let saveT;

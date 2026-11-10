@@ -1,8 +1,123 @@
 /* ===== «События»: слайдер анонсов на главной, страница события, список и архив =====
-   Данные: S.events (data.json). Публикуются обычной кнопкой «Опубликовать», как документы.
+   Данные лежат в events.json в репозитории (а не в data.json), как и объявления (08-board.js).
+   Сайт читает файл напрямую с GitHub, поэтому новое или изменённое событие видно сразу,
+   не дожидаясь GitHub Pages и не требуя «Опубликовать». Владелец создаёт, правит, удаляет и двигает
+   события обычными кнопками правки; каждое действие — отдельный коммит events.json (нужен токен GitHub).
+   S.events — это окно в EVT.list (не попадает ни в data.json, ни в «Опубликовать»).
    Поля события: id, title, tag, date (дд.мм.гггг), time, place, summary, banner (+bannerPos), body (HTML),
    link + linkLabel (кнопка на странице события), until (дд.мм.гггг), draft.
    Событие показывается на слайдере, пока не прошла дата «until» (если её нет — дата события; если нет и её — без ограничения). */
+const EVT = { list: [], q: Promise.resolve(), busy: 0, status: "load", at: 0, err: "", timer: 0, last: 0 };
+const EVKEY = "tcs-events-v1";
+const evApi = () => `https://api.github.com/repos/${GH.repo}/contents/events.json`;
+const evParse = (txt) => {
+  const j = JSON.parse(txt), a = Array.isArray(j) ? j : j && j.events;
+  if (!Array.isArray(a)) throw new Error("events.json: ожидался список событий");
+  return a.filter((e) => e && typeof e === "object" && typeof e.id === "string" && typeof e.title === "string");
+};
+const evText = (list) => JSON.stringify({ events: list }, null, 2) + "\n";
+try { const c = JSON.parse(LS.get(EVKEY, "null")); if (c && Array.isArray(c.events)) { EVT.list = c.events; EVT.at = c.at || 0; EVT.status = "cache"; } } catch (e) {}
+const evCache = () => LS.set(EVKEY, JSON.stringify({ events: EVT.list, at: EVT.at }));
+
+/* чтение: API GitHub (всегда свежее; условные запросы не тратят лимит) → raw (обновляется раз в минуту) → файл рядом с сайтом */
+async function evLoad() {
+  const src = [
+    async () => { const r = await fetch(evApi() + "?ref=" + GH.branch, { headers: { ...ghH(), Accept: "application/vnd.github.raw+json" }, cache: "no-cache" }); if (!r.ok) throw new Error("api " + r.status); return r.text(); },
+    async () => { const r = await fetch(`https://raw.githubusercontent.com/${GH.repo}/${GH.branch}/events.json?t=${Math.floor(Date.now() / 60000)}`); if (!r.ok) throw new Error("raw " + r.status); return r.text(); },
+    async () => { const r = await fetch("events.json", { cache: "no-cache" }); if (!r.ok) throw new Error("file " + r.status); return r.text(); },
+  ];
+  let last = null;
+  for (let i = 0; i < src.length; i++) {
+    try {
+      const list = evParse(await src[i]());
+      if (EVT.busy) return false; /* не затираем действие, которое ещё записывается */
+      const ch = JSON.stringify(list) !== JSON.stringify(EVT.list);
+      EVT.list = list; EVT.at = EVT.last = Date.now(); EVT.status = i < 2 ? "live" : "stale"; EVT.err = ""; evCache();
+      return ch;
+    } catch (e) { last = e; }
+  }
+  EVT.status = EVT.list.length || EVT.at ? "stale" : "fail"; EVT.err = last ? last.message : "";
+  return false;
+}
+
+/* запись: берём свежую версию с GitHub, применяем действие к ней и коммитим. Одновременные правки не затирают друг друга */
+async function evPush(apply, msg) {
+  for (let i = 0; i < 3; i++) {
+    const r = await fetch(evApi() + "?ref=" + GH.branch, { headers: ghH(), cache: "no-store" });
+    let list = [], sha = "";
+    if (r.status === 404) list = [];
+    else if (!r.ok) throw pbErr(r, await r.json().catch(() => ({})));
+    else { const j = await r.json(); sha = j.sha; list = evParse(bUtf8(j.content || "")); }
+    const next = apply(list), body = { message: msg, content: await b64Of(new Blob([evText(next)], { type: "application/json" })), branch: GH.branch };
+    if (sha) body.sha = sha;
+    const p = await fetch(evApi(), { method: "PUT", headers: ghH(), body: JSON.stringify(body) });
+    if (p.ok) { EVT.list = next; EVT.at = EVT.last = Date.now(); EVT.status = "live"; EVT.err = ""; evCache(); return; }
+    if (p.status !== 409 && p.status !== 422) throw pbErr(p, await p.json().catch(() => ({})));
+  }
+  throw new Error("данные на GitHub менялись одновременно, повторите действие");
+}
+const evOps = {
+  add: (n) => (a) => [...a.filter((x) => x.id !== n.id), n],
+  set: (id, f, keys) => (a) => a.map((x) => { if (x.id !== id) return x; const n = { ...x }; keys.forEach((k) => delete n[k]); return Object.assign(n, f); }),
+  del: (id) => (a) => a.filter((x) => x.id !== id),
+  mv: (id, d) => (a) => { a = a.slice(); const i = a.findIndex((x) => x.id === id), j = i + d; if (i < 0 || j < 0 || j >= a.length) return a; [a[i], a[j]] = [a[j], a[i]]; return a; },
+};
+/* действие владельца: мгновенно показываем у себя, коммитим в очереди */
+function evOp(apply, msg, done) {
+  if (!GH.token) { toast("Чтобы публиковать события без пересборки, подключите токен GitHub: «Медиа» → «Подключить»"); return Promise.resolve(false); }
+  EVT.list = apply(EVT.list.map((x) => ({ ...x }))); EVT.busy++; EVT.status = "save"; evRepaint();
+  const job = EVT.q.then(() => evPush(apply, msg)).then(() => { EVT.busy--; toast(done || "Опубликовано, уже видно всем"); return true; })
+    .catch(async (e) => { EVT.busy--; toast("Не удалось сохранить: " + e.message); EVT.status = "stale"; EVT.err = e.message; try { await evLoad(); } catch (x) {} return false; })
+    .then((ok) => { evRepaint(); return ok; });
+  EVT.q = job.catch(() => {});
+  return job;
+}
+/* из окна редактора */
+function evSaveEd(v, isNew, id) {
+  const f = {};
+  Object.keys(v).forEach((k) => { if (typeof v[k] === "string") v[k] = v[k].trim(); if (v[k] !== "" && v[k] != null) f[k] = v[k]; });
+  if (!f.title) { toast("Укажите заголовок события"); return false; }
+  for (const k of ["date", "until"]) if (f[k] && !/^\d{2}\.\d{2}\.\d{4}$/.test(f[k])) { toast("Дата должна быть в формате дд.мм.гггг, например 14.11.2026"); return false; }
+  f.draft = !!v.draft;
+  if (isNew) { const n = { id: "e-" + uid(), ...f }; evOp(evOps.add(n), "Событие: " + n.title.slice(0, 50), n.draft ? "Черновик сохранён (виден только вам)" : "Событие опубликовано, уже видно всем"); }
+  else { const keys = SCHEMA.events.fields.map((x) => x[0]).concat("bannerPos"); evOp(evOps.set(id, f, keys), "Событие изменено: " + f.title.slice(0, 50), "Изменения сохранены"); }
+  return true;
+}
+const evDel = (id) => { const go = /^#\/event\//.test(location.hash); const p = evOp(evOps.del(id), "Событие удалено", "Удалено"); if (go) location.hash = "#/events"; return p; };
+const evMv = (id, d) => evOp(evOps.mv(id, d), "События: порядок", "Порядок сохранён");
+
+/* перерисовка страниц, где есть события (главная, список, страница события) */
+const evPage = () => { const h = location.hash.replace(/^#\/?/, "").replace(/\/$/, ""); return h === "" || h === "events" || /^event\//.test(h); };
+function evRepaint() {
+  if (!evPage()) return;
+  if (typeof keepScroll === "function") keepScroll(render); else render();
+}
+const evBusyUi = () => !!document.querySelector(".ov.open");
+async function evTick(force) {
+  if (document.hidden || EVT.busy || !evPage() || (!force && Date.now() - EVT.last < 20000)) return;
+  if (await evLoad() && !evBusyUi()) evRepaint();
+}
+async function evRefresh() { if (!EVT.busy) EVT.status = EVT.list.length ? EVT.status : "load"; try { await evLoad(); } catch (e) {} evRepaint(); }
+function evStat() {
+  const s = EVT.status, t = EVT.at ? " · " + bTime(EVT.at) : "";
+  if (s === "save") return `<span class="bs sv">Сохраняю на GitHub…</span>`;
+  if (s === "live") return `<span class="bs ok">События: свежая версия${t}</span>`;
+  if (s === "load") return `<span class="bs">Загружаю события…</span>`;
+  if (s === "fail") return `<span class="bs er">Не удалось загрузить events.json${EVT.err ? " (" + esc(EVT.err) + ")" : ""}</span>`;
+  return `<span class="bs er">Показана сохранённая версия${t} — GitHub сейчас недоступен</span>`;
+}
+/* вызывается из loadData(): подключает хранилище и ждёт первую загрузку (не дольше 2.5 с) */
+async function evInstall(legacy) {
+  if (!EVT.at && !EVT.list.length && legacy && legacy.length) { EVT.list = legacy; EVT.status = "legacy"; } /* events.json ещё нет — берём старые события из data.json */
+  Object.defineProperty(S, "events", { get: () => EVT.list, set() {}, enumerable: false, configurable: true });
+  const first = evLoad().then((ch) => { if (ch && document.getElementById("app") && document.getElementById("app").children.length) evRepaint(); }).catch(() => {});
+  await Promise.race([first, new Promise((r) => setTimeout(r, 2500))]);
+  clearInterval(EVT.timer); EVT.timer = setInterval(() => evTick(false), 60000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) evTick(false); });
+  addEventListener("hashchange", () => evTick(false));
+  document.addEventListener("click", (e) => { if (e.target.closest && e.target.closest("#evref")) evRefresh(); });
+}
+
 const evKey = () => today().replace(/-/g, "");
 const evEnd = (e) => { const v = String(e.until || e.date || "").trim(); return /^\d{2}\.\d{2}\.\d{4}$/.test(v) ? dkey(v) : ""; };
 const evOver = (e) => { const k = evEnd(e); return !!k && k < evKey(); };
@@ -129,6 +244,7 @@ route("events", () => {
   const all = (S.events || []).filter((e) => evOwn() || !e.draft), up = all.filter((e) => !evOver(e)), old = all.filter(evOver);
   return { title: "События", html: `${phead("Афиша станции", "События и анонсы", "Мероприятия, собрания и учения центральной станции Трамонтана. Нажмите на событие, чтобы прочитать подробности.", S.meta.hero, null, cropOf(S.meta, "hero"))}
   <section class="sec"><div class="wrap">${sech("Ближайшие", "Предстоящие события")}
+    ${evOwn() ? `<div class="bstatus" id="evst">${evStat()}<button type="button" class="bref" id="evref">Обновить</button></div>` : ""}
     ${up.length ? `<div class="grid g3">${up.map(evCard).join("")}</div>` : `<p class="note">Сейчас ничего не запланировано. Новые анонсы появятся здесь и на главной странице.</p>`}
     ${addb("events", "Событие")}</div></section>
   ${old.length ? `<section class="sec alt"><div class="wrap">${sech("Архив", "Прошедшие события")}<div class="grid g3">${old.map(evCard).join("")}</div></div></section>` : ""}` };

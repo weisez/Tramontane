@@ -6,14 +6,14 @@ const pbErr = (r, j) => new Error(r.status === 401 ? "токен недейст�
 const pbUrl = (ref) => `https://api.github.com/repos/${GH.repo}/contents/data.json?ref=${ref || GH.branch}`;
 async function pbMeta(ref) { const r = await fetch(pbUrl(ref), { headers: ghH() }), j = await r.json().catch(() => ({})); if (!r.ok) throw pbErr(r, j); return j; }
 async function pbRaw(ref) { const r = await fetch(pbUrl(ref), { headers: { ...ghH(), Accept: "application/vnd.github.raw+json" } }); if (!r.ok) throw pbErr(r); return r.text(); }
-async function pbSync() { const m = await pbMeta(), t = await pbRaw(); PUB.sha = m.sha; PUB.txt = t; PUB.remote = JSON.parse(t); PUB.hash = pbH(pbN(PUB.remote)); pbInd(); }
+async function pbSync() { const m = await pbMeta(), t = await pbRaw(); PUB.sha = m.sha; PUB.txt = t; PUB.remote = JSON.parse(t); delete PUB.remote.events; PUB.hash = pbH(pbN(PUB.remote)); pbInd(); }
 const pbDirty = () => !!PUB.hash && pbH(pbN(S)) !== PUB.hash;
 function pbInd() { const b = $("#b-pub"); if (b) b.classList.toggle("dirty", pbDirty()); }
 function pbSoon() { clearTimeout(PUB.t); PUB.t = setTimeout(pbInd, 600); }
 function pbDiff(a, b) {
   const rows = []; let lost = 0;
-  const nm = { people: (x) => x.name + " — " + x.title, units: (x) => x.name, ranks: (x) => x.name, timeline: (x) => x.title, rooms: (x) => x.title, zones: (x) => x.name, pois: (x) => x.name, docs: (x) => x.num + " " + x.title, forms: (x) => x.title, events: (x) => x.title };
-  const L = { people: "Люди", units: "Подразделения", ranks: "Звания", timeline: "История", rooms: "Помещения", zones: "Зоны", pois: "Объекты карты", docs: "Документы", forms: "Формуляры", events: "События" };
+  const nm = { people: (x) => x.name + " — " + x.title, units: (x) => x.name, ranks: (x) => x.name, timeline: (x) => x.title, rooms: (x) => x.title, zones: (x) => x.name, pois: (x) => x.name, docs: (x) => x.num + " " + x.title, forms: (x) => x.title };
+  const L = { people: "Люди", units: "Подразделения", ranks: "Звания", timeline: "История", rooms: "Помещения", zones: "Зоны", pois: "Объекты карты", docs: "Документы", forms: "Формуляры" };
   Object.keys(nm).forEach((k) => {
     const A = new Map((a[k] || []).map((x) => [x.id, x])), B = new Map((b[k] || []).map((x) => [x.id, x])), add = [], del = [], chg = [];
     B.forEach((v, id) => { if (!A.has(id)) add.push(v); else if (pbN(A.get(id)) !== pbN(v)) chg.push(v); }); A.forEach((v, id) => { if (!B.has(id)) del.push(v); });
