@@ -276,6 +276,9 @@ function mapTool(a) {
 }
 /* --- подключение --- */
 function mapInit(app, startId) {
+  /* обложка раздела: если картинка не загрузилась (битая внешняя ссылка), показываем главное изображение сайта */
+  const cov = $(".pagehead > .pic", app), hero = S.meta.hero;
+  if (cov && hero) { const fb = () => { if (cov.getAttribute("src") !== hero) { cov.style.display = ""; cov.removeAttribute("style"); cov.src = hero; } }; cov.addEventListener("error", fb); if (cov.complete && !cov.naturalWidth) fb(); }
   const svg = $("#mapsvg", app); if (!svg) return;
   MP.svg = svg; MP.sel = { z: null, p: null }; MP.vb = { x: 0, y: 0, w: MAP_FW };
   if (MP.ro) MP.ro.disconnect();
