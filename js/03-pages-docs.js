@@ -74,16 +74,17 @@ route("forms", () => ({ title: "Формуляры", html: `${phead("Форму�
 const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
 const ruDate = (v) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ""); return m ? m[3] + "." + m[2] + "." + m[1] : v; };
 const PH = { count: "кол-во", name: "имя фамилия", rank: "звание", date: "дата", on: "дата", from: "дата", to: "дата", d1: "дата", d2: "дата", sign: "подпись", phone: "номер", id: "ID аккаунта" };
-function formOut(f, vals) {
+function fillTpl(f, vals, tpl, emptyRaw) {
   const F = Object.fromEntries(f.fields.map((x) => [x.k, x]));
-  return f.tpl.replace(/\{(\w+)\}/g, (m, k) => {
+  return String(tpl || "").replace(/\{(\w+)\}/g, (m, k) => {
     const x = F[k]; if (!x) return m; const v = vals[k];
     if (x.t === "check") return v ? "[ X ]" : "[   ]";
     if (x.t === "list") { const L = String(v || "").split("\n").map((s) => s.trim()).filter(Boolean); return (L.length ? L : ["(ссылка)"]).map((s, i) => i + 1 + ". " + s).join("\n"); }
-    if (!v) return "*" + (PH[k] || x.l.split(/[,(:]/)[0].trim().toLowerCase().split(" ").slice(0, 3).join(" ")) + "*";
+    if (!v) return emptyRaw && emptyRaw[k] != null ? emptyRaw[k] : "*" + (PH[k] || x.l.split(/[,(:]/)[0].trim().toLowerCase().split(" ").slice(0, 3).join(" ")) + "*";
     return x.t === "date" ? ruDate(v) : v;
   });
 }
+const formOut = (f, vals) => fillTpl(f, vals, f.tpl);
 route("form/:id", (id) => {
   const f = fById(id);
   if (!f) return { html: notFound() };
@@ -97,17 +98,26 @@ route("form/:id", (id) => {
   }).join("");
   return { title: f.title, html: `${phead(E(f.ref || "Формуляр"), E(f.title), E(f.desc || ""), null, `<a href="#/">Главная</a> / <a href="#/forms">Формуляры</a>`)}
   <section class="sec"><div class="wrap fg"><div><div class="note" style="margin-bottom:14px">Адресат: ${E(f.to || "")}. Поля сохраняются в вашем браузере.</div>${fields}<button id="fclr">Очистить форму</button> <button class="ed" data-ed="forms:${f.id}">✎ Править формуляр</button></div>
-    <div class="col2"><div class="stk"><div class="outh"><button class="pri" id="fcp">Скопировать текст</button><button id="fpr" title="Чистый вид текста без шапки и меню — для скриншота">Режим скриншота</button></div><div class="out" id="fo"></div></div></div></div></section>`,
+    <div class="col2"><div class="stk"><div class="outh"><div class="otabs" role="tablist" aria-label="Вид вывода"><button type="button" role="tab" data-om="txt">Текст</button><button type="button" role="tab" data-om="bb">BB-код</button></div><button class="pri" id="fcp">Скопировать</button><button id="fpr" title="Чистый вид текста без шапки и меню — для скриншота">Режим скриншота</button></div><div class="out" id="fo"></div><div class="out bb" id="fob" hidden></div><p class="note" id="fobn" hidden>BB-код для вставки на форум: скопируйте и вставьте в редактор в режиме BB-кода (кнопка «[ ]» в окне ответа).</p></div></div></div></section>`,
     init(app) {
       const key = "tcs-f-" + f.id; let vals = {};
       try { vals = JSON.parse(LS.get(key, "{}")); } catch (e) {}
       f.fields.forEach((x) => { if (x.t === "date" && vals[x.k] == null && ["date", "on"].includes(x.k)) vals[x.k] = today(); });
       const els = $$("[data-k]", app);
       els.forEach((el) => { const v = vals[el.dataset.k]; if (el.type === "checkbox") el.checked = !!v; else if (v != null) el.value = v; });
-      const up = () => { els.forEach((el) => { vals[el.dataset.k] = el.type === "checkbox" ? el.checked : el.value; }); LS.set(key, JSON.stringify(vals)); $("#fo", app).textContent = formOut(f, vals); };
+      const up = () => { els.forEach((el) => { vals[el.dataset.k] = el.type === "checkbox" ? el.checked : el.value; }); LS.set(key, JSON.stringify(vals)); $("#fo", app).textContent = formOut(f, vals); $("#fob", app).textContent = bbOut(f, vals); };
       const fgEl = $(".fg", app); fgEl.addEventListener("input", up); fgEl.addEventListener("change", up);
-      $("#fcp", app).onclick = () => { try { navigator.clipboard.writeText($("#fo", app).textContent); toast("Текст скопирован"); } catch (e) { toast("Не удалось скопировать"); } };
-      $("#fpr", app).onclick = () => shotOpen($("#fo", app), "so");
+      let mode = LS.get("tcs-fmode", "txt") === "bb" ? "bb" : "txt";
+      const setMode = (m) => {
+        mode = m; LS.set("tcs-fmode", m);
+        $("#fo", app).hidden = m === "bb"; $("#fob", app).hidden = m !== "bb"; $("#fobn", app).hidden = m !== "bb";
+        $$("[data-om]", app).forEach((b) => { const on = b.dataset.om === m; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+        $("#fcp", app).textContent = m === "bb" ? "Скопировать BB-код" : "Скопировать текст";
+      };
+      $$("[data-om]", app).forEach((b) => { b.onclick = () => setMode(b.dataset.om); });
+      setMode(mode);
+      $("#fcp", app).onclick = () => { try { navigator.clipboard.writeText($(mode === "bb" ? "#fob" : "#fo", app).textContent); toast(mode === "bb" ? "BB-код скопирован" : "Текст скопирован"); } catch (e) { toast("Не удалось скопировать"); } };
+      $("#fpr", app).onclick = () => { const t = $("#fo", app).cloneNode(true); t.hidden = false; shotOpen(t, "so"); }; /* скриншот всегда с обычным текстом */
       $("#fclr", app).onclick = () => { LS.set(key, "{}"); render(); };
       up();
     } };

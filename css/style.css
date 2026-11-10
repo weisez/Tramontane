@@ -266,3 +266,10 @@ body.editing #mapsvg .mk{cursor:move}
 #mapsvg.custom .mz .zf{fill-opacity:.26;stroke-width:3}#mapsvg.custom .mz.sel .zf{fill-opacity:.4}#mapsvg.custom.has .mz:not(.sel) .zf{fill-opacity:.08}
 #mapsvg.custom .zn{opacity:.6;paint-order:stroke;stroke:rgba(0,0,0,.35);stroke-width:2px}
 #mapsvg.custom #mbase image{filter:drop-shadow(0 0 10px rgba(0,0,0,.45))}
+/* формуляры: переключатель «Текст / BB-код» */
+.out[hidden],.note[hidden]{display:none}
+.out.bb{font-size:12.5px;background:#0d1520;color:#d8dee8;border-color:var(--line)}
+:root[data-theme=light] .out.bb{background:#f4f1e6;color:#17202c;border-color:#cdbf98}
+.otabs{display:inline-flex;border:1px solid var(--line)}
+.otabs button{border:0;margin:0;padding:8px 14px;font:500 12px var(--ff-m);letter-spacing:.08em;text-transform:uppercase;background:var(--card);color:var(--mute)}
+.otabs button.on{background:var(--brass);color:#14100a}
