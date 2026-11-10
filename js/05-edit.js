@@ -32,6 +32,7 @@ const SCHEMA = {
   footer: { title: "Подвал сайта", single: 1, get: () => ({ rows: footData().map((r) => r.slice()) }), set: (v) => { S.footer = v.rows; }, fields: [["rows", "Ссылки подвала. Одинаковое название колонки = одна колонка. Ссылка: #/раздел, https://… или mailto:…", "arr2", { n: 3, ph: ["Колонка", "Название", "Ссылка"], list: 2 }]] },
   nav: { title: "Меню сайта", single: 1, get: () => ({ rows: navData().map((r) => r.slice()) }), set: (v) => { S.nav = v.rows; }, fields: [["rows", "Пункты меню. Группа пустая = отдельная ссылка; одинаковая группа = выпадающее меню", "arr2", { n: 4, ph: ["Группа", "Название", "Ссылка", "Описание"], list: 2 }]] },
   dept: { title: "Структура департамента", single: 1, get: () => ({ tree: treeToText(S.dept), deptText: S.deptText || "" }), set: (v) => { S.dept = textToTree(v.tree); S.deptText = v.deptText; }, fields: [["tree", "Структура: отступ в 2 пробела = вложенность, «*» в начале = выделить", "tree"], ["deptText", "Текст слева от схемы", "html"]] },
+  events: { title: "Событие", fields: [["title", "Заголовок", "text"], ["tag", "Рубрика (например: Собрание, Учения, День открытых дверей)", "text"], ["date", "Дата проведения (дд.мм.гггг)", "text"], ["time", "Время (например: 17:30)", "text"], ["place", "Место", "text"], ["summary", "Коротко для слайдера на главной (1–2 предложения)", "area"], ["banner", "Картинка-баннер", "image", { fr: [["Слайдер на компьютере", 2.4], ["Слайдер на телефоне", 16 / 9], ["Карточка в списке", 16 / 7]] }], ["body", "Полный текст страницы события", "html"], ["link", "Кнопка на странице: куда ведёт (#/form/… или https://…). Пусто — без кнопки", "text", { list: 1 }], ["linkLabel", "Надпись на кнопке (например: Подать заявление)", "text"], ["until", "Показывать до (дд.мм.гггг). Пусто — до даты проведения, а без неё — всегда", "text"], ["draft", "Черновик: не показывать посетителям", "bool"]], blank: () => ({ title: "", tag: "", date: "", time: "", place: "", summary: "", banner: "", body: "<p></p>", link: "", linkLabel: "", until: "", draft: false }) },
   notes: { title: "Объявление", fields: [["title", "Заголовок (необязательно)", "text"], ["author", "Автор", "text"], ["role", "Звание / роль", "text"], ["place", "Где / подпись", "text"], ["date", "Дата (пусто — подставится текущая)", "text"], ["text", "Текст", "area"]], blank: () => ({ title: "", author: "", role: "", place: "", date: "", text: "" }) },
 };
 const treeToText = (n, d = 0) => !n ? "" : "  ".repeat(d) + (n.hl ? "* " : "") + n.name + "\n" + (n.kids || []).map((k) => treeToText(k, d + 1)).join("");
@@ -51,7 +52,7 @@ const RB = [["bold", "<b>B</b>"], ["italic", "<i>I</i>"], ["underline", "<u>U</u
 function fieldHTML(f, v, it) {
   const [k, label, t, o] = f, A = (x) => esc(x == null ? "" : x);
   let h = "";
-  if (t === "text") h = `<input data-f="${k}" value="${A(v)}">`;
+  if (t === "text") h = `<input data-f="${k}"${o && o.list ? ' list="rl-opts"' : ""} value="${A(v)}">`;
   else if (t === "area") h = `<textarea data-f="${k}">${A(v)}</textarea>`;
   else if (t === "json") h = `<textarea data-f="${k}" data-t="json" style="min-height:160px;font-family:var(--ff-m);font-size:12px">${A(JSON.stringify(v || [], null, 1))}</textarea>`;
   else if (t === "lines") h = `<textarea data-f="${k}" data-t="lines">${A((v || []).join("\n"))}</textarea>`;

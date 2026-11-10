@@ -12,8 +12,8 @@ function pbInd() { const b = $("#b-pub"); if (b) b.classList.toggle("dirty", pbD
 function pbSoon() { clearTimeout(PUB.t); PUB.t = setTimeout(pbInd, 600); }
 function pbDiff(a, b) {
   const rows = []; let lost = 0;
-  const nm = { people: (x) => x.name + " — " + x.title, units: (x) => x.name, ranks: (x) => x.name, timeline: (x) => x.title, rooms: (x) => x.title, zones: (x) => x.name, pois: (x) => x.name, docs: (x) => x.num + " " + x.title, forms: (x) => x.title };
-  const L = { people: "Люди", units: "Подразделения", ranks: "Звания", timeline: "История", rooms: "Помещения", zones: "Зоны", pois: "Объекты карты", docs: "Документы", forms: "Формуляры" };
+  const nm = { people: (x) => x.name + " — " + x.title, units: (x) => x.name, ranks: (x) => x.name, timeline: (x) => x.title, rooms: (x) => x.title, zones: (x) => x.name, pois: (x) => x.name, docs: (x) => x.num + " " + x.title, forms: (x) => x.title, events: (x) => x.title };
+  const L = { people: "Люди", units: "Подразделения", ranks: "Звания", timeline: "История", rooms: "Помещения", zones: "Зоны", pois: "Объекты карты", docs: "Документы", forms: "Формуляры", events: "События" };
   Object.keys(nm).forEach((k) => {
     const A = new Map((a[k] || []).map((x) => [x.id, x])), B = new Map((b[k] || []).map((x) => [x.id, x])), add = [], del = [], chg = [];
     B.forEach((v, id) => { if (!A.has(id)) add.push(v); else if (pbN(A.get(id)) !== pbN(v)) chg.push(v); }); A.forEach((v, id) => { if (!B.has(id)) del.push(v); });

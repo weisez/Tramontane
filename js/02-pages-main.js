@@ -15,7 +15,7 @@ const BADGE = `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3 55 12v
 route("", () => {
   const m = S.meta, [a, ...b] = (m.name || "").split(" "), br = latest("briefing", 1)[0], cap = pById("delacroix");
   const stats = statsPick().map((s) => `<div class="stat"><b data-count="${E(s.n)}">${E(s.n)}</b><span>${E(s.l)}</span></div>`).join("");
-  return { title: "", html: `
+  return { title: "", init: evsInit, html: `
   <section class="hero">${fimg(m.hero, cropOf(m, "hero"), "", true)}<div class="wrap hero-in">
     <div class="eb">${E(m.org)}</div>
     <h1>${E(a || "")}<span>${E(b.join(" "))}</span></h1>
@@ -24,6 +24,7 @@ route("", () => {
     <div class="hero-addr">${E(m.address)}</div>
   </div></section>
   ${br ? `<div class="strip"><b>Брифинг</b><span>${E(br.num)} · ${E(br.date)}</span><a href="#/doc/${br.id}">Читать →</a></div>` : ""}
+  ${evsHome()}
   <section class="sec"><div class="wrap quote">
     ${cap ? `<div class="reveal" style="position:relative">${phot(cap)}${eb("people", cap.id)}</div>` : ""}
     <div class="reveal"><div class="eb">Командующий офицер</div><h2 style="margin:8px 0 22px">${cap ? E(cap.rank + " " + cap.name) : ""}</h2>
