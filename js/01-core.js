@@ -106,7 +106,7 @@ function ovNudge(o) {
 /* two-step confirm */
 function arm(b, ok) { if (b.classList.contains("arm")) { clearTimeout(b._t); ok(); return; } b.dataset.t = b.textContent; b.textContent = "Точно?"; b.classList.add("arm"); b._t = setTimeout(() => { b.classList.remove("arm"); b.textContent = b.dataset.t; }, 3000); }
 /* theme */
-function theme(t) { if (t) LS.set("tcs-theme", t); const v = LS.get("tcs-theme", /[?&]classic\b/.test(location.search) ? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark") : "dark"); document.documentElement.dataset.theme = v; return v; }
+function theme(t) { if (t) LS.set("tcs-theme", t); const v = LS.get("tcs-theme", matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); document.documentElement.dataset.theme = v; return v; }
 
 /* ===== editable UI texts: static strings in templates become editable ===== */
 const D0 = "\uE000", D1 = "\uE001";
