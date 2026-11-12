@@ -19,7 +19,7 @@ const evText = (list) => JSON.stringify({ events: list }, null, 2) + "\n";
 try { const c = JSON.parse(LS.get(EVKEY, "null")); if (c && Array.isArray(c.events)) { EVT.list = c.events; EVT.at = c.at || 0; EVT.status = "cache"; } } catch (e) {}
 const evCache = () => LS.set(EVKEY, JSON.stringify({ events: EVT.list, at: EVT.at }));
 
-/* чтение: API GitHub (всегда свежее; условные запросы не тратят лимит) → raw (обновляется раз в минуту) → файл рядом с сайтом */
+/* чтение: владелец с токеном — API GitHub (всегда свежее), остальные — raw (раз в минуту), запасной вариант — файл рядом с сайтом */
 async function evLoad() {
   const src = [
     async () => { const r = await fetch(evApi() + "?ref=" + GH.branch, { headers: { ...ghH(), Accept: "application/vnd.github.raw+json" }, cache: "no-cache" }); if (!r.ok) throw new Error("api " + r.status); return r.text(); },
@@ -27,12 +27,15 @@ async function evLoad() {
     async () => { const r = await fetch("events.json", { cache: "no-cache" }); if (!r.ok) throw new Error("file " + r.status); return r.text(); },
   ];
   let last = null;
-  for (let i = 0; i < src.length; i++) {
+  /* посетители (без токена) читают raw: у API GitHub лимит 60 запросов/час на IP, а за офисным или мобильным NAT он общий */
+  const order = GH.token ? [0, 1, 2] : [1, 2];
+  for (let k = 0; k < order.length; k++) {
+    const i = order[k], fresh = k < order.length - 1;
     try {
       const list = evParse(await src[i]());
       if (EVT.busy) return false; /* не затираем действие, которое ещё записывается */
       const ch = JSON.stringify(list) !== JSON.stringify(EVT.list);
-      EVT.list = list; EVT.at = EVT.last = Date.now(); EVT.status = i < 2 ? "live" : "stale"; EVT.err = ""; evCache();
+      EVT.list = list; EVT.at = EVT.last = Date.now(); EVT.status = fresh ? "live" : "stale"; EVT.err = ""; evCache();
       return ch;
     } catch (e) { last = e; }
   }

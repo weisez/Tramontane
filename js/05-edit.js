@@ -131,7 +131,7 @@ function mvItem(c, id, d) { if (c === "notes") { boardMv(id, d); return; } if (c
 /* modal-level events */
 document.addEventListener("click", (e) => {
   const ov = e.target.closest("#edov"); if (!ov) return;
-  const b = e.target.closest("button"); if (!b) { if (e.target === ov) ovClose("edov"); return; }
+  const b = e.target.closest("button"); if (!b) { if (e.target === ov) ovNudge(ov); return; }
   const d = b.dataset;
   if ("edx" in d) ovClose("edov");
   else if ("edsave" in d) edSave();
@@ -159,7 +159,7 @@ function textEd(key) {
   const cur = (S.txt || {})[key], val = cur != null ? cur : key;
   const o = ovOpen("txov", `<div class="md"><div class="mh"><h3>Изменить надпись</h3><button data-x aria-label="Закрыть">✕</button></div><div class="mb"><p class="note">Исходный текст: «${esc(key)}». Замена действует везде, где встречается эта надпись.</p><div class="fld"><textarea id="tx-v" style="min-height:90px">${esc(val)}</textarea></div></div><div class="mf"><button data-rs>Сбросить</button><span class="sp"></span><button data-x>Отмена</button><button class="pri" data-ok>Сохранить</button></div></div>`);
   const fin = () => { save(); ovClose("txov"); keepScroll(() => { chrome(); render(); }); toast("Надпись обновлена"); };
-  o.onclick = (e) => { if (e.target === o) { ovClose("txov"); return; } const b = e.target.closest("button"); if (!b) return;
+  o.onclick = (e) => { if (e.target === o) { ovNudge(o); return; } const b = e.target.closest("button"); if (!b) return;
     if ("x" in b.dataset) ovClose("txov"); else if ("rs" in b.dataset) { delete S.txt[key]; fin(); }
     else if ("ok" in b.dataset) { const v = $("#tx-v").value.trim(); if (!v || v === key) delete S.txt[key]; else S.txt[key] = v; fin(); } };
   $("#tx-v").focus();
@@ -169,7 +169,7 @@ function btnEd(a) {
   const curL = (S.txt || {})[label0] != null ? S.txt[label0] : label0, curH = (S.lnk || {})[key] || href0;
   const o = ovOpen("txov", `<div class="md"><div class="mh"><h3>Кнопка</h3><button data-x aria-label="Закрыть">✕</button></div><div class="mb"><div class="fld"><label>Надпись</label><input id="bt-l" value="${esc(curL)}"></div><div class="fld"><label>Куда ведёт (раздел сайта или адрес)</label><input id="bt-h" list="rl-opts" value="${esc(curH)}" placeholder="#/career или https://…"></div><p class="note">Начните вводить: подскажем разделы, документы и формуляры. Для внешних ссылок укажите https://…</p><datalist id="rl-opts">${routeList().map((x) => `<option value="${esc(x[0])}">${esc(x[1])}</option>`).join("")}</datalist></div><div class="mf"><button data-rs>Сбросить</button><span class="sp"></span><button data-x>Отмена</button><button class="pri" data-ok>Сохранить</button></div></div>`);
   const fin = () => { save(); ovClose("txov"); keepScroll(() => { chrome(); render(); }); toast("Кнопка обновлена"); };
-  o.onclick = (e) => { if (e.target === o) { ovClose("txov"); return; } const b = e.target.closest("button"); if (!b) return;
+  o.onclick = (e) => { if (e.target === o) { ovNudge(o); return; } const b = e.target.closest("button"); if (!b) return;
     if ("x" in b.dataset) ovClose("txov");
     else if ("rs" in b.dataset) { delete S.txt[label0]; delete S.lnk[key]; fin(); }
     else if ("ok" in b.dataset) { const l = $("#bt-l").value.trim(), h = $("#bt-h").value.trim();

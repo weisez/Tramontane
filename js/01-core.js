@@ -93,6 +93,16 @@ addEventListener("error", (e) => { const i = e.target; if (i && i.tagName === "I
 /* modal helpers */
 function ovOpen(id, html) { let o = $("#" + id); if (!o) { o = document.createElement("div"); o.className = "ov"; o.id = id; document.body.appendChild(o); } o.innerHTML = html; o.classList.add("open"); return o; }
 const ovClose = (id) => { const o = $("#" + id); if (o) { o.classList.remove("open"); o.innerHTML = ""; } };
+/* Окна с вводом (редактор, надписи, «Опубликовать», «Данные») не закрываются кликом по фону: случайный клик не должен стирать набранное.
+   Вместо закрытия окно коротко «подрагивает» и подсвечивается. Закрыть: ✕, «Отмена» или Esc. Тянуть выделение из окна наружу не считается кликом по фону. */
+let OV_DOWN = null;
+document.addEventListener("pointerdown", (e) => { OV_DOWN = e.target; }, true);
+function ovNudge(o) {
+  if (!o || OV_DOWN !== o) return;
+  const m = o.querySelector(".md"); if (!m) return;
+  m.classList.add("held"); clearTimeout(m._ht); m._ht = setTimeout(() => m.classList.remove("held"), 700);
+  if (m.animate && !matchMedia("(prefers-reduced-motion: reduce)").matches) m.animate([{ transform: "translateX(0)" }, { transform: "translateX(-7px)" }, { transform: "translateX(6px)" }, { transform: "translateX(-3px)" }, { transform: "translateX(0)" }], { duration: 380, easing: "ease-out" });
+}
 /* two-step confirm */
 function arm(b, ok) { if (b.classList.contains("arm")) { clearTimeout(b._t); ok(); return; } b.dataset.t = b.textContent; b.textContent = "Точно?"; b.classList.add("arm"); b._t = setTimeout(() => { b.classList.remove("arm"); b.textContent = b.dataset.t; }, 3000); }
 /* theme */

@@ -140,11 +140,11 @@ body.editing .card,body.editing .drow,body.editing .person,body.editing .post,bo
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal,.tli{opacity:1;transform:none}}
 
 /* ===== v2 UI: staff groups, vacancies, board, editable texts, rows ===== */
-.aside{top:calc(var(--hh) + 14px)}.out{top:calc(var(--hh) + 14px)}.fg .col2 .stk,.outh{top:calc(var(--hh) + 10px)}
+.aside{top:calc(var(--hv) + 14px)}.out{top:calc(var(--hv) + 14px)}.fg .col2 .stk,.outh{top:calc(var(--hv) + 10px)}
 .ugrp{margin-top:36px}.ugh{display:flex;align-items:center;gap:14px;margin-bottom:14px}.ugh h3{color:var(--brass2)}.ugm{gap:4px}.ugm button{padding:2px 10px}.ugm button:disabled{opacity:.3;cursor:default}
 .vac-msg{display:flex;gap:24px;align-items:center;padding:30px 34px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--brass)}.vac-msg.closed{border-left-color:var(--red)}.vm-i{font:500 40px/1 var(--ff-h);color:var(--brass2);width:56px;text-align:center;flex:none}.vac-msg b{font:500 21px var(--ff-h);letter-spacing:.12em;text-transform:uppercase}.vac-msg p{margin:8px 0 0;color:var(--mute);font:400 17px/1.6 var(--ff-s)}
 .bcol{min-width:0}.cbody{min-width:0}
-.post.compose{position:sticky;top:calc(var(--hh) + 10px);z-index:6;background:var(--card);border-color:color-mix(in srgb,var(--brass) 55%,var(--line));box-shadow:0 14px 40px rgba(0,0,0,.35);margin-bottom:18px;align-items:start}
+.post.compose{position:sticky;top:calc(var(--hv) + 10px);z-index:6;background:var(--card);border-color:color-mix(in srgb,var(--brass) 55%,var(--line));box-shadow:0 14px 40px rgba(0,0,0,.35);margin-bottom:18px;align-items:start}
 .post.compose .av{background:linear-gradient(135deg,var(--brass),var(--brass2));color:#14100a;font-size:22px}
 .cmp-t{width:100%;text-align:left;border:1px dashed var(--line);padding:13px 15px;color:var(--mute);font:italic 16px var(--ff-s);background:var(--card2)}.cmp-t:hover{border-color:var(--brass);color:var(--ink)}.compose.open .cmp-t{display:none}
 .cmp-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.3,1)}.cmp-b>div{overflow:hidden;min-height:0}.compose.open .cmp-b{grid-template-rows:1fr}
@@ -344,3 +344,16 @@ body.editing .evs-s.on{outline:1px dashed rgba(201,162,75,.6);outline-offset:-4p
 @media(max-width:940px){.lf{grid-template-columns:1fr;gap:30px}.lf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.lf-grid{grid-template-columns:1fr}.lf-it{grid-template-columns:104px minmax(0,1fr);gap:14px}.lf-it p{display:none}}
 @media print{.lf-sec{display:none}}
+
+/* ===== шапка прячется при прокрутке вниз (js/99-init.js → headerAutoHide) ===== */
+:root{--hv:var(--hh)}
+html.hdr-off{--hv:0px}
+#hdr{transition:transform .55s cubic-bezier(.22,.8,.26,1),box-shadow .4s}
+#hdr:after{content:"";position:absolute;left:0;right:0;top:100%;height:3px;background:linear-gradient(90deg,var(--brass),var(--brass2) 35%,var(--blue));transform:scaleX(var(--rp,0));transform-origin:left;opacity:0;transition:opacity .4s;pointer-events:auto}
+html.hdr-off #hdr{transform:translateY(-100%);box-shadow:none}
+html.hdr-off #hdr:after{opacity:1}
+html.hdr-off #hdr:hover,html.hdr-off #hdr:has(:focus-visible){transform:none;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+html.hdr-off #hdr:hover:after,html.hdr-off #hdr:has(:focus-visible):after{opacity:0}
+.aside,.fg .col2 .stk,.post.compose,.out,.outh{transition:top .55s cubic-bezier(.22,.8,.26,1)}
+/* окна с вводом: клик по фону не закрывает, а подсвечивает окно */
+.md.held{outline:2px solid var(--brass2);outline-offset:4px;transition:outline-color .2s}

@@ -28,7 +28,7 @@ function pbDiff(a, b) {
 const pbClose = () => ovClose("pbov");
 async function pbOpen() {
   const o = ovOpen("pbov", `<div class="md"><div class="mh"><h3>Публикация <small class="note">${esc(GH.repo)} · ${esc(GH.branch)}</small></h3><button data-pb="hist">История</button><button data-pb="x" aria-label="Закрыть">✕</button></div><div class="mb" id="pbb"></div></div>`);
-  o.onclick = (e) => { if (e.target === o) { pbClose(); return; } const b = e.target.closest("[data-pb]"); if (!b) return; const a = b.dataset.pb; if (a === "x") pbClose(); else if (a === "go") pbGo(); else if (a === "hist") pbHist(); else if (a === "back") pbOpen(); else if (a === "rev") pbRev(b.dataset.sha); else if (a === "cfg") { pbClose(); mlOpen(null); mlCfg(); } };
+  o.onclick = (e) => { if (e.target === o) { ovNudge(o); return; } const b = e.target.closest("[data-pb]"); if (!b) return; const a = b.dataset.pb; if (a === "x") pbClose(); else if (a === "go") pbGo(); else if (a === "hist") pbHist(); else if (a === "back") pbOpen(); else if (a === "rev") pbRev(b.dataset.sha); else if (a === "cfg") { pbClose(); mlOpen(null); mlCfg(); } };
   const B = $("#pbb");
   if (!GH.token) { B.innerHTML = `<p class="note"><b>Нужен токен GitHub</b> с правом Contents: Read and write (тот же, что для медиатеки).</p><p><button class="pri" data-pb="cfg">Подключить</button></p>`; return; }
   B.innerHTML = '<p class="note">Сравниваю с GitHub…</p>';
@@ -62,7 +62,7 @@ async function pbRev(sha) {
 /* export / import */
 function dataOpen() {
   const o = ovOpen("dtov", `<div class="md wide"><div class="mh"><h3>Данные сайта (JSON)</h3><button data-d="x" aria-label="Закрыть">✕</button></div><div class="mb"><p class="note">Резервная копия всех данных. Вставьте JSON и нажмите «Загрузить», чтобы заменить текущие данные в редакторе.</p><textarea id="dt" style="min-height:320px;font:12px var(--ff-m)">${esc(JSON.stringify(S, null, 2))}</textarea></div><div class="mf"><button data-d="cp">Скопировать</button><button data-d="dl">Скачать файл</button><span class="sp"></span><button class="dng" data-d="ld">Загрузить из поля</button></div></div>`);
-  o.onclick = (e) => { if (e.target === o) { ovClose("dtov"); return; } const b = e.target.closest("[data-d]"); if (!b) return; const a = b.dataset.d;
+  o.onclick = (e) => { if (e.target === o) { ovNudge(o); return; } const b = e.target.closest("[data-d]"); if (!b) return; const a = b.dataset.d;
     if (a === "x") ovClose("dtov"); else if (a === "cp") { try { navigator.clipboard.writeText($("#dt").value); toast("Скопировано"); } catch (x) {} }
     else if (a === "dl") { const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([$("#dt").value], { type: "application/json" })); l.download = "data.json"; l.click(); }
     else if (a === "ld") arm(b, () => { try { S = JSON.parse($("#dt").value); LS.set(KEY, JSON.stringify(S)); location.reload(); } catch (x) { toast("Ошибка JSON: " + x.message); } }); };

@@ -17,7 +17,7 @@ const bTime = (t) => { const d = new Date(t), p = (n) => String(n).padStart(2, "
 try { const c = JSON.parse(LS.get(BKEY, "null")); if (c && Array.isArray(c.notes)) { BOARD.notes = c.notes; BOARD.at = c.at || 0; BOARD.status = "cache"; } } catch (e) {}
 const bCache = () => LS.set(BKEY, JSON.stringify({ notes: BOARD.notes, at: BOARD.at }));
 
-/* чтение: сначала API GitHub (всегда свежее, условные запросы не тратят лимит), затем raw, затем файл рядом с сайтом */
+/* чтение: владелец с токеном — API GitHub (всегда свежее), остальные — raw (раз в минуту), запасной вариант — файл рядом с сайтом */
 async function boardLoad() {
   const src = [
     async () => { const r = await fetch(bApi() + "?ref=" + GH.branch, { headers: { ...ghH(), Accept: "application/vnd.github.raw+json" }, cache: "no-cache" }); if (!r.ok) throw new Error("api " + r.status); return r.text(); },
@@ -25,8 +25,11 @@ async function boardLoad() {
     async () => { const r = await fetch("board.json", { cache: "no-cache" }); if (!r.ok) throw new Error("file " + r.status); return r.text(); },
   ];
   let last = null;
-  for (let i = 0; i < src.length; i++) {
-    try { const notes = bParse(await src[i]()); if (BOARD.busy) return false; /* не затираем действие, которое ещё записывается */ const ch = JSON.stringify(notes) !== JSON.stringify(BOARD.notes); BOARD.notes = notes; BOARD.at = Date.now(); BOARD.status = i === 0 ? "live" : "stale"; BOARD.err = ""; bCache(); return ch; }
+  /* посетители (без токена) читают raw: у API GitHub лимит 60 запросов/час на IP, а за офисным или мобильным NAT он общий */
+  const order = GH.token ? [0, 1, 2] : [1, 2];
+  for (let k = 0; k < order.length; k++) {
+    const i = order[k], fresh = k < order.length - 1;
+    try { const notes = bParse(await src[i]()); if (BOARD.busy) return false; /* не затираем действие, которое ещё записывается */ const ch = JSON.stringify(notes) !== JSON.stringify(BOARD.notes); BOARD.notes = notes; BOARD.at = Date.now(); BOARD.status = fresh ? "live" : "stale"; BOARD.err = ""; bCache(); return ch; }
     catch (e) { last = e; }
   }
   BOARD.status = BOARD.notes.length || BOARD.at ? "stale" : "fail"; BOARD.err = last ? last.message : "";
@@ -88,7 +91,7 @@ function boardStat() {
 const boardItem = (n) => `<div class="post reveal in"><div class="av">${E(ini(n.author))}</div><div class="pbody"><div class="who">${E(n.role ? n.role + " " : "")}${E(n.author || "")}</div><div class="where">${E(n.place || "")}${n.place && n.date ? " · " : ""}${n.date ? E(n.date) : ""}</div>${n.title ? `<h4 class="nt">${E(n.title)}</h4>` : ""}<p class="nb">${E(n.text)}</p></div>${eb("notes", n.id)}${mvb("notes", n.id)}</div>`;
 function boardList() {
   const L = BOARD.notes.map(boardItem).join("") || (BOARD.status === "load" ? "" : `<p class="note">Объявлений пока нет.</p>`);
-  return `<div class="bstatus" id="bst">${boardStat()}<button type="button" class="bref" id="bref">Обновить</button></div>${L}${addb("notes", "Объявление")}`;
+  return `${OWN && !VIEW() ? `<div class="bstatus" id="bst">${boardStat()}<button type="button" class="bref" id="bref">Обновить</button></div>` : ""}${L}${addb("notes", "Объявление")}`;
 }
 function boardPaint() { const el = $("#bl"); if (!el) return; el.innerHTML = ui(boardList()); const b = $("#bref"); if (b) b.onclick = boardRefresh; }
 async function boardRefresh() { BOARD.status = BOARD.busy ? "save" : BOARD.notes.length ? BOARD.status : "load"; try { await boardLoad(); } catch (e) {} boardPaint(); }

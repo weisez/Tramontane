@@ -75,8 +75,9 @@ const STK = ".aside,.fg .col2 .stk,.post.compose";
 let stkRO;
 function stickyFit() {
   const hh = $("#hdr").offsetHeight, vh = innerHeight;
+  const vis = document.documentElement.classList.contains("hdr-off") ? 0 : hh; /* сколько шапки сейчас видно: липкие блоки поднимаются вместе с ней */
   document.documentElement.style.setProperty("--hh", hh + "px");
-  $$(STK).forEach((e) => { e.style.top = ""; if (getComputedStyle(e).position !== "sticky") return; const g = e.classList.contains("compose") ? 10 : 14; e.style.top = Math.min(hh + g, vh - e.offsetHeight - g) + "px"; });
+  $$(STK).forEach((e) => { e.style.top = ""; if (getComputedStyle(e).position !== "sticky") return; const g = e.classList.contains("compose") ? 10 : 14; e.style.top = Math.min(vis + g, vh - e.offsetHeight - g) + "px"; });
 }
 function stickyWatch() {
   stickyFit();
@@ -85,6 +86,33 @@ function stickyWatch() {
   $$(STK).forEach((e) => stkRO.observe(e));
 }
 addEventListener("resize", stickyFit);
+/* ===== шапка: уезжает вверх при прокрутке вниз и возвращается при прокрутке вверх =====
+   Класс hdr-off на <html> двигает шапку (стили в style.css). Не прячем: у самого верха, при открытом меню или окне,
+   в режиме правки у владельца и при навигации с клавиатуры. Пока шапка спрятана, по верхнему краю бежит полоска прогресса чтения. */
+(function headerAutoHide() {
+  const root = document.documentElement;
+  let last = scrollY, run = 0, off = false, queued = false;
+  const set = (v) => { if (v === off) return; off = v; root.classList.toggle("hdr-off", v); stickyFit(); };
+  const hold = () => {
+    const h = $("#hdr"), a = document.activeElement;
+    return !h || $("#nav").classList.contains("open") || !!document.querySelector(".ov.open") ||
+      document.body.classList.contains("editing") || (a && h.contains(a) && a.matches(":focus-visible"));
+  };
+  function step() {
+    queued = false;
+    const y = Math.max(0, scrollY), d = y - last, max = root.scrollHeight - innerHeight;
+    last = y;
+    root.style.setProperty("--rp", max > 0 ? Math.min(1, y / max).toFixed(4) : "0");
+    if (y < 120 || hold()) { run = 0; set(false); return; }   /* у верха и при удержании шапка на месте */
+    if (d === 0) return;
+    if ((d > 0) !== (run > 0)) run = 0;                       /* сменилось направление: считаем заново */
+    run += d;
+    if (run > 24) set(true);                                  /* ушли вниз заметно: прячем */
+    else if (run < -10) set(false);                           /* чуть потянули вверх: возвращаем */
+  }
+  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(step); } }, { passive: true });
+  document.addEventListener("focusin", (e) => { if (e.target.closest && e.target.closest("#hdr") && e.target.matches(":focus-visible")) set(false); });
+})();
 (async function init() {
   theme();
   try { await ownerCheck(); } catch (e) {}
